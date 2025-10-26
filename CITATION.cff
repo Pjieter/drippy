@@ -1,0 +1,19 @@
+# YAML 1.2
+---
+cff-version: "1.2.0"
+title: "drippy"
+authors:
+  - family-names: Dubbelman
+    given-names: Michiel
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+date-released: 2025-10-26
+version: "0.0.1"
+repository-code: "https://github.com/Pjieter/drippy"
+keywords:
+  - "EDA"
+  - " data analysis"
+  - " data"
+  - " exploratory data analysis"
+  - " regression"
+  - " fitting"
+message: "If you use this software, please cite it using these metadata."

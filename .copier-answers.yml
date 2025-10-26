@@ -1,0 +1,39 @@
+# Changes here will be overwritten by Copier
+SelectCitation:
+- AddCitationFile_flag
+- AddCFFConvert_flag
+SelectCodeQualityFeatures:
+- AddLocalTests_flag
+- SelectGitHubActions_flag
+- AddLinting_flag
+- AddPreCommit_flag
+- AddSonarCloud_flag
+- AddEditorConfig_flag
+SelectCommunityFeatures:
+- AddContributing_flag
+SelectDocumentationFeatures:
+- AddLocalDocumentation_flag
+- AddOnlineDocumentation_flag
+- AddDevDoc_flag
+- AddGitHubActionDocumentation_flag
+SelectGitHubActions:
+- AddGitHubActionBuild_flag
+- AddLinkCheck_flag
+SelectPublishReleaseFeatures:
+- SelectCitation_flag
+- AddChangeLog_flag
+- AddZenodo_flag
+_commit: 0.6.1
+_src_path: https://github.com/nlesc/python-template.git
+copyright_holder: Michiel Dubbelman
+email: m.p.dubbelman@tudelft.nl
+full_name: Michiel Dubbelman
+github_organization: Pjieter
+keywords: EDA, data analysis, data, exploratory data analysis, regression, fitting
+license: MIT
+package_name: drippy
+package_short_description: Discover, Refine, Inspect, Present in Python, using EDA
+    principles outlined by NIST/SEMATECH e-Handbook of Statistical Methods, http://www.itl.nist.gov/div898/handbook/eda/eda.htm
+    to analyse data.
+template_profile: recommended
+version: 0.0.1
