@@ -8,7 +8,7 @@ build:
     post_install:
       # Install poetry
       # https://python-poetry.org/docs/#installing-manually
-      - pip install poetry
+      - pip install poetry==2.2
       # Install dependencies with 'docs' dependency group
       # https://python-poetry.org/docs/managing-dependencies/#dependency-groups
       # VIRTUAL_ENV needs to be set manually for now.

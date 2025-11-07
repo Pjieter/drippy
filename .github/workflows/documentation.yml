@@ -32,7 +32,7 @@ jobs:
           which python
           python --version
       - name: Install the project dependencies
-        run: poetry install --all-groups
+        run: poetry install --with docs
       - name: Install pandoc using apt
         run: sudo apt install pandoc        
       - name: Build documentation
