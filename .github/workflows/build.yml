@@ -21,19 +21,22 @@ jobs:
         poetry-version: ['2.2']
     steps:
       - uses: actions/checkout@v4
+      - name: Install poetry
+        run: pipx install poetry==${{ matrix.poetry-version }}
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Python Poetry Action
-        uses: abatilo/actions-poetry@v4.0.0
-        with:
-          poetry-version: ${{ matrix.poetry-version }}
+          cache: 'poetry'
+          cache-dependency-path: poetry.lock
       - name: Python info
         shell: bash -e {0}
         run: |
           which python
           python --version
+      - name: Setup Poetry environment
+        run: |
+          poetry env use ${{ matrix.python-version }}
       - name: Install the project dependencies
         run: |
           poetry install --all-groups
@@ -48,23 +51,28 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ['3.12']
+        poetry-version: ['2.2']
     steps:
       - uses: actions/checkout@v4
+      - name: Install poetry
+        run: pipx install poetry==${{ matrix.poetry-version }}
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Python Poetry Action
-        uses: abatilo/actions-poetry@v4.0.0
-        with:
-          poetry-version: 2.2
+          cache: 'poetry'
+          cache-dependency-path: poetry.lock
       - name: Python info
         shell: bash -e {0}
         run: |
           which python
           python --version
+      - name: Setup Poetry environment
+        run: |
+          poetry env use ${{ matrix.python-version }}
       - name: Install the project dependencies
-        run: poetry install --all-groups
+        run: |
+          poetry install --all-groups
       - name: Check style against standards using ruff
         run: |
           poetry run ruff check --fix
