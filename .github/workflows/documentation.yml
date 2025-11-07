@@ -31,6 +31,9 @@ jobs:
         run: |
           which python
           python --version
+      - name: Setup Poetry environment
+        run: |
+          poetry env use ${{ matrix.python-version }}
       - name: Install the project dependencies
         run: poetry install --with docs
       - name: Install pandoc using apt
