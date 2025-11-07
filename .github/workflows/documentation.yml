@@ -34,7 +34,7 @@ jobs:
       - name: Install the project dependencies
         run: poetry install --with docs
       - name: Install pandoc using apt
-        run: sudo apt install pandoc        
+        run: sudo apt install pandoc
       - name: Build documentation
         run: |
           eval $(poetry env activate)
