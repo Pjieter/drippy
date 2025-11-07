@@ -1,4 +1,5 @@
 # DRIPPY
+
 Discover, Refine, Inspect, Present in Python, using EDA principles outlined by NIST/SEMATECH e-Handbook of Statistical Methods, ([this link](http://www.itl.nist.gov/div898/handbook/eda/eda.htm)), to analyse data.
 
 [![github repo badge](https://img.shields.io/badge/github-repo-000.svg?logo=github&labelColor=gray&color=blue)](https://github.com/Pjieter/drippy)
@@ -8,7 +9,7 @@ Discover, Refine, Inspect, Present in Python, using EDA principles outlined by N
 [![build](https://github.com/Pjieter/drippy/actions/workflows/build.yml/badge.svg)](https://github.com/Pjieter/drippy/actions/workflows/build.yml)
 [![cffconvert](https://github.com/Pjieter/drippy/actions/workflows/cffconvert.yml/badge.svg)](https://github.com/Pjieter/drippy/actions/workflows/cffconvert.yml)
 [![sonarcloud](https://github.com/Pjieter/drippy/actions/workflows/sonarcloud.yml/badge.svg)](https://github.com/Pjieter/drippy/actions/workflows/sonarcloud.yml)
-[![link-check](https://github.com/Pjieter/drippy/actions/workflows/link-check.yml/badge.svg)](https://github.com/Pjieter/drippy/actions/workflows/link-check.yml) |
+[![link-check](https://github.com/Pjieter/drippy/actions/workflows/link-check.yml/badge.svg)](https://github.com/Pjieter/drippy/actions/workflows/link-check.yml)
 
 ## How to use drippy
 
@@ -22,13 +23,12 @@ To install drippy from GitHub repository, do:
 ```console
 git clone git@github.com:Pjieter/drippy.git
 cd drippy
-python -m pip install .
+poetry install
 ```
 
 ## Documentation
 
-Can be found here: https://drippy.readthedocs.io/en/latest/
-
+Can be found here: [https://drippy.readthedocs.io/en/latest/](https://drippy.readthedocs.io/en/latest/)
 ## Contributing
 
 If you want to contribute to the development of drippy,
