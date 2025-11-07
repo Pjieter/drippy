@@ -4,8 +4,8 @@
 # - https://www.python.org/dev/peps/pep-0621/
 
 [build-system]
-requires = ["setuptools>=64.0.0", "setuptools-scm", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [project]
 authors = [
@@ -18,43 +18,37 @@ classifiers = [
     "",
     "Natural Language :: English",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 dependencies = []
 description = "Discover, Refine, Inspect, Present in Python, using EDA principles outlined by NIST/SEMATECH e-Handbook of Statistical Methods, http://www.itl.nist.gov/div898/handbook/eda/eda.htm to analyse data."
 keywords = ["EDA"," data analysis"," data"," exploratory data analysis"," regression"," fitting"]
-license = {file = "LICENSE"}
+license-files = [
+    "LICENSE","CITATION.cff"
+]
+
 name = "drippy"
 readme = {file = "README.md", content-type = "text/markdown"}
-requires-python = ">=3.8"
-version = "0.0.1"
+requires-python = ">=3.11,<4"
+version = "0.1.0"
 
-[project.optional-dependencies]
-dev = [
-    "build",  # build is not only used in publishing (below), but also in the template's test suite
-    "bump-my-version",
-    "coverage [toml]",
-    "pytest",
-    "pytest-cov",
-    "ruff",
-    "sphinx",
-    "sphinx_rtd_theme",
-    "sphinx-autoapi",
-    "tox",
-    "myst_parser",
-]
+[dependency-groups]
 docs = [
-    "sphinx",
-    "sphinx_rtd_theme",
-    "sphinx-autoapi",
-    "myst_parser",
+    "sphinx (>=8.2.3,<9.0.0)",
+    "sphinx-rtd-theme (>=3.0.2,<4.0.0)",
+    "sphinx-autoapi (>=3.6.0,<4.0.0)",
+    "myst-parser (>=4.0.1,<5.0.0)"
 ]
-publishing = [
-    "build",
-    "twine",
-    "wheel",
+dev = [
+    {include-group = "docs"},
+    "bump-my-version (>=1.2.2,<2.0.0)",
+    "coverage (>=7.10.6,<8.0.0)",
+    "pytest (>=8.4.2,<9.0.0)",
+    "pytest-cov (>=7.0.0,<8.0.0)",
+    "ruff (>=0.13.0,<0.14.0)",
+    "tox (>=4.30.2,<5.0.0)"
 ]
 
 [project.urls]
@@ -75,7 +69,7 @@ command_line = "-m pytest"
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py38,py39,py310,py311,py312
+envlist = py311,py312,py313
 skip_missing_interpreters = true
 [testenv]
 commands = pytest
@@ -94,8 +88,6 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 # Enable Pyflakes `E` and `F` codes by default.
 select = ["ALL"]
 ignore = [
-    "ANN101", # Missing type annotation for `self` in method
-    "ANN102", # Missing type annotation for `cls` in classmethod
     "ANN204", # Missing return type annotation for special (dunder) method
     "FBT",    # Using boolean function arguments
     "TD",     # TODOs
@@ -124,7 +116,7 @@ force-single-line = true
 no-lines-before = ["future","standard-library","third-party","first-party","local-folder"]
 
 [tool.bumpversion]
-current_version = "0.0.1"
+current_version = "0.1.0"
 
 [[tool.bumpversion.files]]
 filename = "src/drippy/__init__.py"
