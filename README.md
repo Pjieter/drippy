@@ -28,7 +28,7 @@ poetry install
 
 ## Documentation
 
-Can be found here: [https://drippy.readthedocs.io/en/latest/](https://drippy.readthedocs.io/en/latest/)
+The documentation can be found here: [https://drippy.readthedocs.io/en/latest/](https://drippy.readthedocs.io/en/latest/)
 ## Contributing
 
 If you want to contribute to the development of drippy,
