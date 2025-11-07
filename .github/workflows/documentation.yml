@@ -14,23 +14,32 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      matrix:
+        python-version: ['3.12']
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python 3.9
+      - name: Install poetry
+        run: pipx install poetry==2.2
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: ${{ matrix.python-version }}
+          cache: 'poetry'
+          cache-dependency-path: poetry.lock
       - name: Python info
         shell: bash -e {0}
         run: |
           which python
           python --version
-      - name: Upgrade pip and install dependencies
+      - name: Setup Poetry environment
         run: |
-          python -m pip install --upgrade pip setuptools
-          python -m pip install .[dev,publishing]
+          poetry env use ${{ matrix.python-version }}
+      - name: Install the project dependencies
+        run: poetry install --with docs
       - name: Install pandoc using apt
-        run: sudo apt install pandoc        
+        run: sudo apt install pandoc
       - name: Build documentation
-        run: make coverage doctest html
+        run: |
+          eval $(poetry env activate)
+          make coverage doctest html
         working-directory: docs
