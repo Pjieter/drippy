@@ -5,7 +5,8 @@ from matplotlib.figure import Figure
 
 
 def get_figure_and_axes(
-    fig: Figure | None = None, ax: Axes | None = None,
+    fig: Figure | None = None,
+    ax: Axes | None = None,
 ) -> tuple[Figure, Axes]:
     """Get or create figure and axes for plotting.
 

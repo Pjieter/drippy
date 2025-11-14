@@ -29,7 +29,9 @@ class TimeSeriesPlotter:
         # Implementation of the plotting logic goes here
 
     def sequence_plot(
-        self, fig: Figure | None = None, ax: Axes | None = None,
+        self,
+        fig: Figure | None = None,
+        ax: Axes | None = None,
     ) -> tuple[Figure, Axes]:
         """Creates a sequence plot showing the data and over "time".
 
@@ -49,7 +51,10 @@ class TimeSeriesPlotter:
         return fig, ax
 
     def spectral_plot(
-        self, fig: Figure = None, ax: Axes = None, alarm_levels: bool = True,
+        self,
+        fig: Figure = None,
+        ax: Axes = None,
+        alarm_levels: bool = True,
     ) -> tuple[Figure, Axes]:
         """Creates a Lomb-Scargle periodogram of the model residuals.
 
@@ -74,12 +79,12 @@ class TimeSeriesPlotter:
                 frequency[np.argmax(power)],
                 power.max(),
                 "rx",
-                label=f"False alarm level max peak: {false_alarm_max_peak*100:.3g}%",
+                label=f"False alarm level max peak: {false_alarm_max_peak * 100:.3g}%",
             )
             for i, fal in enumerate(false_alarm_levels):
                 ax.axhline(
                     fal,
-                    color=f"C{i+1}",
+                    color=f"C{i + 1}",
                     linestyle="--",
                     label=f"False Alarm Level {['10%', '5%', '1%'][i]}",
                 )
@@ -90,7 +95,9 @@ class TimeSeriesPlotter:
         return fig, ax
 
     def auto_correlation_plot(
-        self, fig: Figure | None = None, ax: Axes | None = None,
+        self,
+        fig: Figure | None = None,
+        ax: Axes | None = None,
     ) -> tuple[Figure, Axes]:
         """Creates an autocorrelation plot of the data with confidence intervals.
 
@@ -110,11 +117,11 @@ class TimeSeriesPlotter:
             conf_level = sp.stats.norm.ppf((1 + ci) / 2) / np.sqrt(N)
             ax.axhline(
                 conf_level,
-                color=f"C{i+1}",
+                color=f"C{i + 1}",
                 linestyle="--",
-                label=f"{ci*100:.0f}% confidence level",
+                label=f"{ci * 100:.0f}% confidence level",
             )
-            ax.axhline(-conf_level, color=f"C{i+1}", linestyle="--")
+            ax.axhline(-conf_level, color=f"C{i + 1}", linestyle="--")
         ax.set_xlabel("Lag")
         ax.set_ylabel("Autocorrelation")
         ax.legend()
@@ -122,7 +129,9 @@ class TimeSeriesPlotter:
         return fig, ax
 
     def complex_demodulation_phase_plot(
-        self, fig: Figure = None, ax: Axes = None,
+        self,
+        fig: Figure = None,
+        ax: Axes = None,
     ) -> tuple[Figure, Axes]:
         """Creates a plot showing the instantaneous phase extracted via Hilbert transform.
 

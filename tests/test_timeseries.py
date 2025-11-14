@@ -185,7 +185,8 @@ class TestComplexDemodulationPhasePlot:
 
         provided_fig, provided_ax = plt.subplots()
         fig, ax = plotter.complex_demodulation_phase_plot(
-            fig=provided_fig, ax=provided_ax,
+            fig=provided_fig,
+            ax=provided_ax,
         )
 
         assert fig is provided_fig
