@@ -1,13 +1,44 @@
+from typing import Optional
+import matplotlib.pyplot as plt
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
 import numpy as np
 
 
-def bl_filt(y, half_width):
+def get_figure_and_axes(
+    fig: Optional[Figure] = None, ax: Optional[Axes] = None
+) -> tuple[Figure, Axes]:
+    """
+    Get or create figure and axes for plotting.
+
+    Args:
+        fig (Figure, optional): Existing Figure or None to create new. Defaults to None.
+        ax (Axes, optional): Existing Axes or None to create new. Defaults to None.
+
+    Returns:
+        tuple[Figure, Axes]: Figure and Axes objects for plotting.
+    """
+    if fig is None:
+        fig = plt.figure()
+    if ax is None:
+        ax = fig.add_subplot(111)
+    return fig, ax
+
+
+def bl_filt(y: np.ndarray, half_width: int) -> np.ndarray:
     """
     Simple Blackman filter.
 
     The end effects are handled by calculating the weighted
     average of however many points are available, rather than
     by zero-padding.
+
+    Args:
+        y (np.ndarray): Input signal to be filtered.
+        half_width (int): Half-width of the filter window. Total window size will be 2*half_width + 1.
+
+    Returns:
+        np.ndarray: Filtered signal with the same shape as input.
     """
     nf = half_width * 2 + 1
     x = np.linspace(-1, 1, nf, endpoint=True)
