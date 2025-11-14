@@ -1,6 +1,7 @@
 """Tests for the drippy.timeseries module."""
 
 import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 from matplotlib.axes import Axes
@@ -14,7 +15,7 @@ matplotlib.use("Agg")  # Use non-interactive backend for testing
 def simple_data():
     """Generate simple data for testing."""
     t = np.linspace(0, 10, 100)
-    y = 2 * t + 3
+    y = 2 * t + 3 + np.sin(t)  # Linear trend with sinusoidal component
     return t, y
 
 
@@ -23,6 +24,13 @@ def plotter(simple_data):
     """Create a TimeSeriesPlotter instance."""
     t, y = simple_data
     return TimeSeriesPlotter(y=y, t=t)
+
+
+@pytest.fixture(autouse=True)
+def close_figures():
+    """Automatically close all matplotlib figures after each test."""
+    yield
+    plt.close("all")
 
 
 class TestTimeSeriesPlotterInitialization:
@@ -96,14 +104,11 @@ class TestSpectralPlot:
 
     def test_with_provided_fig_ax(self, plotter):
         """Test spectral_plot with user-provided figure and axes."""
-        import matplotlib.pyplot as plt
-
         provided_fig, provided_ax = plt.subplots()
         fig, ax = plotter.spectral_plot(fig=provided_fig, ax=provided_ax)
 
         assert fig is provided_fig
         assert ax is provided_ax
-        plt.close(provided_fig)
 
     def test_with_alarm_levels_enabled(self, plotter):
         """Test that spectral plot runs with alarm levels enabled."""
@@ -142,14 +147,11 @@ class TestAutoCorrelationPlot:
 
     def test_with_provided_fig_ax(self, plotter):
         """Test auto_correlation_plot with user-provided figure and axes."""
-        import matplotlib.pyplot as plt
-
         provided_fig, provided_ax = plt.subplots()
         fig, ax = plotter.auto_correlation_plot(fig=provided_fig, ax=provided_ax)
 
         assert fig is provided_fig
         assert ax is provided_ax
-        plt.close(provided_fig)
 
     def test_creates_plot_lines(self, plotter):
         """Test that autocorrelation plot creates line objects."""
@@ -181,8 +183,6 @@ class TestComplexDemodulationPhasePlot:
 
     def test_with_provided_fig_ax(self, plotter):
         """Test complex_demodulation_phase_plot with user-provided figure and axes."""
-        import matplotlib.pyplot as plt
-
         provided_fig, provided_ax = plt.subplots()
         fig, ax = plotter.complex_demodulation_phase_plot(
             fig=provided_fig,
@@ -191,7 +191,6 @@ class TestComplexDemodulationPhasePlot:
 
         assert fig is provided_fig
         assert ax is provided_ax
-        plt.close(provided_fig)
 
     def test_creates_plot_lines(self, plotter):
         """Test that complex demodulation plot creates line objects."""
@@ -211,21 +210,6 @@ class TestComplexDemodulationPhasePlot:
         assert xlabel != ""
         assert ylabel != ""
         assert title != ""
-
-
-class TestAutoPlot:
-    """Tests for auto_plot method."""
-
-    def test_method_exists(self, plotter):
-        """Test that auto_plot method exists and is callable."""
-        assert hasattr(plotter, "auto_plot")
-        assert callable(plotter.auto_plot)
-
-    def test_runs_without_error(self, plotter):
-        """Test that auto_plot can be called without raising an error."""
-        result = plotter.auto_plot()
-        # Method currently returns None
-        assert result is None
 
 
 class TestEdgeCases:
@@ -266,32 +250,3 @@ class TestEdgeCases:
 
         assert len(plotter.t) == 5
         assert len(plotter.y) == 5
-
-
-class TestPlotterIntegration:
-    """Integration tests using multiple plotting methods."""
-
-    def test_multiple_plots_on_same_figure(self, plotter):
-        """Test creating multiple plots on the same figure."""
-        import matplotlib.pyplot as plt
-
-        fig, axes = plt.subplots(2, 2, figsize=(12, 10))
-
-        # Create all four plots on the same figure
-        fig, _ = plotter.sequence_plot(fig=fig, ax=axes[0, 0])
-        fig, _ = plotter.spectral_plot(fig=fig, ax=axes[0, 1])
-        fig, _ = plotter.auto_correlation_plot(fig=fig, ax=axes[1, 0])
-        fig, _ = plotter.complex_demodulation_phase_plot(fig=fig, ax=axes[1, 1])
-
-        assert isinstance(fig, Figure)
-        plt.close(fig)
-
-    def test_all_plotting_methods_run(self, plotter):
-        """Test that all plotting methods can be called successfully."""
-        fig1, ax1 = plotter.sequence_plot()
-        fig2, ax2 = plotter.spectral_plot()
-        fig3, ax3 = plotter.auto_correlation_plot()
-        fig4, ax4 = plotter.complex_demodulation_phase_plot()
-
-        assert all(isinstance(f, Figure) for f in [fig1, fig2, fig3, fig4])
-        assert all(isinstance(a, Axes) for a in [ax1, ax2, ax3, ax4])

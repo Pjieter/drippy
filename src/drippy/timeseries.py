@@ -19,14 +19,9 @@ class TimeSeriesPlotter:
         Args:
             y (Iterable[float]): Sequentially ordered data points
             t (Iterable[float]): Sequentially ordered "time" points. This can be any continuously changing variable.
-            model_result (ModelResult): The result of the model fitting
         """
         self.y = np.asarray(y)
         self.t = np.asarray(t)
-
-    def auto_plot(self) -> None:
-        """Plots the given data."""
-        # Implementation of the plotting logic goes here
 
     def sequence_plot(
         self,
@@ -52,11 +47,11 @@ class TimeSeriesPlotter:
 
     def spectral_plot(
         self,
-        fig: Figure = None,
-        ax: Axes = None,
+        fig: Figure | None = None,
+        ax: Axes | None = None,
         alarm_levels: bool = True,
     ) -> tuple[Figure, Axes]:
-        """Creates a Lomb-Scargle periodogram of the model residuals.
+        """Creates a Lomb-Scargle periodogram of the data
 
         Args:
             fig (Figure, optional): Figure to be used for plotting. If None, a new figure is created. Defaults to None.
@@ -130,8 +125,8 @@ class TimeSeriesPlotter:
 
     def complex_demodulation_phase_plot(
         self,
-        fig: Figure = None,
-        ax: Axes = None,
+        fig: Figure | None = None,
+        ax: Axes | None = None,
     ) -> tuple[Figure, Axes]:
         """Creates a plot showing the instantaneous phase extracted via Hilbert transform.
 
