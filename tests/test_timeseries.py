@@ -5,7 +5,6 @@ import numpy as np
 import pytest
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
-
 from drippy.timeseries import TimeSeriesPlotter
 
 matplotlib.use("Agg")  # Use non-interactive backend for testing
@@ -186,7 +185,7 @@ class TestComplexDemodulationPhasePlot:
 
         provided_fig, provided_ax = plt.subplots()
         fig, ax = plotter.complex_demodulation_phase_plot(
-            fig=provided_fig, ax=provided_ax
+            fig=provided_fig, ax=provided_ax,
         )
 
         assert fig is provided_fig

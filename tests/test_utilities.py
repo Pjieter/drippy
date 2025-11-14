@@ -1,13 +1,12 @@
 """Tests for the drippy.utilities module."""
 
-import numpy as np
-import pytest
 import matplotlib
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
-
-from drippy.utilities import get_figure_and_axes, bl_filt
+from drippy.utilities import bl_filt
+from drippy.utilities import get_figure_and_axes
 
 matplotlib.use("Agg")  # Use non-interactive backend for testing
 

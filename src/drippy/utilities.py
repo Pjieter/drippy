@@ -1,15 +1,13 @@
-from typing import Optional
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
-import numpy as np
 
 
 def get_figure_and_axes(
-    fig: Optional[Figure] = None, ax: Optional[Axes] = None
+    fig: Figure | None = None, ax: Axes | None = None,
 ) -> tuple[Figure, Axes]:
-    """
-    Get or create figure and axes for plotting.
+    """Get or create figure and axes for plotting.
 
     Args:
         fig (Figure, optional): Existing Figure or None to create new. Defaults to None.
@@ -26,8 +24,7 @@ def get_figure_and_axes(
 
 
 def bl_filt(y: np.ndarray, half_width: int) -> np.ndarray:
-    """
-    Simple Blackman filter.
+    """Simple Blackman filter.
 
     The end effects are handled by calculating the weighted
     average of however many points are available, rather than

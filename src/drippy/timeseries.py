@@ -1,15 +1,12 @@
 """Contains the plotting functions for time series models."""
 
-from typing import Iterable, Optional
-from lmfit.model import ModelResult
-from matplotlib.axes import Axes
-from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
+from collections.abc import Iterable
 import numpy as np
 import scipy as sp
 from astropy.timeseries import LombScargle
 from lmfit.models import LinearModel
-
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
 from drippy.utilities import get_figure_and_axes
 
 
@@ -17,8 +14,7 @@ class TimeSeriesPlotter:
     """A class for plotting time series models."""
 
     def __init__(self, y: Iterable[float], t: Iterable[float]) -> None:
-        """
-        Initialize the TimeSeriesPlotter with data and model results.
+        """Initialize the TimeSeriesPlotter with data and model results.
 
         Args:
             y (Iterable[float]): Sequentially ordered data points
@@ -31,13 +27,11 @@ class TimeSeriesPlotter:
     def auto_plot(self) -> None:
         """Plots the given data."""
         # Implementation of the plotting logic goes here
-        pass
 
     def sequence_plot(
-        self, fig: Optional[Figure] = None, ax: Optional[Axes] = None
+        self, fig: Figure | None = None, ax: Axes | None = None,
     ) -> tuple[Figure, Axes]:
-        """
-        Creates a sequence plot showing the data and over "time".
+        """Creates a sequence plot showing the data and over "time".
 
         Args:
             fig (Optional[Figure], optional): Matplotlib figure to use. If None, a new figure is created. Defaults to None.
@@ -55,10 +49,9 @@ class TimeSeriesPlotter:
         return fig, ax
 
     def spectral_plot(
-        self, fig: Figure = None, ax: Axes = None, alarm_levels: bool = True
+        self, fig: Figure = None, ax: Axes = None, alarm_levels: bool = True,
     ) -> tuple[Figure, Axes]:
-        """
-        Creates a Lomb-Scargle periodogram of the model residuals.
+        """Creates a Lomb-Scargle periodogram of the model residuals.
 
         Args:
             fig (Figure, optional): Figure to be used for plotting. If None, a new figure is created. Defaults to None.
@@ -97,10 +90,9 @@ class TimeSeriesPlotter:
         return fig, ax
 
     def auto_correlation_plot(
-        self, fig: Optional[Figure] = None, ax: Optional[Axes] = None
+        self, fig: Figure | None = None, ax: Axes | None = None,
     ) -> tuple[Figure, Axes]:
-        """
-        Creates an autocorrelation plot of the data with confidence intervals.
+        """Creates an autocorrelation plot of the data with confidence intervals.
 
         Args:
             fig (Optional[Figure], optional): Matplotlib figure to use. If None, a new figure is created. Defaults to None.
@@ -130,10 +122,9 @@ class TimeSeriesPlotter:
         return fig, ax
 
     def complex_demodulation_phase_plot(
-        self, fig: Figure = None, ax: Axes = None
+        self, fig: Figure = None, ax: Axes = None,
     ) -> tuple[Figure, Axes]:
-        """
-        Creates a plot showing the instantaneous phase extracted via Hilbert transform.
+        """Creates a plot showing the instantaneous phase extracted via Hilbert transform.
 
         Args:
             fig (Optional[Figure], optional): Matplotlib figure to use. If None, a new figure is created. Defaults to None.
@@ -157,7 +148,7 @@ class TimeSeriesPlotter:
             result.best_fit,
             color="red",
             label=f"Linear Fit with R$^2$={result.rsquared:.3g}\n"
-            f"$\phi_0$={result.params['intercept'].value:.3g}, $\omega$={result.params['slope'].value:.3g}",
+            rf"$\phi_0$={result.params['intercept'].value:.3g}, $\omega$={result.params['slope'].value:.3g}",
         )
         ax.set_xlabel("X-axis")
         ax.set_ylabel("Phase (radians)")
