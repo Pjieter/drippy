@@ -76,9 +76,13 @@ extras = dev
 """
 
 [tool.ruff]
-line-length = 120
+line-length = 79
 output-format = "concise"
 extend-exclude = ["docs"]
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = 72
 
 [tool.ruff.lint]
 # Allow unused variables when underscore-prefixed.

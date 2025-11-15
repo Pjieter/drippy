@@ -14,7 +14,7 @@ mpl.use("Agg")  # Use non-interactive backend for testing
 
 @pytest.fixture
 def rng():
-    """Generate a random number generator with fixed seed for reproducible tests."""
+    """Generate a random number generator with fixed seed."""
     return np.random.Generator(np.random.PCG64(8))
 
 
@@ -22,7 +22,7 @@ class TestGetFigureAndAxes:
     """Tests for get_figure_and_axes function."""
 
     def test_creates_new_figure_and_axes_when_none_provided(self):
-        """Test that new Figure and Axes are created when none are provided."""
+        """Test new Figure and Axes are created when none provided."""
         fig, ax = get_figure_and_axes()
 
         assert isinstance(fig, Figure)
@@ -48,7 +48,7 @@ class TestGetFigureAndAxes:
         plt.close(fig)
 
     def test_creates_axes_on_provided_figure(self):
-        """Test that Axes is created on the provided Figure when ax is None."""
+        """Test Axes are created when ax is None."""
         provided_fig = plt.figure()
         fig, ax = get_figure_and_axes(fig=provided_fig, ax=None)
 
@@ -124,15 +124,21 @@ class TestBlFilt:
         """Test that TypeError is raised for non-numpy array input."""
         y = [1, 2, 3, 4, 5]  # List instead of np.ndarray
 
-        with pytest.raises(TypeError, match=r"Input array must be a numpy array."):
+        with pytest.raises(
+            TypeError,
+            match=r"Input array must be a numpy array."
+            ):
             bl_filt(y, half_width=2)
 
     def test_raises_value_error_for_invalid_half_width(self, rng):
-        """Test that ValueError is raised for invalid half_width values."""
+        """Test ValueError is raised for invalid half_width values."""
         y = rng.standard_normal(50)
 
         invalid_half_widths = [0, -1, 2.5, "three", True, False, None]
 
         for hw in invalid_half_widths:
-            with pytest.raises(ValueError, match=f"half_width must be a positive integer. Got {hw}."):
+            with pytest.raises(
+                ValueError,
+                match=f"half_width must be a positive integer. Got {hw}.",
+            ):
                 bl_filt(y, half_width=hw)

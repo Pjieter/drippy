@@ -148,7 +148,10 @@ class TestAutoCorrelationPlot:
     def test_with_provided_fig_ax(self, plotter):
         """Test auto_correlation_plot with user-provided figure and axes."""
         provided_fig, provided_ax = plt.subplots()
-        fig, ax = plotter.auto_correlation_plot(fig=provided_fig, ax=provided_ax)
+        fig, ax = plotter.auto_correlation_plot(
+            fig=provided_fig,
+            ax=provided_ax
+            )
 
         assert fig is provided_fig
         assert ax is provided_ax
@@ -175,14 +178,14 @@ class TestComplexDemodulationPhasePlot:
     """Tests for complex_demodulation_phase_plot method."""
 
     def test_returns_figure_and_axes(self, plotter):
-        """Test that complex_demodulation_phase_plot returns Figure and Axes objects."""
+        """Test that plot returns Figure and Axes objects."""
         fig, ax = plotter.complex_demodulation_phase_plot()
 
         assert isinstance(fig, Figure)
         assert isinstance(ax, Axes)
 
     def test_with_provided_fig_ax(self, plotter):
-        """Test complex_demodulation_phase_plot with user-provided figure and axes."""
+        """Test plot with user-provided figure and axes."""
         provided_fig, provided_ax = plt.subplots()
         fig, ax = plotter.complex_demodulation_phase_plot(
             fig=provided_fig,
@@ -200,7 +203,7 @@ class TestComplexDemodulationPhasePlot:
         assert len(lines) >= 1
 
     def test_has_labels(self, plotter):
-        """Test that complex demodulation plot has proper axis labels and title."""
+        """Test complex demodulation plot has axis labels and title."""
         _, ax = plotter.complex_demodulation_phase_plot()
 
         xlabel = ax.get_xlabel()

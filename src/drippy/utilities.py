@@ -11,8 +11,10 @@ def get_figure_and_axes(
     """Get or create figure and axes for plotting.
 
     Args:
-        fig (Figure, optional): Existing Figure or None to create new. Defaults to None.
-        ax (Axes, optional): Existing Axes or None to create new. Defaults to None.
+        fig (Figure, optional): Existing Figure or None to create new.
+        Defaults to None.
+        ax (Axes, optional): Existing Axes or None to create new.
+        Defaults to None.
 
     Returns:
         tuple[Figure, Axes]: Figure and Axes objects for plotting.
@@ -33,7 +35,9 @@ def bl_filt(y: np.ndarray, half_width: int) -> np.ndarray:
 
     Args:
         y (np.ndarray): Input signal to be filtered.
-        half_width (int): Half-width of the filter window. Total window size will be 2*half_width + 1.
+        half_width (int):
+            Half-width of the filter window. Total window size will be
+            2*half_width + 1.
 
     Returns:
         np.ndarray: Filtered signal with the same shape as input.
@@ -41,7 +45,11 @@ def bl_filt(y: np.ndarray, half_width: int) -> np.ndarray:
     if not isinstance(y, np.ndarray):
         error = "Input y must be a numpy array."
         raise TypeError(error)
-    if isinstance(half_width, bool) or not isinstance(half_width, int) or half_width < 1:
+    if (
+        isinstance(half_width, bool)
+        or not isinstance(half_width, int)
+        or half_width < 1
+    ):
         error = f"half_width must be a positive integer. Got {half_width}."
         raise ValueError(error)
     nf = half_width * 2 + 1
