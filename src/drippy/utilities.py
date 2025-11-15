@@ -41,11 +41,7 @@ def bl_filt(y: np.ndarray, half_width: int) -> np.ndarray:
     if not isinstance(y, np.ndarray):
         error = "Input y must be a numpy array."
         raise TypeError(error)
-    if (
-        isinstance(half_width, bool)
-        or not isinstance(half_width, int)
-        or half_width < 1
-    ):
+    if isinstance(half_width, bool) or not isinstance(half_width, int) or half_width < 1:
         error = f"half_width must be a positive integer. Got {half_width}."
         raise ValueError(error)
     nf = half_width * 2 + 1

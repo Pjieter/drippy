@@ -1,15 +1,21 @@
 """Tests for the drippy.utilities module."""
 
-import matplotlib
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+import pytest
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
-import pytest
 from drippy.utilities import bl_filt
 from drippy.utilities import get_figure_and_axes
 
-matplotlib.use("Agg")  # Use non-interactive backend for testing
+mpl.use("Agg")  # Use non-interactive backend for testing
+
+
+@pytest.fixture
+def rng():
+    """Generate a random number generator with fixed seed for reproducible tests."""
+    return np.random.Generator(np.random.PCG64(8))
 
 
 class TestGetFigureAndAxes:
@@ -54,35 +60,34 @@ class TestGetFigureAndAxes:
     def test_returns_tuple(self):
         """Test that the function returns a tuple."""
         result = get_figure_and_axes()
+        output_length = 2
 
         assert isinstance(result, tuple)
-        assert len(result) == 2
+        assert len(result) == output_length
         plt.close(result[0])
 
 
 class TestBlFilt:
     """Tests for bl_filt (Blackman filter) function."""
 
-    def test_returns_array_with_correct_shape(self):
+    def test_returns_array_with_correct_shape(self, rng):
         """Test that output shape matches input shape."""
-        rng = np.random.Generator(np.random.PCG64(8))
         y = rng.standard_normal(50)
         filtered = bl_filt(y, half_width=3)
 
         assert filtered.shape == y.shape
         assert isinstance(filtered, np.ndarray)
 
-    def test_returns_finite_values(self):
+    def test_returns_finite_values(self, rng):
         """Test that output contains only finite values."""
-        rng = np.random.Generator(np.random.PCG64(8))
         y = rng.standard_normal(100)
         filtered = bl_filt(y, half_width=5)
 
         assert np.all(np.isfinite(filtered))
 
-    def test_handles_different_half_widths(self):
+    def test_handles_different_half_widths(self, rng):
         """Test that function works with different half_width values."""
-        y = np.random.randn(50)
+        y = rng.standard_normal(100)
 
         # Test with minimal half_width
         filtered_small = bl_filt(y, half_width=1)
@@ -120,12 +125,11 @@ class TestBlFilt:
         """Test that TypeError is raised for non-numpy array input."""
         y = [1, 2, 3, 4, 5]  # List instead of np.ndarray
 
-        with pytest.raises(TypeError, match="Input y must be a numpy array."):
+        with pytest.raises(TypeError, match=r"Input array must be a numpy array."):
             bl_filt(y, half_width=2)
 
-    def test_raises_value_error_for_invalid_half_width(self):
+    def test_raises_value_error_for_invalid_half_width(self, rng):
         """Test that ValueError is raised for invalid half_width values."""
-        rng = np.random.Generator(np.random.PCG64(8))
         y = rng.standard_normal(50)
 
         invalid_half_widths = [0, -1, 2.5, "three", True, False, None]

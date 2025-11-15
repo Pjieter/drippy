@@ -112,7 +112,7 @@ class TestSpectralPlot:
 
     def test_with_alarm_levels_enabled(self, plotter):
         """Test that spectral plot runs with alarm levels enabled."""
-        fig, ax = plotter.spectral_plot(alarm_levels=True)
+        _, ax = plotter.spectral_plot(alarm_levels=True)
 
         lines = ax.get_lines()
         assert len(lines) >= 1
@@ -248,5 +248,5 @@ class TestEdgeCases:
         y = np.array([-5, -3, -1, 1, 3])
         plotter = TimeSeriesPlotter(y=y, t=t)
 
-        assert len(plotter.t) == 5
-        assert len(plotter.y) == 5
+        assert len(plotter.t) == len(t)
+        assert len(plotter.y) == len(y)
