@@ -1,6 +1,6 @@
 """Tests for the drippy.timeseries module."""
 
-import matplotlib
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
@@ -8,13 +8,13 @@ from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 from drippy.timeseries import TimeSeriesPlotter
 
-matplotlib.use("Agg")  # Use non-interactive backend for testing
+mpl.use("Agg")  # Use non-interactive backend for testing
 
 
 @pytest.fixture
 def simple_data():
     """Generate simple data for testing."""
-    t = np.linspace(0, 10, 100)
+    t = np.linspace(1, 10, 100)
     y = 2 * t + 3 + np.sin(t)  # Linear trend with sinusoidal component
     return t, y
 
@@ -44,8 +44,8 @@ class TestTimeSeriesPlotterInitialization:
 
         assert isinstance(plotter.t, np.ndarray)
         assert isinstance(plotter.y, np.ndarray)
-        assert len(plotter.t) == 5
-        assert len(plotter.y) == 5
+        assert len(plotter.t) == len(t)
+        assert len(plotter.y) == len(y)
 
     def test_initialization_with_numpy_arrays(self, simple_data):
         """Test initialization with numpy array inputs."""
@@ -78,14 +78,14 @@ class TestSequencePlot:
 
     def test_creates_plot_lines(self, plotter):
         """Test that sequence plot creates line objects."""
-        fig, ax = plotter.sequence_plot()
+        _, ax = plotter.sequence_plot()
 
         lines = ax.get_lines()
         assert len(lines) >= 1
 
     def test_has_labels(self, plotter):
         """Test that sequence plot has axis labels and title."""
-        fig, ax = plotter.sequence_plot()
+        _, ax = plotter.sequence_plot()
 
         assert ax.get_xlabel() != ""
         assert ax.get_ylabel() != ""
@@ -119,14 +119,14 @@ class TestSpectralPlot:
 
     def test_with_alarm_levels_disabled(self, plotter):
         """Test that spectral plot runs with alarm levels disabled."""
-        fig, ax = plotter.spectral_plot(alarm_levels=False)
+        _, ax = plotter.spectral_plot(alarm_levels=False)
 
         lines = ax.get_lines()
         assert len(lines) >= 1
 
     def test_has_labels(self, plotter):
         """Test that spectral plot has proper axis labels."""
-        fig, ax = plotter.spectral_plot()
+        _, ax = plotter.spectral_plot()
 
         xlabel = ax.get_xlabel()
         ylabel = ax.get_ylabel()
@@ -155,14 +155,14 @@ class TestAutoCorrelationPlot:
 
     def test_creates_plot_lines(self, plotter):
         """Test that autocorrelation plot creates line objects."""
-        fig, ax = plotter.auto_correlation_plot()
+        _, ax = plotter.auto_correlation_plot()
 
         lines = ax.get_lines()
         assert len(lines) > 0
 
     def test_has_labels(self, plotter):
         """Test that autocorrelation plot has proper axis labels."""
-        fig, ax = plotter.auto_correlation_plot()
+        _, ax = plotter.auto_correlation_plot()
 
         xlabel = ax.get_xlabel()
         ylabel = ax.get_ylabel()
@@ -194,14 +194,14 @@ class TestComplexDemodulationPhasePlot:
 
     def test_creates_plot_lines(self, plotter):
         """Test that complex demodulation plot creates line objects."""
-        fig, ax = plotter.complex_demodulation_phase_plot()
+        _, ax = plotter.complex_demodulation_phase_plot()
 
         lines = ax.get_lines()
         assert len(lines) >= 1
 
     def test_has_labels(self, plotter):
         """Test that complex demodulation plot has proper axis labels and title."""
-        fig, ax = plotter.complex_demodulation_phase_plot()
+        _, ax = plotter.complex_demodulation_phase_plot()
 
         xlabel = ax.get_xlabel()
         ylabel = ax.get_ylabel()
@@ -239,8 +239,8 @@ class TestEdgeCases:
         y = np.sin(t)
         plotter = TimeSeriesPlotter(y=y, t=t)
 
-        assert len(plotter.t) == 10000
-        assert len(plotter.y) == 10000
+        assert len(plotter.t) == len(t)
+        assert len(plotter.y) == len(y)
 
     def test_negative_values(self):
         """Test with negative values in data."""

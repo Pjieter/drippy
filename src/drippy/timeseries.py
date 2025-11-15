@@ -31,8 +31,10 @@ class TimeSeriesPlotter:
         """Creates a sequence plot showing the data and over "time".
 
         Args:
-            fig (Optional[Figure], optional): Matplotlib figure to use. If None, a new figure is created. Defaults to None.
-            ax (Optional[Axes], optional): Matplotlib axes to use. If None, new axes are created. Defaults to None.
+            fig (Optional[Figure], optional):
+                Matplotlib figure to use. If None, a new figure is created. Defaults to None.
+            ax (Optional[Axes], optional):
+                Matplotlib axes to use. If None, new axes are created. Defaults to None.
 
         Returns:
             tuple[Figure, Axes]: The figure and axes containing the plot.
@@ -51,7 +53,7 @@ class TimeSeriesPlotter:
         ax: Axes | None = None,
         alarm_levels: bool = True,
     ) -> tuple[Figure, Axes]:
-        """Creates a Lomb-Scargle periodogram of the data
+        """Creates a Lomb-Scargle periodogram of the data.
 
         Args:
             fig (Figure, optional): Figure to be used for plotting. If None, a new figure is created. Defaults to None.
@@ -97,19 +99,21 @@ class TimeSeriesPlotter:
         """Creates an autocorrelation plot of the data with confidence intervals.
 
         Args:
-            fig (Optional[Figure], optional): Matplotlib figure to use. If None, a new figure is created. Defaults to None.
-            ax (Optional[Axes], optional): Matplotlib axes to use. If None, new axes are created. Defaults to None.
+            fig (Optional[Figure], optional):
+                Matplotlib figure to use. If None, a new figure is created. Defaults to None.
+            ax (Optional[Axes], optional):
+                Matplotlib axes to use. If None, new axes are created. Defaults to None.
 
         Returns:
             tuple[Figure, Axes]: The figure and axes containing the plot.
         """
         fig, ax = get_figure_and_axes(fig, ax)
-        N = len(self.y)
+        n = len(self.y)
 
-        ax.acorr(self.y, usevlines=True, maxlags=N - 1)
+        ax.acorr(self.y, usevlines=True, maxlags=n - 1)
         conf_interval = [0.99, 0.95, 0.8]
         for i, ci in enumerate(conf_interval):
-            conf_level = sp.stats.norm.ppf((1 + ci) / 2) / np.sqrt(N)
+            conf_level = sp.stats.norm.ppf((1 + ci) / 2) / np.sqrt(n)
             ax.axhline(
                 conf_level,
                 color=f"C{i + 1}",
@@ -131,8 +135,10 @@ class TimeSeriesPlotter:
         """Creates a plot showing the instantaneous phase extracted via Hilbert transform.
 
         Args:
-            fig (Optional[Figure], optional): Matplotlib figure to use. If None, a new figure is created. Defaults to None.
-            ax (Optional[Axes], optional): Matplotlib axes to use. If None, new axes are created. Defaults to None.
+            fig (Optional[Figure], optional):
+                Matplotlib figure to use. If None, a new figure is created. Defaults to None.
+            ax (Optional[Axes], optional):
+                Matplotlib axes to use. If None, new axes are created. Defaults to None.
 
         Returns:
             tuple[Figure, Axes]: The figure and axes containing the plot.

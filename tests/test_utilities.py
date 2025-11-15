@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
+import pytest
 from drippy.utilities import bl_filt
 from drippy.utilities import get_figure_and_axes
 
@@ -64,7 +65,8 @@ class TestBlFilt:
 
     def test_returns_array_with_correct_shape(self):
         """Test that output shape matches input shape."""
-        y = np.random.randn(50)
+        rng = np.random.Generator(np.random.PCG64(8))
+        y = rng.standard_normal(50)
         filtered = bl_filt(y, half_width=3)
 
         assert filtered.shape == y.shape
@@ -72,7 +74,8 @@ class TestBlFilt:
 
     def test_returns_finite_values(self):
         """Test that output contains only finite values."""
-        y = np.random.randn(100)
+        rng = np.random.Generator(np.random.PCG64(8))
+        y = rng.standard_normal(100)
         filtered = bl_filt(y, half_width=5)
 
         assert np.all(np.isfinite(filtered))
@@ -117,23 +120,18 @@ class TestBlFilt:
         """Test that TypeError is raised for non-numpy array input."""
         y = [1, 2, 3, 4, 5]  # List instead of np.ndarray
 
-        try:
+        with pytest.raises(TypeError, match="Input y must be a numpy array."):
             bl_filt(y, half_width=2)
-        except TypeError as e:
-            assert str(e) == "Input y must be a numpy array."
-        else:
-            assert False, "TypeError was not raised for non-array input."
 
     def test_raises_value_error_for_invalid_half_width(self):
         """Test that ValueError is raised for invalid half_width values."""
-        y = np.random.randn(50)
+        rng = np.random.Generator(np.random.PCG64(8))
+        y = rng.standard_normal(50)
 
-        invalid_half_widths = [0, -1, 2.5, "three"]
+        invalid_half_widths = [0, -1, 2.5, "three", True, False, None]
 
         for hw in invalid_half_widths:
-            try:
+            with pytest.raises(
+                ValueError, match=f"half_width must be a positive integer. Got {hw}."
+            ):
                 bl_filt(y, half_width=hw)
-            except ValueError as e:
-                assert str(e) == f"half_width must be a positive integer. Got {hw}."
-            else:
-                assert False, f"ValueError was not raised for half_width={hw}."
