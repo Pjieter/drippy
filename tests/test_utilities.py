@@ -135,7 +135,5 @@ class TestBlFilt:
         invalid_half_widths = [0, -1, 2.5, "three", True, False, None]
 
         for hw in invalid_half_widths:
-            with pytest.raises(
-                ValueError, match=f"half_width must be a positive integer. Got {hw}."
-            ):
+            with pytest.raises(ValueError, match=f"half_width must be a positive integer. Got {hw}."):
                 bl_filt(y, half_width=hw)
