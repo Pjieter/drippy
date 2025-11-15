@@ -60,10 +60,9 @@ class TestGetFigureAndAxes:
     def test_returns_tuple(self):
         """Test that the function returns a tuple."""
         result = get_figure_and_axes()
-        output_length = 2
 
         assert isinstance(result, tuple)
-        assert len(result) == output_length
+        assert len(result) == 2  # noqa: PLR2004 (always should be 2)
         plt.close(result[0])
 
 
@@ -135,5 +134,7 @@ class TestBlFilt:
         invalid_half_widths = [0, -1, 2.5, "three", True, False, None]
 
         for hw in invalid_half_widths:
-            with pytest.raises(ValueError, match=f"half_width must be a positive integer. Got {hw}."):
+            with pytest.raises(
+                ValueError, match=f"half_width must be a positive integer. Got {hw}."
+            ):
                 bl_filt(y, half_width=hw)
