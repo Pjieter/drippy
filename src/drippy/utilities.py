@@ -38,6 +38,10 @@ def bl_filt(y: np.ndarray, half_width: int) -> np.ndarray:
     Returns:
         np.ndarray: Filtered signal with the same shape as input.
     """
+    if not isinstance(y, np.ndarray):
+        raise TypeError("Input y must be a numpy array.")
+    if not isinstance(half_width, int) or half_width < 1:
+        raise ValueError(f"half_width must be a positive integer. Got {half_width}.")
     nf = half_width * 2 + 1
     x = np.linspace(-1, 1, nf, endpoint=True)
     x = x[1:-1]  # chop off the useless endpoints with zero weight

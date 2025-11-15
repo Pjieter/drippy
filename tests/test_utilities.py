@@ -112,3 +112,28 @@ class TestBlFilt:
 
         assert filtered.shape == y.shape
         assert np.all(np.isfinite(filtered))
+
+    def test_raises_type_error_for_non_array_input(self):
+        """Test that TypeError is raised for non-numpy array input."""
+        y = [1, 2, 3, 4, 5]  # List instead of np.ndarray
+
+        try:
+            bl_filt(y, half_width=2)
+        except TypeError as e:
+            assert str(e) == "Input y must be a numpy array."
+        else:
+            assert False, "TypeError was not raised for non-array input."
+
+    def test_raises_value_error_for_invalid_half_width(self):
+        """Test that ValueError is raised for invalid half_width values."""
+        y = np.random.randn(50)
+
+        invalid_half_widths = [0, -1, 2.5, "three"]
+
+        for hw in invalid_half_widths:
+            try:
+                bl_filt(y, half_width=hw)
+            except ValueError as e:
+                assert str(e) == f"half_width must be a positive integer. Got {hw}."
+            else:
+                assert False, f"ValueError was not raised for half_width={hw}."
