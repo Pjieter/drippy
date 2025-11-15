@@ -149,9 +149,8 @@ class TestAutoCorrelationPlot:
         """Test auto_correlation_plot with user-provided figure and axes."""
         provided_fig, provided_ax = plt.subplots()
         fig, ax = plotter.auto_correlation_plot(
-            fig=provided_fig,
-            ax=provided_ax
-            )
+            fig=provided_fig, ax=provided_ax
+        )
 
         assert fig is provided_fig
         assert ax is provided_ax

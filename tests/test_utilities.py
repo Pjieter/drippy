@@ -125,9 +125,8 @@ class TestBlFilt:
         y = [1, 2, 3, 4, 5]  # List instead of np.ndarray
 
         with pytest.raises(
-            TypeError,
-            match=r"Input array must be a numpy array."
-            ):
+            TypeError, match=r"Input array must be a numpy array."
+        ):
             bl_filt(y, half_width=2)
 
     def test_raises_value_error_for_invalid_half_width(self, rng):
