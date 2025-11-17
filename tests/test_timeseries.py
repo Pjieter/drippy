@@ -74,6 +74,54 @@ class TestTimeSeriesPlotterInitialization:
         ):
             TimeSeriesPlotter(y=y, t=t)
 
+    def test_raises_error_for_empty_data(self):
+        """Test ValueError is raised for empty inputs."""
+        t = []
+        y = []
+        with pytest.raises(ValueError, match=r"y and t cannot be empty"):
+            TimeSeriesPlotter(y=y, t=t)
+
+    def test_raises_error_for_empty_y(self):
+        """Test ValueError is raised when y is empty."""
+        t = [1, 2, 3]
+        y = []
+        with pytest.raises(ValueError, match=r"y and t cannot be empty"):
+            TimeSeriesPlotter(y=y, t=t)
+
+    def test_raises_error_for_empty_t(self):
+        """Test ValueError is raised when t is empty."""
+        t = []
+        y = [1, 2, 3]
+        with pytest.raises(ValueError, match=r"y and t cannot be empty"):
+            TimeSeriesPlotter(y=y, t=t)
+
+    def test_raises_error_for_multidimensional_arrays(self):
+        """Test ValueError is raised for multi-dimensional inputs."""
+        t = np.array([[1, 2], [3, 4]])
+        y = np.array([[5, 6], [7, 8]])
+        with pytest.raises(
+            ValueError, match=r"y and t must be 1-dimensional arrays"
+        ):
+            TimeSeriesPlotter(y=y, t=t)
+
+    def test_raises_error_for_multidimensional_y(self):
+        """Test ValueError is raised when y is multi-dimensional."""
+        t = np.array([1, 2, 3, 4])
+        y = np.array([[5, 6], [7, 8]])
+        with pytest.raises(
+            ValueError, match=r"y and t must be 1-dimensional arrays"
+        ):
+            TimeSeriesPlotter(y=y, t=t)
+
+    def test_raises_error_for_multidimensional_t(self):
+        """Test ValueError is raised when t is multi-dimensional."""
+        t = np.array([[1, 2], [3, 4]])
+        y = np.array([5, 6, 7, 8])
+        with pytest.raises(
+            ValueError, match=r"y and t must be 1-dimensional arrays"
+        ):
+            TimeSeriesPlotter(y=y, t=t)
+
 
 class TestSequencePlot:
     """Tests for sequence_plot method."""
@@ -234,15 +282,6 @@ class TestComplexDemodulationPhasePlot:
 
 class TestEdgeCases:
     """Tests for edge cases and data handling."""
-
-    def test_empty_data(self):
-        """Test initialization with empty data."""
-        t = np.array([])
-        y = np.array([])
-        plotter = TimeSeriesPlotter(y=y, t=t)
-
-        assert len(plotter.t) == 0
-        assert len(plotter.y) == 0
 
     def test_single_data_point(self):
         """Test initialization with a single data point."""

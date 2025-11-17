@@ -25,6 +25,12 @@ class TimeSeriesPlotter:
         """
         self.y = np.asarray(y)
         self.t = np.asarray(t)
+        if self.y.size == 0 or self.t.size == 0:
+            error = "y and t cannot be empty"
+            raise ValueError(error)
+        if self.y.ndim != 1 or self.t.ndim != 1:
+            error = "y and t must be 1-dimensional arrays"
+            raise ValueError(error)
         if len(self.t) != len(self.y):
             error = (
                 f"t and y must have the same length. "
@@ -107,6 +113,7 @@ class TimeSeriesPlotter:
         ax.legend()
         ax.set_xlabel("Frequency (cycles per unit time)")
         ax.set_ylabel("Spectral Power Density")
+        ax.set_title("Lomb-Scargle Periodogram")
         fig.tight_layout()
         return fig, ax
 
