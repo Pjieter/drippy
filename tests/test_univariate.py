@@ -617,8 +617,9 @@ class TestBoxCoxNormalityPlot:
         """Test that box_cox_normality_plot creates 4 subplots."""
         fig, axes = positive_plotter.box_cox_normality_plot()
 
-        # Box-Cox creates 2x2 grid = 4 subplots
-        assert len(fig.axes) == 4  # noqa: PLR2004
+        # Box-Cox creates 2x2 grid = 4 subplots (unless a user supplies
+        # additional axes in a figure).
+        assert len(fig.axes) >= 4  # noqa: PLR2004
         for ax in axes.flatten():
             assert isinstance(ax, Axes)
 

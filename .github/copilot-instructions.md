@@ -68,6 +68,7 @@ All plotting methods follow the `get_figure_and_axes(fig, ax)` pattern from `uti
       yield
       plt.close("all")
   ```
+
 - Group related tests in classes (e.g., `TestTimeSeriesPlotterInitialization`)
 - Test edge cases: empty data, mismatched lengths, multi-dimensional arrays
 
@@ -109,7 +110,7 @@ poetry run bump-my-version bump major  # 0.1.0 -> 1.0.0
 
 Updates version in: `pyproject.toml`, `src/drippy/__init__.py`, `CITATION.cff`, `docs/conf.py`
 
-**Dependencies**
+## Dependencies
 
 **Core scientific stack:**
 - `matplotlib` - Plotting (all methods return Figure/Axes)
