@@ -57,6 +57,7 @@ class TimeSeriesPlotter:
         ax.set_xlabel("Time-axis")
         ax.set_ylabel("Y-axis")
         ax.set_title("Sequence Plot")
+        fig.tight_layout()
         return fig, ax
 
     def spectral_plot(
