@@ -21,7 +21,13 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
-dependencies = ["matplotlib (>=3.10.7,<4.0.0)", "numpy (>=2.3.4,<3.0.0)", "scipy (>=1.16.3,<2.0.0)", "astropy (>=7.1.1,<8.0.0)", "lmfit (>=1.3.4,<2.0.0)", "pytest-xdist[psutil] (>=3.8.0,<4.0.0)"]
+dependencies = [
+"matplotlib (>=3.10.7,<4.0.0)", 
+"numpy (>=2.3.4,<3.0.0)", 
+"scipy (>=1.16.3,<2.0.0)", 
+"astropy (>=7.1.1,<8.0.0)", 
+"lmfit (>=1.3.4,<2.0.0)", 
+]
 description = "Discover, Refine, Inspect, Present in Python, using EDA principles outlined by NIST/SEMATECH e-Handbook of Statistical Methods, http://www.itl.nist.gov/div898/handbook/eda/eda.htm to analyse data."
 keywords = ["EDA"," data analysis"," data"," exploratory data analysis"," regression"," fitting"]
 license-files = [
@@ -47,7 +53,8 @@ dev = [
     "pytest (>=8.4.2,<9.0.0)",
     "pytest-cov (>=7.0.0,<8.0.0)",
     "ruff (>=0.13.0,<0.14.0)",
-    "tox (>=4.30.2,<5.0.0)"
+    "tox (>=4.30.2,<5.0.0)",
+    "pytest-xdist[psutil] (>=3.8.0,<4.0.0)",
 ]
 
 [project.urls]
