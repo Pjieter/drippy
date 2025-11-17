@@ -1,5 +1,6 @@
 """Tests for the drippy.utilities module."""
 
+import re
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -124,9 +125,7 @@ class TestBlFilt:
         """Test that TypeError is raised for non-numpy array input."""
         y = [1, 2, 3, 4, 5]  # List instead of np.ndarray
 
-        with pytest.raises(
-            TypeError, match=r"Input y must be a numpy array."
-        ):
+        with pytest.raises(TypeError, match=r"Input y must be a numpy array."):
             bl_filt(y, half_width=2)
 
     def test_raises_value_error_for_invalid_half_width(self, rng):
@@ -136,8 +135,9 @@ class TestBlFilt:
         invalid_half_widths = [0, -1, 2.5, "three", True, False, None]
 
         for hw in invalid_half_widths:
+            expected_msg = f"half_width must be a positive integer. Got {hw}."
             with pytest.raises(
                 ValueError,
-                match=f"half_width must be a positive integer. Got {hw}.",
+                match=re.escape(expected_msg),
             ):
                 bl_filt(y, half_width=hw)
