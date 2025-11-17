@@ -151,7 +151,7 @@ class TestSequencePlot:
     def test_with_provided_fig_ax(self, plotter):
         """Test spectral_plot with user-provided figure and axes."""
         provided_fig, provided_ax = plt.subplots()
-        fig, ax = plotter.spectral_plot(fig=provided_fig, ax=provided_ax)
+        fig, ax = plotter.sequence_plot(fig=provided_fig, ax=provided_ax)
 
         assert fig is provided_fig
         assert ax is provided_ax
