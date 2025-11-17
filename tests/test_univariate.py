@@ -960,6 +960,22 @@ class TestParameterValidation:
             fig, _ = plotter.histogram_plot(bins=bins)
             assert isinstance(fig, Figure)
 
+    def test_histogram_with_negative_bins(self, plotter):
+        """Test histogram with negative number of bins."""
+        with pytest.raises(ValueError):
+            plotter.histogram_plot(bins=-5)
+
+    def test_histogram_with_zero_bins(self, plotter):
+        """Test histogram with zero bins."""
+        with pytest.raises(ValueError):
+            plotter.histogram_plot(bins=0)
+
+    def test_histogram_with_single_bin(self, plotter):
+        """Test histogram with single bin."""
+        fig, ax = plotter.histogram_plot(bins=1)
+        assert isinstance(fig, Figure)
+        assert len(ax.patches) == 1
+
     def test_lag_plot_with_small_lag(self, plotter):
         """Test lag plot behavior with small lag."""
         # With lag=1, should have n-1 points
@@ -967,6 +983,45 @@ class TestParameterValidation:
         collections = ax.collections
         scatter_data = collections[0].get_offsets()
         assert len(scatter_data) == len(plotter.y) - 1
+
+    def test_lag_plot_with_negative_lag(self, plotter):
+        """Test lag plot with negative lag value."""
+        with pytest.raises(
+            ValueError,
+            match=r"Lag must be a positive integer",
+        ):
+            plotter.lag_plot(lag=-1)
+
+    def test_lag_plot_with_zero_lag(self, plotter):
+        """Test lag plot with zero lag value."""
+        with pytest.raises(
+            ValueError,
+            match=r"Lag must be a positive integer",
+        ):
+            plotter.lag_plot(lag=0)
+
+    def test_lag_plot_with_lag_equal_to_data_length(self, plotter):
+        """Test lag plot with lag equal to data length."""
+        with pytest.raises(
+            ValueError,
+            match=r"Lag must be less than the length of the data",
+        ):
+            plotter.lag_plot(lag=len(plotter.y))
+
+    def test_lag_plot_with_lag_exceeding_data_length(self, plotter):
+        """Test lag plot with lag exceeding data length."""
+        with pytest.raises(
+            ValueError,
+            match=r"Lag must be less than the length of the data",
+        ):
+            plotter.lag_plot(lag=len(plotter.y) + 10)
+
+    def test_lag_plot_with_float_lag(self, plotter):
+        """Test lag plot with float lag value (should convert to int)."""
+        # Should accept float and convert to int
+        fig, ax = plotter.lag_plot(lag=2.7)
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
 
     def test_probability_plot_with_invalid_distribution(self, plotter):
         """Test probability plot with invalid distribution name."""
@@ -976,6 +1031,76 @@ class TestParameterValidation:
             match=r"is not a valid distribution name",
         ):
             plotter.probability_plot(distribution="invalid_dist")
+
+    def test_bootstrap_plot_with_negative_n_bootstrap(self, plotter):
+        """Test bootstrap plot with negative number of bootstrap samples."""
+        with pytest.raises(
+            ValueError,
+            match=r"Number of bootstrap samples must be positive",
+        ):
+            plotter.bootstrap_plot(n_bootstrap=-100)
+
+    def test_bootstrap_plot_with_zero_n_bootstrap(self, plotter):
+        """Test bootstrap plot with zero bootstrap samples."""
+        with pytest.raises(
+            ValueError,
+            match=r"Number of bootstrap samples must be positive",
+        ):
+            plotter.bootstrap_plot(n_bootstrap=0)
+
+    def test_bootstrap_plot_with_single_bootstrap(self, plotter):
+        """Test bootstrap plot with single bootstrap sample."""
+        fig, ax = plotter.bootstrap_plot(n_bootstrap=1)
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_bootstrap_plot_with_non_callable_statistic(self, plotter):
+        """Test bootstrap plot with non-callable statistic."""
+        with pytest.raises(
+            TypeError,
+            match=r"Statistic must be callable",
+        ):
+            plotter.bootstrap_plot(statistic="mean")
+
+    def test_ppcc_plot_with_invalid_rough_range(self, positive_plotter):
+        """Test PPCC plot with invalid rough range."""
+        with pytest.raises(
+            ValueError,
+            match=r"Rough range must contain exactly 2 elements",
+        ):
+            positive_plotter.ppcc_plot(rough_range=(0.1, 0.5, 0.9))
+
+    def test_ppcc_plot_with_inverted_rough_range(self, positive_plotter):
+        """Test PPCC plot with inverted rough range."""
+        with pytest.raises(
+            ValueError,
+            match=r"Rough range must be \(min, max\) with min < max",
+        ):
+            positive_plotter.ppcc_plot(rough_range=(0.9, 0.1))
+
+    def test_ppcc_plot_with_equal_rough_range(self, positive_plotter):
+        """Test PPCC plot with equal values in rough range."""
+        with pytest.raises(
+            ValueError,
+            match=r"Rough range must be \(min, max\) with min < max",
+        ):
+            positive_plotter.ppcc_plot(rough_range=(0.5, 0.5))
+
+    def test_ppcc_plot_with_negative_n_points(self, positive_plotter):
+        """Test PPCC plot with negative number of points."""
+        with pytest.raises(
+            ValueError,
+            match=r"Number of points must be positive",
+        ):
+            positive_plotter.ppcc_plot(n_rough=-10)
+
+    def test_ppcc_plot_with_zero_n_points(self, positive_plotter):
+        """Test PPCC plot with zero points."""
+        with pytest.raises(
+            ValueError,
+            match=r"Number of points must be positive",
+        ):
+            positive_plotter.ppcc_plot(n_rough=0)
 
 
 class TestMemoryAndPerformance:

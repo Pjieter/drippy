@@ -93,7 +93,19 @@ class UnivariatePlotter:
         Returns:
             tuple[Figure, Axes]:
                 The figure and axes containing the plot.
+
+        Raises:
+            ValueError:
+                If lag is not positive or exceeds data length.
         """
+        lag = int(lag)
+        if lag <= 0:
+            error = "Lag must be a positive integer"
+            raise ValueError(error)
+        if lag >= len(self.y):
+            error = "Lag must be less than the length of the data"
+            raise ValueError(error)
+
         fig, ax = get_figure_and_axes(fig, ax)
 
         y_lagged = self.y[lag:]
@@ -137,7 +149,15 @@ class UnivariatePlotter:
         Returns:
             tuple[Figure, Axes]:
                 The figure and axes containing the plot.
+
+        Raises:
+            ValueError:
+                If bins is an integer less than or equal to 0.
         """
+        if isinstance(bins, int) and bins <= 0:
+            error = f"Number of bins must be positive, got {bins}"
+            raise ValueError(error)
+
         fig, ax = get_figure_and_axes(fig, ax)
 
         ax.hist(self.y, bins=bins)
@@ -242,6 +262,9 @@ class UnivariatePlotter:
         self,
         fig: Figure | None = None,
         ax: Iterable[Axes] | None = None,
+        rough_range: tuple[float, float] = (-2, 2),
+        n_rough: int = 50,
+        n_fine: int = 100,
     ) -> tuple[Figure, Iterable[Axes]]:
         """Creates a probability plot correlation coefficient (PPCC) plot.
 
@@ -255,6 +278,12 @@ class UnivariatePlotter:
             ax (Iterable[Axes] | None, optional):
                 Array of matplotlib axes with shape (2,). If None,
                 creates new axes. Defaults to None.
+            rough_range (tuple[float, float], optional):
+                Range for rough PPCC plot. Defaults to (-2, 2).
+            n_rough (int, optional):
+                Number of points for rough plot. Defaults to 50.
+            n_fine (int, optional):
+                Number of points for fine plot. Defaults to 100.
 
         Returns:
             tuple[Figure, Iterable[Axes]]:
@@ -262,8 +291,23 @@ class UnivariatePlotter:
 
         Raises:
             ValueError:
-                If ax is provided but does not have shape (2,).
+                If ax is provided but does not have shape (2,),
+                or if rough_range is invalid, or if n_rough/n_fine
+                are not positive.
         """
+        if len(rough_range) != 2:  # noqa: PLR2004
+            error = "Rough range must contain exactly 2 elements"
+            raise ValueError(error)
+        if rough_range[0] >= rough_range[1]:
+            error = "Rough range must be (min, max) with min < max"
+            raise ValueError(error)
+        if n_rough <= 0:
+            error = "Number of points must be positive"
+            raise ValueError(error)
+        if n_fine <= 0:
+            error = "Number of points must be positive"
+            raise ValueError(error)
+
         if fig is None or ax is None:
             fig, _ = get_figure_and_axes(fig, None)
             ax = fig.subplots(1, 2)
@@ -274,8 +318,9 @@ class UnivariatePlotter:
 
         rough_shape_values, rough_ppcc = sp.stats.ppcc_plot(
             self.y,
-            -2,
-            2,
+            rough_range[0],
+            rough_range[1],
+            N=n_rough,
             plot=ax[0],
         )
         rough_max_index = np.argmax(rough_ppcc)
@@ -283,7 +328,7 @@ class UnivariatePlotter:
             self.y,
             rough_shape_values[rough_max_index] - 0.5,
             rough_shape_values[rough_max_index] + 0.5,
-            N=100,
+            N=n_fine,
             plot=ax[1],
         )
         fine_max_index = np.argmax(fine_ppcc)
@@ -486,6 +531,7 @@ class UnivariatePlotter:
         fig: Figure | None = None,
         ax: Axes | None = None,
         statistic: Callable = np.mean,
+        n_bootstrap: int = 10000,
     ) -> tuple[Figure, Axes]:
         """Creates a bootstrap distribution plot.
 
@@ -498,15 +544,31 @@ class UnivariatePlotter:
                 Defaults to None.
             statistic (Callable, optional):
                 Statistic function to bootstrap. Defaults to np.mean.
+            n_bootstrap (int, optional):
+                Number of bootstrap samples. Defaults to 10000.
 
         Returns:
             tuple[Figure, Axes]:
                 The figure and axes containing the plot.
+
+        Raises:
+            ValueError:
+                If n_bootstrap is not positive.
+            TypeError:
+                If statistic is not callable.
         """
+        if not callable(statistic):
+            error = "Statistic must be callable"
+            raise TypeError(error)
+        if n_bootstrap <= 0:
+            error = "Number of bootstrap samples must be positive"
+            raise ValueError(error)
+
         fig, ax = get_figure_and_axes(fig, ax)
         result = sp.stats.bootstrap(
             (self.y,),
             statistic,
+            n_resamples=n_bootstrap,
         )
         variability_label = (
             f"Variability of {statistic.__name__}: {result.standard_error:.3g}"
