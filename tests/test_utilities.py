@@ -65,7 +65,6 @@ class TestGetFigureAndAxes:
             if expected_ax_same:
                 assert ax is ax_input, f"Failed for case: {desc}"
 
-
     def test_returns_tuple(self):
         """Test that the function returns a tuple."""
         result = get_figure_and_axes()
