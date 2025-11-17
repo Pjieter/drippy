@@ -25,6 +25,9 @@ def get_figure_and_axes(
         ax = fig.add_subplot(1, 1, 1)
     elif fig is None and ax is not None:
         fig = ax.get_figure()
+    elif ax.figure is not fig:
+        error = "Provided ax does not belong to provided fig."
+        raise ValueError(error)
     return fig, ax
 
 

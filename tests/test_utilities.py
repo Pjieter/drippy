@@ -39,7 +39,7 @@ class TestGetFigureAndAxes:
         # Add case where both fig and ax belong together
         provided_fig, provided_ax = plt.subplots()
         test_cases.append(
-            (provided_fig, provided_ax, True, True, "both provided (same)")
+            (provided_fig, provided_ax, True, True, "both provided (same)"),
         )
 
         for (

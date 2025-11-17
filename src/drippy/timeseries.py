@@ -25,6 +25,12 @@ class TimeSeriesPlotter:
         """
         self.y = np.asarray(y)
         self.t = np.asarray(t)
+        if len(self.t) != len(self.y):
+            error = (
+                f"t and y must have the same length. "
+                f"Got len(t)={len(self.t)}, len(y)={len(self.y)}."
+            )
+            raise ValueError(error)
 
     def sequence_plot(
         self,
@@ -48,7 +54,7 @@ class TimeSeriesPlotter:
         fig, ax = get_figure_and_axes(fig, ax)
         ax.plot(self.t, self.y, label="Data")
         ax.legend()
-        ax.set_xlabel("X-axis")
+        ax.set_xlabel("Time-axis")
         ax.set_ylabel("Y-axis")
         ax.set_title("Sequence Plot")
         return fig, ax
@@ -177,7 +183,7 @@ class TimeSeriesPlotter:
             rf"$\phi_0$={result.params['intercept'].value:.3g}, "
             rf"$\omega$={result.params['slope'].value:.3g}",
         )
-        ax.set_xlabel("X-axis")
+        ax.set_xlabel("Time-axis")
         ax.set_ylabel("Phase (radians)")
         ax.set_title("Complex Demodulation Phase Plot")
         ax.legend()
