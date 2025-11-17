@@ -22,41 +22,49 @@ def rng():
 class TestGetFigureAndAxes:
     """Tests for get_figure_and_axes function."""
 
-    def test_creates_new_figure_and_axes_when_none_provided(self):
-        """Test new Figure and Axes are created when none provided."""
-        fig, ax = get_figure_and_axes()
+    @pytest.fixture(autouse=True)
+    def close_figures_after_test(self):
+        """Fixture to close all figures after each test."""
+        yield
+        plt.close("all")
 
-        assert isinstance(fig, Figure)
-        assert isinstance(ax, Axes)
-        plt.close(fig)
+    def test_figure_and_axes_combinations(self):
+        """Test all combinations of providing fig and ax parameters."""
+        test_cases = [
+            (None, None, False, False, "both None"),
+            (plt.figure(), None, True, False, "fig provided, ax None"),
+            (None, plt.subplots()[1], False, True, "fig None, ax provided"),
+        ]
 
-    def test_uses_provided_figure(self):
-        """Test that the provided Figure is used."""
-        provided_fig = plt.figure()
-        fig, ax = get_figure_and_axes(fig=provided_fig)
-
-        assert fig is provided_fig
-        assert isinstance(ax, Axes)
-        plt.close(fig)
-
-    def test_uses_provided_axes(self):
-        """Test that the provided Axes is used."""
+        # Add case where both fig and ax belong together
         provided_fig, provided_ax = plt.subplots()
-        fig, ax = get_figure_and_axes(fig=provided_fig, ax=provided_ax)
+        test_cases.append(
+            (provided_fig, provided_ax, True, True, "both provided (same)")
+        )
 
-        assert fig is provided_fig
-        assert ax is provided_ax
-        plt.close(fig)
+        for (
+            fig_input,
+            ax_input,
+            expected_fig_same,
+            expected_ax_same,
+            desc,
+        ) in test_cases:
+            # Call function
+            fig, ax = get_figure_and_axes(fig=fig_input, ax=ax_input)
 
-    def test_creates_axes_on_provided_figure(self):
-        """Test Axes are created when ax is None."""
-        provided_fig = plt.figure()
-        fig, ax = get_figure_and_axes(fig=provided_fig, ax=None)
+            # Verify outputs are valid
+            assert isinstance(fig, Figure), f"Failed for case: {desc}"
+            assert isinstance(ax, Axes), f"Failed for case: {desc}"
 
-        assert fig is provided_fig
-        assert isinstance(ax, Axes)
-        assert ax.figure is provided_fig
-        plt.close(fig)
+            # Verify fig and ax belong together
+            assert ax.figure is fig, f"Failed for case: {desc}"
+
+            # Verify expected behavior
+            if expected_fig_same:
+                assert fig is fig_input, f"Failed for case: {desc}"
+            if expected_ax_same:
+                assert ax is ax_input, f"Failed for case: {desc}"
+
 
     def test_returns_tuple(self):
         """Test that the function returns a tuple."""
@@ -64,7 +72,6 @@ class TestGetFigureAndAxes:
 
         assert isinstance(result, tuple)
         assert len(result) == 2  # noqa: PLR2004 (always should be 2)
-        plt.close(result[0])
 
 
 class TestBlFilt:

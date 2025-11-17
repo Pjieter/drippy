@@ -19,10 +19,12 @@ def get_figure_and_axes(
     Returns:
         tuple[Figure, Axes]: Figure and Axes objects for plotting.
     """
-    if fig is None:
-        fig = plt.figure()
-    if ax is None:
-        ax = fig.add_subplot(111)
+    if fig is None and ax is None:
+        fig, ax = plt.subplots()
+    elif fig is not None and ax is None:
+        ax = fig.add_subplot(1, 1, 1)
+    elif fig is None and ax is not None:
+        fig = ax.get_figure()
     return fig, ax
 
 
