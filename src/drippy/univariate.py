@@ -444,7 +444,7 @@ class UnivariatePlotter:
                 If axes is provided but does not have shape (2, 2).
         """
         if fig is None or axes is None:
-            fig = Figure(figsize=(10, 10))
+            fig, axes = get_figure_and_axes(fig, None)
             axes = fig.subplots(2, 2)
 
         if axes.shape != (2, 2):

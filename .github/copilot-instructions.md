@@ -34,6 +34,7 @@ poetry run ruff format
 - No FBT (boolean trap), no explicit TODO markers in commits
 
 **Example function signature:**
+
 ```python
 def sequence_plot(
     self,
@@ -108,7 +109,7 @@ poetry run bump-my-version bump major  # 0.1.0 -> 1.0.0
 
 Updates version in: `pyproject.toml`, `src/drippy/__init__.py`, `CITATION.cff`, `docs/conf.py`
 
-**Dependencies
+**Dependencies**
 
 **Core scientific stack:**
 - `matplotlib` - Plotting (all methods return Figure/Axes)
