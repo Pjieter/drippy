@@ -40,7 +40,6 @@ class UnivariatePlotter:
 
     def auto_plot(self) -> None:
         """Creates automated diagnostic plots of the data."""
-        # TODO: Implementation of the plotting logic goes here
         msg = "auto_plot is not yet implemented"
         raise NotImplementedError(msg)
 
@@ -108,8 +107,8 @@ class UnivariatePlotter:
 
         fig, ax = get_figure_and_axes(fig, ax)
 
-        y_lagged = self.y[lag:]
-        y_original = self.y[:-lag]
+        y_original = self.y[lag:]
+        y_lagged = self.y[:-lag]
 
         # Set color of point equal to its index to create a gradient effect
         colors = np.arange(len(y_lagged))
@@ -486,8 +485,15 @@ class UnivariatePlotter:
 
         Raises:
             ValueError:
-                If axes is provided but does not have shape (2, 2).
+                If axes is provided but does not have shape (2, 2),
+                or if any y values are not positive.
         """
+        if not np.all(self.y > 0):
+            error = (
+                "Box-Cox transformation requires all y values to be positive."
+            )
+            raise ValueError(error)
+
         if fig is None or axes is None:
             fig, axes = get_figure_and_axes(fig, None)
             axes = fig.subplots(2, 2)

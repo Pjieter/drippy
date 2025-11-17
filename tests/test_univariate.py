@@ -246,6 +246,18 @@ class TestLagPlot:
         # Main plot + colorbar
         assert len(fig.axes) == 2  # noqa: PLR2004
 
+    def test_lag_plot_data_orientation(self, plotter):
+        """Test that lag plot has correct data orientation."""
+        lag = 2
+        _, ax = plotter.lag_plot(lag=lag)
+
+        scatter_data = ax.collections[0].get_offsets()
+
+        # X-axis should be lagged values (Y[i-lag])
+        # Y-axis should be current values (Y[i])
+        np.testing.assert_array_equal(scatter_data[:, 0], plotter.y[:-lag])
+        np.testing.assert_array_equal(scatter_data[:, 1], plotter.y[lag:])
+
 
 class TestHistogramPlot:
     """Tests for histogram_plot method."""
@@ -662,6 +674,32 @@ class TestBoxCoxNormalityPlot:
         # Check that the returned axes are from the provided axes
         for i, ax in enumerate(axes.flatten()):
             assert ax is provided_axes.flatten()[i]
+
+    def test_raises_error_for_non_positive_values(self):
+        """Test ValueError for non-positive y values."""
+        x = np.array([1, 2, 3, 4, 5])
+        y = np.array([1, -2, 3, 4, 5])  # Contains negative value
+        plotter = UnivariatePlotter(y=y, x=x)
+
+        with pytest.raises(
+            ValueError,
+            match=r"Box-Cox transformation requires all y values "
+            r"to be positive\.",
+        ):
+            plotter.box_cox_normality_plot()
+
+    def test_raises_error_for_zero_values(self):
+        """Test ValueError for zero y values."""
+        x = np.array([1, 2, 3, 4, 5])
+        y = np.array([1, 0, 3, 4, 5])  # Contains zero
+        plotter = UnivariatePlotter(y=y, x=x)
+
+        with pytest.raises(
+            ValueError,
+            match=r"Box-Cox transformation requires all y values "
+            r"to be positive\.",
+        ):
+            plotter.box_cox_normality_plot()
 
 
 class TestBootstrapPlot:
