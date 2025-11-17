@@ -60,6 +60,7 @@ All plotting methods follow the `get_figure_and_axes(fig, ax)` pattern from `uti
 - Use `mpl.use("Agg")` at module top for non-interactive backend
 - Create reusable `@pytest.fixture` for common data (see `test_timeseries.py`)
 - Auto-close figures with `autouse=True` fixture to prevent memory leaks:
+
   ```python
   @pytest.fixture(autouse=True)
   def close_figures():
@@ -70,6 +71,7 @@ All plotting methods follow the `get_figure_and_axes(fig, ax)` pattern from `uti
 - Test edge cases: empty data, mismatched lengths, multi-dimensional arrays
 
 **Run tests:**
+
 ```powershell
 poetry run pytest -v           # Standard run
 poetry run coverage run        # With coverage
@@ -97,6 +99,7 @@ When adding new plotter classes or plotting methods:
 ## Version Bumping
 
 Use `bump-my-version` (NOT manual editing):
+
 ```powershell
 poetry run bump-my-version bump patch  # 0.1.0 -> 0.1.1
 poetry run bump-my-version bump minor  # 0.1.0 -> 0.2.0

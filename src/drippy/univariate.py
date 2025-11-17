@@ -278,25 +278,25 @@ class UnivariatePlotter:
             2,
             plot=ax[0],
         )
-        max_ppcc_index = np.argmax(rough_ppcc)
+        rough_max_index = np.argmax(rough_ppcc)
         fine_shape_values, fine_ppcc = sp.stats.ppcc_plot(
             self.y,
-            rough_shape_values[max_ppcc_index] - 0.5,
-            rough_shape_values[max_ppcc_index] + 0.5,
+            rough_shape_values[rough_max_index] - 0.5,
+            rough_shape_values[rough_max_index] + 0.5,
             N=100,
             plot=ax[1],
         )
-        max_ppcc_index = np.argmax(fine_ppcc)
-        max_shape = rough_shape_values[max_ppcc_index]
+        fine_max_index = np.argmax(fine_ppcc)
+        max_shape = rough_shape_values[rough_max_index]
         ax[0].vlines(
             max_shape,
             0,
-            rough_ppcc[max_ppcc_index],
+            rough_ppcc[rough_max_index],
             color="r",
             label=f"Max PPCC at shape={max_shape:.3g}",
         )
         ax[0].legend()
-        max_shape_fine = fine_shape_values[max_ppcc_index]
+        max_shape_fine = fine_shape_values[fine_max_index]
         ax[1].axvline(
             max_shape_fine,
             color="r",
