@@ -65,6 +65,15 @@ class TestTimeSeriesPlotterInitialization:
         np.testing.assert_array_equal(plotter.t, t)
         np.testing.assert_array_equal(plotter.y, y)
 
+    def test_raises_error_for_mismatched_lengths(self):
+        """Test ValueError is raised for different length inputs."""
+        t = [1, 2, 3]
+        y = [1, 2, 3, 4, 5]
+        with pytest.raises(
+            ValueError, match=r"t and y must have the same length"
+        ):
+            TimeSeriesPlotter(y=y, t=t)
+
 
 class TestSequencePlot:
     """Tests for sequence_plot method."""
@@ -90,6 +99,14 @@ class TestSequencePlot:
         assert ax.get_xlabel() != ""
         assert ax.get_ylabel() != ""
         assert ax.get_title() != ""
+
+    def test_with_provided_fig_ax(self, plotter):
+        """Test spectral_plot with user-provided figure and axes."""
+        provided_fig, provided_ax = plt.subplots()
+        fig, ax = plotter.spectral_plot(fig=provided_fig, ax=provided_ax)
+
+        assert fig is provided_fig
+        assert ax is provided_ax
 
 
 class TestSpectralPlot:

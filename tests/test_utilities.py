@@ -72,6 +72,17 @@ class TestGetFigureAndAxes:
         assert isinstance(result, tuple)
         assert len(result) == 2  # noqa: PLR2004 (always should be 2)
 
+    def test_raises_value_error_when_fig_and_ax_dont_belong_together(self):
+        """Test ValueError is raised when fig and ax don't belong together."""
+        fig1, _ = plt.subplots()
+        _, ax2 = plt.subplots()
+
+        with pytest.raises(
+            ValueError,
+            match=r"Provided ax does not belong to provided fig\.",
+        ):
+            get_figure_and_axes(fig=fig1, ax=ax2)
+
 
 class TestBlFilt:
     """Tests for bl_filt (Blackman filter) function."""
