@@ -30,7 +30,7 @@ poetry run ruff format
 **Strict Ruff configuration** with line length 79 characters:
 - Import style: Force single-line imports, sorted by `isort` integration
 - Docstrings: Google style convention (Napoleon extension)
-- Type hints: Required for all public functions (except dunder methods like `__init__`)
+- Type hints: Required for all public functions and `__init__` methods
 - No FBT (boolean trap), no explicit TODO markers in commits
 
 **Example function signature:**
