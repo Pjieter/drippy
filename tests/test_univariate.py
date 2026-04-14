@@ -1,7 +1,6 @@
 """Tests for the drippy.univariate module."""
 
 from __future__ import annotations
-
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -11,9 +10,8 @@ from matplotlib.figure import Figure
 
 mpl.use("Agg")
 
-import drippy.univariate as uv  # noqa: E402
-from drippy.data import EDAData  # noqa: E402
-
+import drippy.univariate as uv
+from drippy.data import EDAData
 
 # --- Fixtures ---
 
