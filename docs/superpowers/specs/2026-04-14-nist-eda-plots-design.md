@@ -16,7 +16,7 @@ Replace the existing class-based architecture (`UnivariatePlotter`, `TimeSeriesP
 
 ### Data Container: `EDAData`
 
-Defined in `src/drippy/data.py`. Lightweight validated data bag — no plotting logic.
+Defined in `src/drippy/data.py`. Validated data container with convenience plotting methods.
 
 ```python
 class EDAData:
@@ -32,7 +32,7 @@ class EDAData:
 **Fields:**
 - `y` — response variable; always required
 - `x` — continuous predictor or single categorical factor
-- `t` — time index (time series plots)
+- `t` — any continuous index variable used as the independent axis (e.g. time, 1/B in quantum oscillations, position). Named `t` by convention but not restricted to real time.
 - `factors` — named factors for multi-factor/DOE/comparative plots (`{"treatment": [...], "block": [...]}`)
 
 **Validation at construction (raises `ValueError`):**
@@ -43,13 +43,37 @@ class EDAData:
 **Usage by model:**
 ```python
 EDAData(y)                               # univariate
-EDAData(y, t=t)                          # time series
+EDAData(y, t=t)                          # time series (t = any continuous index)
 EDAData(y, x=factor)                     # 1-factor
 EDAData(y, x=predictor)                  # regression
 EDAData(y, factors={"A": a, "B": b})     # multi-factor/DOE
 EDAData(y, x=y1, factors={"y2": y2})     # interlab (youden)
 EDAData(y, factors={"v2": v2, "v3": v3}) # multivariate (star)
 ```
+
+**Fluent plotting methods:**
+
+`EDAData` exposes all applicable plot functions as methods, delegating to the standalone functions via lazy imports (to avoid circular imports between `data.py` and plot modules):
+
+```python
+data = EDAData(y)
+data.histogram()          # calls drippy.univariate.histogram(self, ...)
+data.four_plot()          # calls drippy.univariate.four_plot(self, ...)
+
+data = EDAData(y, x=factor)
+data.box_plot()           # calls drippy.onefactor.box_plot(self, ...)
+data.mean_plot()
+```
+
+Each method passes `self` as the first argument and forwards all kwargs to the underlying function. Lazy import pattern:
+
+```python
+def histogram(self, **kwargs):
+    from drippy.univariate import histogram
+    return histogram(self, **kwargs)
+```
+
+Methods are defined on `EDAData` for all 35 plot functions. If a required field is missing, the underlying function raises `ValueError` as usual.
 
 ---
 
@@ -196,7 +220,7 @@ All require `data.x`. Linear intercept/slope/residual-sd plots are typically use
 ```python
 def spectral_plot(data: EDAData, ...) -> tuple[Figure, Axes]:
     if data.t is None:
-        raise ValueError("spectral_plot requires t (time index)")
+        raise ValueError("spectral_plot requires t (continuous index)")
 ```
 
 No defensive checks beyond what `EDAData` already guarantees.
@@ -205,8 +229,9 @@ No defensive checks beyond what `EDAData` already guarantees.
 
 ## Testing Patterns
 
+Each test module defines one fixture per data category it exercises, plus the universal `close_figures` autouse fixture. Fixtures reflect the data requirements of the model under test:
+
 ```python
-# Each test module follows this structure
 import matplotlib as mpl
 mpl.use("Agg")
 
@@ -216,28 +241,60 @@ import matplotlib.pyplot as plt
 from drippy import EDAData
 import drippy.onefactor as of
 
-@pytest.fixture
-def data():
-    rng = np.random.default_rng(42)
-    y = rng.normal(size=50)
-    x = np.repeat(["A", "B", "C", "D", "E"], 10)
-    return EDAData(y, x=x)
+# --- Fixtures ---
 
 @pytest.fixture(autouse=True)
 def close_figures():
     yield
     plt.close("all")
 
+@pytest.fixture
+def univariate_data():
+    rng = np.random.default_rng(42)
+    return EDAData(rng.normal(size=50))
+
+@pytest.fixture
+def timeseries_data():
+    rng = np.random.default_rng(42)
+    t = np.linspace(0, 10, 100)
+    return EDAData(rng.normal(size=100), t=t)
+
+@pytest.fixture
+def onefactor_data():
+    rng = np.random.default_rng(42)
+    y = rng.normal(size=50)
+    x = np.repeat(["A", "B", "C", "D", "E"], 10)
+    return EDAData(y, x=x)
+
+@pytest.fixture
+def multifactor_data():
+    rng = np.random.default_rng(42)
+    y = rng.normal(size=16)
+    return EDAData(y, factors={"A": np.tile([−1, 1], 8), "B": np.repeat([−1, 1], 8)})
+
+@pytest.fixture
+def regression_data():
+    rng = np.random.default_rng(42)
+    x = np.linspace(0, 10, 50)
+    return EDAData(rng.normal(loc=x), x=x)
+
+@pytest.fixture
+def comparative_data():
+    rng = np.random.default_rng(42)
+    y = rng.normal(size=30)
+    return EDAData(y, factors={"treatment": np.tile([0, 1, 2], 10), "block": np.repeat([0, 1, 2], 10)})
+
+# --- Tests ---
+
 class TestBoxPlot:
-    def test_returns_figure_and_axes(self, data): ...
-    def test_custom_fig_ax(self, data): ...
-    def test_requires_x(self):
-        data = EDAData(np.ones(10))
+    def test_returns_figure_and_axes(self, onefactor_data): ...
+    def test_custom_fig_ax(self, onefactor_data): ...
+    def test_requires_x(self, univariate_data):
         with pytest.raises(ValueError):
-            of.box_plot(data)
+            of.box_plot(univariate_data)
 ```
 
-`test_data.py` covers `EDAData` validation exhaustively: missing `y`, mismatched lengths, wrong dimensions, empty arrays.
+Each test module imports only the fixtures it needs. `test_data.py` covers `EDAData` validation exhaustively using all fixture shapes: missing `y`, mismatched lengths, wrong dimensions, empty arrays.
 
 ---
 
