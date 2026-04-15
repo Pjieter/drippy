@@ -23,13 +23,13 @@ MIN_PHASE_PLOT_LINES = 2
 
 
 @pytest.fixture(autouse=True)
-def close_figures():  # noqa: D103
+def close_figures():
     yield
     plt.close("all")
 
 
 @pytest.fixture
-def timeseries_data():  # noqa: D103
+def timeseries_data():
     t = np.linspace(1, 10, 100)
     y = 2 * t + 3 + np.sin(t)
     return EDAData(y, t=t)

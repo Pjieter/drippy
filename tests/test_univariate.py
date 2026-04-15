@@ -61,7 +61,8 @@ class TestRunSequencePlot:
         lines = ax.get_lines()
         assert len(lines) >= 1
         x_data, _ = lines[0].get_data()
-        np.testing.assert_array_equal(x_data, np.arange(len(univariate_data.y)))
+        expected = np.arange(len(univariate_data.y))
+        np.testing.assert_array_equal(x_data, expected)
 
     def test_uses_t_when_provided(self, univariate_data_with_t):
         _, ax = uv.run_sequence_plot(univariate_data_with_t)
@@ -71,7 +72,9 @@ class TestRunSequencePlot:
 
     def test_custom_fig_ax(self, univariate_data):
         provided_fig, provided_ax = plt.subplots()
-        fig, ax = uv.run_sequence_plot(univariate_data, fig=provided_fig, ax=provided_ax)
+        fig, ax = uv.run_sequence_plot(
+            univariate_data, fig=provided_fig, ax=provided_ax
+        )
         assert fig is provided_fig
         assert ax is provided_ax
 
@@ -92,7 +95,9 @@ class TestLagPlot:
 
     def test_custom_fig_ax(self, univariate_data):
         provided_fig, provided_ax = plt.subplots()
-        fig, ax = uv.lag_plot(univariate_data, fig=provided_fig, ax=provided_ax)
+        fig, ax = uv.lag_plot(
+            univariate_data, fig=provided_fig, ax=provided_ax
+        )
         assert fig is provided_fig
         assert ax is provided_ax
 
@@ -106,8 +111,12 @@ class TestLagPlot:
         lag = 2
         _, ax = uv.lag_plot(univariate_data, lag=lag)
         scatter_data = ax.collections[0].get_offsets()
-        np.testing.assert_array_equal(scatter_data[:, 0], univariate_data.y[:-lag])
-        np.testing.assert_array_equal(scatter_data[:, 1], univariate_data.y[lag:])
+        np.testing.assert_array_equal(
+            scatter_data[:, 0], univariate_data.y[:-lag]
+        )
+        np.testing.assert_array_equal(
+            scatter_data[:, 1], univariate_data.y[lag:]
+        )
 
     def test_negative_lag_raises(self, univariate_data):
         with pytest.raises(ValueError, match="Lag must be a positive integer"):
@@ -118,11 +127,13 @@ class TestLagPlot:
             uv.lag_plot(univariate_data, lag=0)
 
     def test_lag_too_large_raises(self, univariate_data):
-        with pytest.raises(ValueError, match="Lag must be less than the length"):
+        with pytest.raises(
+            ValueError, match="Lag must be less than the length"
+        ):
             uv.lag_plot(univariate_data, lag=len(univariate_data.y))
 
     def test_float_lag_converted(self, univariate_data):
-        fig, ax = uv.lag_plot(univariate_data, lag=2.7)
+        fig, _ = uv.lag_plot(univariate_data, lag=2.7)
         assert isinstance(fig, Figure)
 
 
@@ -136,7 +147,9 @@ class TestHistogram:
 
     def test_custom_fig_ax(self, univariate_data):
         provided_fig, provided_ax = plt.subplots()
-        fig, ax = uv.histogram(univariate_data, fig=provided_fig, ax=provided_ax)
+        fig, ax = uv.histogram(
+            univariate_data, fig=provided_fig, ax=provided_ax
+        )
         assert fig is provided_fig
         assert ax is provided_ax
 
@@ -167,14 +180,18 @@ class TestNormalProbabilityPlot:
 
     def test_custom_fig_ax(self, univariate_data):
         provided_fig, provided_ax = plt.subplots()
-        fig, ax = uv.normal_probability_plot(univariate_data, fig=provided_fig, ax=provided_ax)
+        fig, ax = uv.normal_probability_plot(
+            univariate_data, fig=provided_fig, ax=provided_ax
+        )
         assert fig is provided_fig
         assert ax is provided_ax
 
     def test_returns_rsquared_when_requested(self, univariate_data):
-        result = uv.normal_probability_plot(univariate_data, return_rsquared=True)
+        result = uv.normal_probability_plot(
+            univariate_data, return_rsquared=True
+        )
         assert len(result) == 3
-        fig, ax, rsq = result
+        _, _, rsq = result
         assert isinstance(rsq, float)
         assert 0 <= rsq <= 1
 
@@ -203,12 +220,16 @@ class TestFourPlot:
 
     def test_wrong_axes_shape_raises(self, univariate_data):
         fig, axes = plt.subplots(1, 3)
-        with pytest.raises(ValueError, match=r"Axes must be an iterable of \(2, 2\)"):
+        with pytest.raises(
+            ValueError, match=r"Axes must be an iterable of \(2, 2\)"
+        ):
             uv.four_plot(univariate_data, fig=fig, axes=axes)
 
     def test_custom_fig_axes(self, univariate_data):
         provided_fig, provided_axes = plt.subplots(2, 2)
-        fig, axes = uv.four_plot(univariate_data, fig=provided_fig, axes=provided_axes)
+        fig, _ = uv.four_plot(
+            univariate_data, fig=provided_fig, axes=provided_axes
+        )
         assert fig is provided_fig
 
 
@@ -226,7 +247,9 @@ class TestPpccPlot:
         assert axes[1].get_title() == "Fine PPCC Plot"
 
     def test_invalid_rough_range_raises(self, univariate_data):
-        with pytest.raises(ValueError, match="Rough range must contain exactly 2"):
+        with pytest.raises(
+            ValueError, match="Rough range must contain exactly 2"
+        ):
             uv.ppcc_plot(univariate_data, rough_range=(0.1, 0.5, 0.9))
 
     def test_inverted_range_raises(self, univariate_data):
@@ -234,7 +257,9 @@ class TestPpccPlot:
             uv.ppcc_plot(univariate_data, rough_range=(2, -2))
 
     def test_negative_n_raises(self, univariate_data):
-        with pytest.raises(ValueError, match="Number of points must be positive"):
+        with pytest.raises(
+            ValueError, match="Number of points must be positive"
+        ):
             uv.ppcc_plot(univariate_data, n_rough=-1)
 
 
@@ -293,7 +318,9 @@ class TestBoxCoxNormalityPlot:
 
     def test_wrong_axes_shape_raises(self, positive_data):
         fig, axes = plt.subplots(1, 3)
-        with pytest.raises(ValueError, match=r"Axes must be an iterable of \(2, 2\)"):
+        with pytest.raises(
+            ValueError, match=r"Axes must be an iterable of \(2, 2\)"
+        ):
             uv.box_cox_normality_plot(positive_data, fig=fig, axes=axes)
 
     def test_all_subplots_have_content(self, positive_data):
