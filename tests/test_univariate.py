@@ -15,6 +15,7 @@ from drippy.data import EDAData
 
 # --- Fixtures ---
 
+
 @pytest.fixture(autouse=True)
 def close_figures():
     yield
@@ -49,6 +50,7 @@ def positive_data_with_x():
 
 
 # --- run_sequence_plot ---
+
 
 class TestRunSequencePlot:
     def test_returns_figure_and_axes(self, univariate_data):
@@ -86,6 +88,7 @@ class TestRunSequencePlot:
 
 
 # --- lag_plot ---
+
 
 class TestLagPlot:
     def test_returns_figure_and_axes(self, univariate_data):
@@ -139,6 +142,7 @@ class TestLagPlot:
 
 # --- histogram ---
 
+
 class TestHistogram:
     def test_returns_figure_and_axes(self, univariate_data):
         fig, ax = uv.histogram(univariate_data)
@@ -172,6 +176,7 @@ class TestHistogram:
 
 # --- normal_probability_plot ---
 
+
 class TestNormalProbabilityPlot:
     def test_returns_figure_and_axes(self, univariate_data):
         fig, ax = uv.normal_probability_plot(univariate_data)
@@ -201,6 +206,7 @@ class TestNormalProbabilityPlot:
 
 
 # --- four_plot ---
+
 
 class TestFourPlot:
     def test_returns_figure_and_axes(self, univariate_data):
@@ -235,6 +241,7 @@ class TestFourPlot:
 
 # --- ppcc_plot ---
 
+
 class TestPpccPlot:
     def test_returns_figure_and_two_axes(self, univariate_data):
         fig, axes = uv.ppcc_plot(univariate_data)
@@ -265,6 +272,7 @@ class TestPpccPlot:
 
 # --- weibull_plot ---
 
+
 class TestWeibullPlot:
     def test_returns_figure_and_axes(self, positive_data):
         fig, ax = uv.weibull_plot(positive_data)
@@ -283,6 +291,7 @@ class TestWeibullPlot:
 
 
 # --- probability_plot ---
+
 
 class TestProbabilityPlot:
     def test_returns_figure_and_axes(self, univariate_data):
@@ -304,6 +313,7 @@ class TestProbabilityPlot:
 
 
 # --- box_cox_normality_plot ---
+
 
 class TestBoxCoxNormalityPlot:
     def test_returns_figure_and_axes(self, positive_data):
@@ -331,6 +341,7 @@ class TestBoxCoxNormalityPlot:
 
 # --- bootstrap_plot ---
 
+
 class TestBootstrapPlot:
     def test_returns_figure_and_axes(self, univariate_data):
         fig, ax = uv.bootstrap_plot(univariate_data)
@@ -351,6 +362,7 @@ class TestBootstrapPlot:
 
 
 # --- box_cox_linearity_plot ---
+
 
 class TestBoxCoxLinearityPlot:
     def test_returns_figure_and_axes(self, positive_data_with_x):
