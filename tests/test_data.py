@@ -4,6 +4,8 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
 
 mpl.use("Agg")
 
@@ -157,3 +159,85 @@ class TestEDADataValidation:
             ValueError, match="factors\\['A'\\] must be 1-dimensional"
         ):
             EDAData([1, 2, 3, 4], factors={"A": np.ones((2, 2))})
+
+
+# --- Fluent methods ---
+
+
+class TestFluentMethods:
+    """Each method must delegate to the correct module function."""
+
+    def test_run_sequence_plot(self, univariate_data):
+        fig, ax = univariate_data.run_sequence_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_histogram(self, univariate_data):
+        fig, ax = univariate_data.histogram()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_lag_plot(self, univariate_data):
+        fig, ax = univariate_data.lag_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_normal_probability_plot(self, univariate_data):
+        fig, ax = univariate_data.normal_probability_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_four_plot(self, univariate_data):
+        fig, axes = univariate_data.four_plot()
+        assert isinstance(fig, Figure)
+        assert len(axes) == 4
+
+    def test_spectral_plot(self, timeseries_data):
+        fig, ax = timeseries_data.spectral_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_autocorrelation_plot(self, timeseries_data):
+        fig, ax = timeseries_data.autocorrelation_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_complex_demodulation_amplitude_plot(self, timeseries_data):
+        fig, ax = timeseries_data.complex_demodulation_amplitude_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_complex_demodulation_phase_plot(self, timeseries_data):
+        fig, ax = timeseries_data.complex_demodulation_phase_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_scatter_plot(self, onefactor_data):
+        fig, ax = onefactor_data.scatter_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_box_plot(self, onefactor_data):
+        fig, ax = onefactor_data.box_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_mean_plot(self, onefactor_data):
+        fig, ax = onefactor_data.mean_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_sd_plot(self, onefactor_data):
+        fig, ax = onefactor_data.sd_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_kwargs_forwarded(self, univariate_data):
+        """Kwargs must be forwarded to the underlying function."""
+        _, ax = univariate_data.histogram(bins=5)
+        assert len(ax.patches) == 5
+
+    def test_future_module_raises_import_error(self, univariate_data):
+        """Phase 2+ methods raise ImportError until those modules exist."""
+        with pytest.raises((ImportError, ModuleNotFoundError)):
+            univariate_data.doe_scatter_plot()
