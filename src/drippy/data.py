@@ -57,21 +57,21 @@ class EDAData:
 
         return fn(self, **kwargs)
 
-    def normal_probability_plot(self, **kwargs: Any) -> tuple[Figure, Axes]:
+    def normal_probability_plot(
+        self, **kwargs: Any
+    ) -> tuple[Figure, Axes] | tuple[Figure, Axes, float]:
         """Delegates to drippy.univariate.normal_probability_plot."""
         from drippy.univariate import normal_probability_plot as fn
 
         return fn(self, **kwargs)
 
-    def four_plot(
-        self, **kwargs: Any
-    ) -> tuple[Figure, tuple[Axes, Axes, Axes, Axes]]:
+    def four_plot(self, **kwargs: Any) -> tuple[Figure, np.ndarray]:
         """Delegates to drippy.univariate.four_plot."""
         from drippy.univariate import four_plot as fn
 
         return fn(self, **kwargs)
 
-    def ppcc_plot(self, **kwargs: Any) -> tuple[Figure, Axes]:
+    def ppcc_plot(self, **kwargs: Any) -> tuple[Figure, np.ndarray]:
         """Delegates to drippy.univariate.ppcc_plot."""
         from drippy.univariate import ppcc_plot as fn
 
@@ -95,7 +95,9 @@ class EDAData:
 
         return fn(self, **kwargs)
 
-    def box_cox_normality_plot(self, **kwargs: Any) -> tuple[Figure, Axes]:
+    def box_cox_normality_plot(
+        self, **kwargs: Any
+    ) -> tuple[Figure, np.ndarray]:
         """Delegates to drippy.univariate.box_cox_normality_plot."""
         from drippy.univariate import box_cox_normality_plot as fn
 
@@ -157,7 +159,7 @@ class EDAData:
 
         return fn(self, **kwargs)
 
-    def bihistogram(self, **kwargs: Any) -> tuple[Figure, Axes]:
+    def bihistogram(self, **kwargs: Any) -> tuple[Figure, np.ndarray]:
         """Delegates to drippy.onefactor.bihistogram."""
         from drippy.onefactor import bihistogram as fn
 

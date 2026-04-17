@@ -48,8 +48,10 @@ poetry run bump-my-version bump major   # 0.1.0 → 1.0.0
 
 ```
 src/drippy/
-    timeseries.py   — TimeSeriesPlotter class
-    univariate.py   — UnivariatePlotter class
+    data.py         — EDAData validated data container (fluent API entry point)
+    univariate.py   — Standalone functions for univariate plots (y = c + e)
+    timeseries.py   — Standalone functions for time series plots
+    onefactor.py    — Standalone functions for 1-factor plots (y = f(x) + e)
     utilities.py    — Shared helpers (get_figure_and_axes, etc.)
 tests/
     test_timeseries.py
@@ -57,11 +59,12 @@ tests/
     test_utilities.py
 ```
 
-All plotter classes follow the same pattern:
-1. Validate inputs in `__init__` (empty arrays, dimension mismatches, length equality)
-2. Store as `np.asarray()` internally
-3. Plotting methods accept optional `fig`/`ax`, delegate to `get_figure_and_axes()` from `utilities.py`
-4. Always call `fig.tight_layout()` before returning `tuple[Figure, Axes]`
+All plotting functions follow the same pattern:
+1. Accept `EDAData` container as first arg (validated on construction)
+2. Accept optional `fig`/`ax` (or `axes` for multi-axes plots), delegate to `get_figure_and_axes()` from `utilities.py`
+3. Always call `fig.tight_layout()` before returning `tuple[Figure, Axes]` (or `tuple[Figure, np.ndarray]` for multi-axes)
+
+`EDAData` is a fluent wrapper: `EDAData(y=data).four_plot()` delegates to the standalone function.
 
 ## Code Style
 

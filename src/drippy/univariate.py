@@ -9,7 +9,6 @@ from drippy.utilities import get_figure_and_axes
 
 if TYPE_CHECKING:
     from collections.abc import Callable
-    from collections.abc import Iterable
     from matplotlib.axes import Axes
     from matplotlib.figure import Figure
     from drippy.data import EDAData
@@ -142,8 +141,8 @@ def normal_probability_plot(
 def four_plot(
     data: EDAData,
     fig: Figure | None = None,
-    axes: Iterable[Axes] | None = None,
-) -> tuple[Figure, Iterable[Axes]]:
+    axes: np.ndarray | None = None,
+) -> tuple[Figure, np.ndarray]:
     """Creates a 4-plot (run sequence, lag, histogram, normal probability).
 
     Args:
@@ -172,11 +171,11 @@ def four_plot(
 def ppcc_plot(  # noqa: PLR0913
     data: EDAData,
     fig: Figure | None = None,
-    ax: Iterable[Axes] | None = None,
+    ax: np.ndarray | None = None,
     rough_range: tuple[float, float] = (-2, 2),
     n_rough: int = 50,
     n_fine: int = 100,
-) -> tuple[Figure, Iterable[Axes]]:
+) -> tuple[Figure, np.ndarray]:
     """Creates a PPCC plot (rough + fine) for distribution shape estimation.
 
     Args:
@@ -336,8 +335,8 @@ def probability_plot(
 def box_cox_normality_plot(
     data: EDAData,
     fig: Figure | None = None,
-    axes: Iterable[Axes] | None = None,
-) -> tuple[Figure, Iterable[Axes]]:
+    axes: np.ndarray | None = None,
+) -> tuple[Figure, np.ndarray]:
     """Creates a Box-Cox normality plot (2x2 grid).
 
     Shows: original histogram, Box-Cox normality curve, transformed

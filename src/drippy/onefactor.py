@@ -72,9 +72,9 @@ def box_plot(
 def bihistogram(
     data: EDAData,
     fig: Figure | None = None,
-    axes: object | None = None,
+    axes: np.ndarray | None = None,
     bins: int | str = "auto",
-) -> tuple[Figure, object]:
+) -> tuple[Figure, np.ndarray]:
     """Creates side-by-side histograms for exactly 2 factor levels.
 
     Args:
@@ -97,6 +97,9 @@ def bihistogram(
     if fig is None or axes is None:
         fig, _ = get_figure_and_axes(fig, None)
         axes = fig.subplots(1, 2)
+    if axes.shape != (2,):
+        msg = "axes must have shape (2,)"
+        raise ValueError(msg)
     group_a = data.y[data.x == levels[0]]
     group_b = data.y[data.x == levels[1]]
     axes[0].hist(group_a, bins=bins)

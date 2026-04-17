@@ -19,27 +19,27 @@ DRIPPY = Python EDA library, NIST/SEMATECH principles. Plotter classes for stati
 
 ## Commands
 
-**Poetry mandatory** — no pip/venv.
+**Use `uv`/`uvx` — no pip/venv/python directly.**
 
 ```bash
-poetry install --all-groups        # Install all dependencies
+uv sync --all-groups               # Install all dependencies
 
-poetry run pytest -v               # Run all tests
-poetry run pytest tests/test_timeseries.py::TestClass::test_name -v  # Single test
-poetry run pytest -n auto          # Parallel test run (pytest-xdist)
-poetry run coverage run && poetry run coverage report  # With coverage
+uv run pytest -v               # Run all tests
+uv run pytest tests/test_timeseries.py::TestClass::test_name -v  # Single test
+uv run pytest -n auto          # Parallel test run (pytest-xdist)
+uv run coverage run && uv run coverage report  # With coverage
 
-poetry run ruff check .            # Lint
-poetry run ruff format             # Format
+uv run ruff check .            # Lint
+uv run ruff format             # Format
 
 # Docs
-cd docs && sphinx-build -b html . _build/html   # Build docs
-cd docs && make doctest                          # Test docstrings
+cd docs && uv run sphinx-build -b html . _build/html   # Build docs
+cd docs && uv run make doctest                          # Test docstrings
 
 # Version bumping (never edit manually)
-poetry run bump-my-version bump patch   # 0.1.0 → 0.1.1
-poetry run bump-my-version bump minor   # 0.1.0 → 0.2.0
-poetry run bump-my-version bump major   # 0.1.0 → 1.0.0
+uv run bump-my-version bump patch   # 0.1.0 → 0.1.1
+uv run bump-my-version bump minor   # 0.1.0 → 0.2.0
+uv run bump-my-version bump major   # 0.1.0 → 1.0.0
 ```
 
 `bump-my-version` updates: `pyproject.toml`, `src/drippy/__init__.py`, `CITATION.cff`, `docs/conf.py`.
@@ -48,8 +48,10 @@ poetry run bump-my-version bump major   # 0.1.0 → 1.0.0
 
 ```
 src/drippy/
-    timeseries.py   — TimeSeriesPlotter class
-    univariate.py   — UnivariatePlotter class
+    data.py         — EDAData validated data container (fluent API entry point)
+    univariate.py   — Standalone functions for univariate plots (y = c + e)
+    timeseries.py   — Standalone functions for time series plots
+    onefactor.py    — Standalone functions for 1-factor plots (y = f(x) + e)
     utilities.py    — Shared helpers (get_figure_and_axes, etc.)
 tests/
     test_timeseries.py
@@ -57,11 +59,12 @@ tests/
     test_utilities.py
 ```
 
-All plotters same pattern:
-1. Validate inputs in `__init__` (empty arrays, dim mismatches, length equality)
-2. Store as `np.asarray()` internally
-3. Plotting methods accept optional `fig`/`ax`, delegate to `get_figure_and_axes()` from `utilities.py`
-4. Always call `fig.tight_layout()` before return `tuple[Figure, Axes]`
+All plotting functions follow the same pattern:
+1. Accept `EDAData` container as first arg (validated on construction)
+2. Accept optional `fig`/`ax` (or `axes` for multi-axes plots), delegate to `get_figure_and_axes()` from `utilities.py`
+3. Always call `fig.tight_layout()` before returning `tuple[Figure, Axes]` (or `tuple[Figure, np.ndarray]` for multi-axes)
+
+`EDAData` is a fluent wrapper: `EDAData(y=data).four_plot()` delegates to the standalone function.
 
 ## Code Style
 
