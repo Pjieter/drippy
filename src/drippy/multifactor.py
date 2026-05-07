@@ -95,9 +95,7 @@ def doe_mean_plot(
         levels = np.unique(factor)
         means = [data.y[factor == lvl].mean() for lvl in levels]
         ax.plot(levels, means, "o-")
-        ax.axhline(
-            grand_mean, color="r", linestyle="--", label="Grand mean"
-        )
+        ax.axhline(grand_mean, color="r", linestyle="--", label="Grand mean")
         ax.set_xlabel(name)
         ax.set_ylabel("Mean of Y")
         ax.set_title(f"Mean Plot: {name}")
@@ -146,9 +144,7 @@ def doe_sd_plot(
         levels = np.unique(factor)
         sds = [data.y[factor == lvl].std() for lvl in levels]
         ax.plot(levels, sds, "o-")
-        ax.axhline(
-            overall_sd, color="r", linestyle="--", label="Overall SD"
-        )
+        ax.axhline(overall_sd, color="r", linestyle="--", label="Overall SD")
         ax.set_xlabel(name)
         ax.set_ylabel("Standard Deviation of Y")
         ax.set_title(f"SD Plot: {name}")
@@ -181,10 +177,7 @@ def contour_plot(
         raise ValueError(msg)
     if len(data.factors) != 2:  # noqa: PLR2004
         n_factors = len(data.factors)
-        msg = (
-            "contour_plot requires exactly 2 factors, "
-            f"got {n_factors}"
-        )
+        msg = f"contour_plot requires exactly 2 factors, got {n_factors}"
         raise ValueError(msg)
     fig, ax = get_figure_and_axes(fig, ax)
     names = list(data.factors.keys())
