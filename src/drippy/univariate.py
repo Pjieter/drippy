@@ -113,6 +113,7 @@ def normal_probability_plot(
     data: EDAData,
     fig: Figure | None = None,
     ax: Axes | None = None,
+    *,
     return_rsquared: bool = False,
 ) -> tuple[Figure, Axes] | tuple[Figure, Axes, float]:
     """Creates a normal probability plot.

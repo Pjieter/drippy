@@ -6,7 +6,7 @@
 
 **Architecture:** `EDAData` (in `data.py`) is a validated data bag exposing all plot functions as fluent methods via lazy imports. Plot functions live in model-specific modules (`univariate.py`, `timeseries.py`, `onefactor.py`) and accept `EDAData` as their first argument. `run_sequence_plot` is defined once in `univariate.py` and imported by `timeseries.py`. `scatter_plot` is defined in `onefactor.py` and will be re-imported by `regression.py` in Phase 3.
 
-**Tech Stack:** Python 3.11+, matplotlib, numpy, scipy, astropy, lmfit, pytest, poetry
+**Tech Stack:** Python 3.11+, matplotlib, numpy, scipy, astropy, lmfit, pytest, uv
 
 ---
 
@@ -168,7 +168,7 @@ class TestEDADataValidation:
 - [ ] **Step 1.2: Run tests to verify they fail**
 
 ```
-poetry run pytest tests/test_data.py -v
+uv run pytest tests/test_data.py -v
 ```
 
 Expected: `ModuleNotFoundError: No module named 'drippy.data'`
@@ -263,7 +263,7 @@ class EDAData:
 - [ ] **Step 1.4: Run tests to verify they pass**
 
 ```
-poetry run pytest tests/test_data.py -v
+uv run pytest tests/test_data.py -v
 ```
 
 Expected: all green.
@@ -642,7 +642,7 @@ class TestBoxCoxLinearityPlot:
 - [ ] **Step 2.2: Run tests to verify they fail**
 
 ```
-poetry run pytest tests/test_univariate.py -v
+uv run pytest tests/test_univariate.py -v
 ```
 
 Expected: `ImportError: cannot import name 'run_sequence_plot' from 'drippy.univariate'`
@@ -1102,7 +1102,7 @@ def box_cox_linearity_plot(
 - [ ] **Step 2.4: Run tests to verify they pass**
 
 ```
-poetry run pytest tests/test_univariate.py -v
+uv run pytest tests/test_univariate.py -v
 ```
 
 Expected: all green.
@@ -1289,7 +1289,7 @@ class TestComplexDemodulationPhasePlot:
 - [ ] **Step 3.2: Run tests to verify they fail**
 
 ```
-poetry run pytest tests/test_timeseries.py -v
+uv run pytest tests/test_timeseries.py -v
 ```
 
 Expected: `ImportError: cannot import name 'spectral_plot' from 'drippy.timeseries'`
@@ -1481,7 +1481,7 @@ def complex_demodulation_phase_plot(
 - [ ] **Step 3.4: Run tests to verify they pass**
 
 ```
-poetry run pytest tests/test_timeseries.py -v
+uv run pytest tests/test_timeseries.py -v
 ```
 
 Expected: all green.
@@ -1718,7 +1718,7 @@ class TestSdPlot:
 - [ ] **Step 4.2: Run tests to verify they fail**
 
 ```
-poetry run pytest tests/test_onefactor.py -v
+uv run pytest tests/test_onefactor.py -v
 ```
 
 Expected: `ModuleNotFoundError: No module named 'drippy.onefactor'`
@@ -1952,7 +1952,7 @@ def sd_plot(
 - [ ] **Step 4.4: Run tests to verify they pass**
 
 ```
-poetry run pytest tests/test_onefactor.py -v
+uv run pytest tests/test_onefactor.py -v
 ```
 
 Expected: all green.
@@ -2061,7 +2061,7 @@ class TestFluentMethods:
 - [ ] **Step 5.2: Run tests to verify they fail**
 
 ```
-poetry run pytest tests/test_data.py::TestFluentMethods -v
+uv run pytest tests/test_data.py::TestFluentMethods -v
 ```
 
 Expected: `AttributeError: 'EDAData' object has no attribute 'run_sequence_plot'`
@@ -2252,7 +2252,7 @@ Append the following methods to the `EDAData` class (inside the class body, afte
 - [ ] **Step 5.4: Run tests to verify they pass**
 
 ```
-poetry run pytest tests/test_data.py -v
+uv run pytest tests/test_data.py -v
 ```
 
 Expected: all green.
@@ -2345,7 +2345,7 @@ __all__ = [
 - [ ] **Step 6.2: Run the full test suite**
 
 ```
-poetry run pytest -v
+uv run pytest -v
 ```
 
 Expected: all tests pass. If any fail, fix before committing.
@@ -2353,8 +2353,8 @@ Expected: all tests pass. If any fail, fix before committing.
 - [ ] **Step 6.3: Run linter**
 
 ```
-poetry run ruff check .
-poetry run ruff format --check .
+uv run ruff check .
+uv run ruff format --check .
 ```
 
 Fix any issues, then rerun until clean.
