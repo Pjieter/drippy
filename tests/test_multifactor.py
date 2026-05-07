@@ -44,6 +44,11 @@ def no_factors_data():
     return EDAData(np.random.default_rng(42).normal(size=8))
 
 
+@pytest.fixture
+def empty_factors_data():
+    return EDAData(np.random.default_rng(42).normal(size=8), factors={})
+
+
 class TestDoeScatterPlot:
     def test_returns_figure_and_array(self, multifactor_data):
         fig, axes = mf.doe_scatter_plot(multifactor_data)
@@ -66,6 +71,16 @@ class TestDoeScatterPlot:
     def test_one_subplot_per_factor(self, multifactor_data):
         _, axes = mf.doe_scatter_plot(multifactor_data)
         assert len(axes) == len(multifactor_data.factors)
+
+    def test_rejects_empty_factors(self, empty_factors_data):
+        with pytest.raises(ValueError, match="requires factors"):
+            mf.doe_scatter_plot(empty_factors_data)
+
+    def test_rejects_mismatched_fig_axes(self, multifactor_data):
+        _, axes1 = plt.subplots(1, 3)
+        fig2 = plt.figure()
+        with pytest.raises(ValueError, match="do not belong"):
+            mf.doe_scatter_plot(multifactor_data, fig=fig2, axes=axes1)
 
     def test_axes_shape_validation(self, multifactor_data):
         fig, wrong_axes = plt.subplots(1, 2)
@@ -97,6 +112,16 @@ class TestDoeMeanPlot:
         for ax in axes:
             assert len(ax.get_lines()) >= 2
 
+    def test_rejects_empty_factors(self, empty_factors_data):
+        with pytest.raises(ValueError, match="requires factors"):
+            mf.doe_mean_plot(empty_factors_data)
+
+    def test_rejects_mismatched_fig_axes(self, multifactor_data):
+        _, axes1 = plt.subplots(1, 3)
+        fig2 = plt.figure()
+        with pytest.raises(ValueError, match="do not belong"):
+            mf.doe_mean_plot(multifactor_data, fig=fig2, axes=axes1)
+
     def test_axes_shape_validation(self, multifactor_data):
         fig, wrong_axes = plt.subplots(1, 2)
         with pytest.raises(ValueError, match=r"axes must have shape"):
@@ -127,6 +152,16 @@ class TestDoeSdPlot:
         for ax in axes:
             assert len(ax.get_lines()) >= 2
 
+    def test_rejects_empty_factors(self, empty_factors_data):
+        with pytest.raises(ValueError, match="requires factors"):
+            mf.doe_sd_plot(empty_factors_data)
+
+    def test_rejects_mismatched_fig_axes(self, multifactor_data):
+        _, axes1 = plt.subplots(1, 3)
+        fig2 = plt.figure()
+        with pytest.raises(ValueError, match="do not belong"):
+            mf.doe_sd_plot(multifactor_data, fig=fig2, axes=axes1)
+
     def test_axes_shape_validation(self, multifactor_data):
         fig, wrong_axes = plt.subplots(1, 2)
         with pytest.raises(ValueError, match=r"axes must have shape"):
@@ -142,6 +177,10 @@ class TestContourPlot:
     def test_requires_factors(self, no_factors_data):
         with pytest.raises(ValueError, match="requires factors"):
             mf.contour_plot(no_factors_data)
+
+    def test_rejects_empty_factors(self, empty_factors_data):
+        with pytest.raises(ValueError, match="requires factors"):
+            mf.contour_plot(empty_factors_data)
 
     def test_requires_exactly_two_factors(self, multifactor_data):
         with pytest.raises(ValueError, match="exactly 2 factors"):

@@ -12,6 +12,27 @@ if TYPE_CHECKING:
     from drippy.data import EDAData
 
 
+def _get_figure_and_multi_axes(
+    fig: Figure | None,
+    axes: np.ndarray | None,
+    n: int,
+) -> tuple[Figure, np.ndarray]:
+    if fig is None and axes is None:
+        fig, axes = plt.subplots(1, n)
+        axes = np.atleast_1d(axes)
+    elif axes is None:
+        axes = np.atleast_1d(fig.subplots(1, n))
+    elif fig is None:
+        axes = np.atleast_1d(axes)
+        fig = axes.flat[0].get_figure()
+    else:
+        axes = np.atleast_1d(axes)
+        if axes.flat[0].figure is not fig:
+            msg = "Provided axes do not belong to provided fig."
+            raise ValueError(msg)
+    return fig, np.asarray(axes)
+
+
 def doe_scatter_plot(
     data: EDAData,
     fig: Figure | None = None,
@@ -30,19 +51,11 @@ def doe_scatter_plot(
     Returns:
         (fig, axes) where axes is a 1-D array of Axes.
     """
-    if data.factors is None:
+    if not data.factors:
         msg = "doe_scatter_plot requires factors"
         raise ValueError(msg)
     n = len(data.factors)
-    if fig is None and axes is None:
-        fig, axes = plt.subplots(1, n)
-        axes = np.atleast_1d(axes)
-    elif axes is None:
-        axes = np.atleast_1d(fig.subplots(1, n))
-    elif fig is None:
-        axes = np.atleast_1d(axes)
-        fig = axes.flat[0].get_figure()
-    axes = np.asarray(axes)
+    fig, axes = _get_figure_and_multi_axes(fig, axes, n)
     if axes.shape != (n,):
         msg = f"axes must have shape ({n},)"
         raise ValueError(msg)
@@ -74,19 +87,11 @@ def doe_mean_plot(
     Returns:
         (fig, axes) where axes is a 1-D array of Axes.
     """
-    if data.factors is None:
+    if not data.factors:
         msg = "doe_mean_plot requires factors"
         raise ValueError(msg)
     n = len(data.factors)
-    if fig is None and axes is None:
-        fig, axes = plt.subplots(1, n)
-        axes = np.atleast_1d(axes)
-    elif axes is None:
-        axes = np.atleast_1d(fig.subplots(1, n))
-    elif fig is None:
-        axes = np.atleast_1d(axes)
-        fig = axes.flat[0].get_figure()
-    axes = np.asarray(axes)
+    fig, axes = _get_figure_and_multi_axes(fig, axes, n)
     if axes.shape != (n,):
         msg = f"axes must have shape ({n},)"
         raise ValueError(msg)
@@ -123,19 +128,11 @@ def doe_sd_plot(
     Returns:
         (fig, axes) where axes is a 1-D array of Axes.
     """
-    if data.factors is None:
+    if not data.factors:
         msg = "doe_sd_plot requires factors"
         raise ValueError(msg)
     n = len(data.factors)
-    if fig is None and axes is None:
-        fig, axes = plt.subplots(1, n)
-        axes = np.atleast_1d(axes)
-    elif axes is None:
-        axes = np.atleast_1d(fig.subplots(1, n))
-    elif fig is None:
-        axes = np.atleast_1d(axes)
-        fig = axes.flat[0].get_figure()
-    axes = np.asarray(axes)
+    fig, axes = _get_figure_and_multi_axes(fig, axes, n)
     if axes.shape != (n,):
         msg = f"axes must have shape ({n},)"
         raise ValueError(msg)
@@ -172,7 +169,7 @@ def contour_plot(
     Returns:
         The figure and axes containing the plot.
     """
-    if data.factors is None:
+    if not data.factors:
         msg = "contour_plot requires factors"
         raise ValueError(msg)
     if len(data.factors) != 2:  # noqa: PLR2004
