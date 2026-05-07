@@ -1792,7 +1792,7 @@ def box_plot(
     fig, ax = get_figure_and_axes(fig, ax)
     levels = np.unique(data.x)
     groups = [data.y[data.x == level] for level in levels]
-    ax.boxplot(groups, labels=levels)
+    ax.boxplot(groups, tick_labels=levels)
     ax.set_xlabel("Factor Level")
     ax.set_ylabel("Y")
     ax.set_title("Box Plot")

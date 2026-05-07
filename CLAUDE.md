@@ -3,6 +3,7 @@
 Guidance for Claude Code (claude.ai/code) in this repo.
 
 # New session and subagent policy
+
 Always start new session: run /caveman full skill. Subagents: same.
 
 ## Code Exploration Policy
@@ -46,7 +47,7 @@ uv run bump-my-version bump major   # 0.1.0 → 1.0.0
 
 ## Architecture
 
-```
+```text
 src/drippy/
     data.py         — EDAData validated data container (fluent API entry point)
     univariate.py   — Standalone functions for univariate plots (y = c + e)

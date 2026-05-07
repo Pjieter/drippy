@@ -134,6 +134,11 @@ class TestBihistogram:
         assert levels[0] in axes[0].get_title()
         assert levels[1] in axes[1].get_title()
 
+    def test_rejects_wrong_shape_axes(self, bigroup_data):
+        fig, axes = plt.subplots(1, 3)
+        with pytest.raises(ValueError, match=r"shape \(2,\)"):
+            of.bihistogram(bigroup_data, fig=fig, axes=axes)
+
 
 # --- qq_plot ---
 
@@ -177,6 +182,14 @@ class TestMeanPlot:
         with pytest.raises(ValueError, match="requires x"):
             of.mean_plot(univariate_data)
 
+    def test_custom_fig_ax(self, onefactor_data):
+        provided_fig, provided_ax = plt.subplots()
+        fig, ax = of.mean_plot(
+            onefactor_data, fig=provided_fig, ax=provided_ax
+        )
+        assert fig is provided_fig
+        assert ax is provided_ax
+
     def test_has_grand_mean_line(self, onefactor_data):
         _, ax = of.mean_plot(onefactor_data)
         # line for group means + horizontal grand mean
@@ -201,6 +214,12 @@ class TestSdPlot:
     def test_requires_x(self, univariate_data):
         with pytest.raises(ValueError, match="requires x"):
             of.sd_plot(univariate_data)
+
+    def test_custom_fig_ax(self, onefactor_data):
+        provided_fig, provided_ax = plt.subplots()
+        fig, ax = of.sd_plot(onefactor_data, fig=provided_fig, ax=provided_ax)
+        assert fig is provided_fig
+        assert ax is provided_ax
 
     def test_has_overall_sd_line(self, onefactor_data):
         _, ax = of.sd_plot(onefactor_data)

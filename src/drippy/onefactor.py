@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 from typing import TYPE_CHECKING
+import matplotlib.pyplot as plt
 import numpy as np
 from drippy.utilities import get_figure_and_axes
 
@@ -94,9 +95,12 @@ def bihistogram(
         n_levels = len(levels)
         msg = f"bihistogram requires exactly 2 factor levels, got {n_levels}"
         raise ValueError(msg)
-    if fig is None or axes is None:
-        fig, _ = get_figure_and_axes(fig, None)
+    if fig is None and axes is None:
+        fig, axes = plt.subplots(1, 2)
+    elif axes is None:
         axes = fig.subplots(1, 2)
+    elif fig is None:
+        fig = axes.flat[0].get_figure()
     if axes.shape != (2,):
         msg = "axes must have shape (2,)"
         raise ValueError(msg)

@@ -126,10 +126,7 @@ class EDAData:
     def complex_demodulation_amplitude_plot(
         self, **kwargs: Any
     ) -> tuple[Figure, Axes]:
-        """Delegates to drippy.timeseries.
-
-        complex_demodulation_amplitude_plot.
-        """
+        """Delegate to timeseries.complex_demodulation_amplitude_plot."""
         from drippy.timeseries import complex_demodulation_amplitude_plot as fn
 
         return fn(self, **kwargs)
@@ -137,10 +134,7 @@ class EDAData:
     def complex_demodulation_phase_plot(
         self, **kwargs: Any
     ) -> tuple[Figure, Axes]:
-        """Delegates to drippy.timeseries.
-
-        complex_demodulation_phase_plot.
-        """
+        """Delegate to drippy.timeseries.complex_demodulation_phase_plot."""
         from drippy.timeseries import complex_demodulation_phase_plot as fn
 
         return fn(self, **kwargs)
@@ -220,19 +214,13 @@ class EDAData:
         return fn(self, **kwargs)
 
     def linear_correlation_plot(self, **kwargs: Any) -> tuple[Figure, Axes]:
-        """Delegates to drippy.regression.
-
-        linear_correlation_plot (Phase 3).
-        """
+        """Delegate to drippy.regression.linear_correlation_plot (Phase 3)."""
         from drippy.regression import linear_correlation_plot as fn
 
         return fn(self, **kwargs)
 
     def linear_intercept_plot(self, **kwargs: Any) -> tuple[Figure, Axes]:
-        """Delegates to drippy.regression.
-
-        linear_intercept_plot (Phase 3).
-        """
+        """Delegate to drippy.regression.linear_intercept_plot (Phase 3)."""
         from drippy.regression import linear_intercept_plot as fn
 
         return fn(self, **kwargs)
@@ -244,10 +232,7 @@ class EDAData:
         return fn(self, **kwargs)
 
     def linear_residual_sd_plot(self, **kwargs: Any) -> tuple[Figure, Axes]:
-        """Delegates to drippy.regression.
-
-        linear_residual_sd_plot (Phase 3).
-        """
+        """Delegate to drippy.regression.linear_residual_sd_plot (Phase 3)."""
         from drippy.regression import linear_residual_sd_plot as fn
 
         return fn(self, **kwargs)

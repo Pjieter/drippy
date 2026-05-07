@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 from typing import TYPE_CHECKING
+import matplotlib.pyplot as plt
 import numpy as np
 import scipy as sp
 from lmfit.models import LinearModel
@@ -153,9 +154,12 @@ def four_plot(
     Returns:
         (fig, axes_flat) where axes_flat has shape (4,).
     """
-    if fig is None or axes is None:
-        fig, _ = get_figure_and_axes(fig, None)
+    if fig is None and axes is None:
+        fig, axes = plt.subplots(2, 2)
+    elif axes is None:
         axes = fig.subplots(2, 2)
+    elif fig is None:
+        fig = axes.flat[0].get_figure()
     if axes.shape != (2, 2):
         msg = "Axes must be an iterable of (2, 2) Axes objects."
         raise ValueError(msg)
@@ -164,7 +168,6 @@ def four_plot(
     lag_plot(data, fig, axes[1])
     histogram(data, fig, axes[2])
     normal_probability_plot(data, fig, axes[3])
-    fig.tight_layout()
     return fig, axes
 
 
@@ -201,9 +204,12 @@ def ppcc_plot(  # noqa: PLR0913
     if n_fine <= 0:
         msg = "Number of points must be positive"
         raise ValueError(msg)
-    if fig is None or ax is None:
-        fig, _ = get_figure_and_axes(fig, None)
+    if fig is None and ax is None:
+        fig, ax = plt.subplots(1, 2)
+    elif ax is None:
         ax = fig.subplots(1, 2)
+    elif fig is None:
+        fig = ax.flat[0].get_figure()
     if ax.shape != (2,):
         msg = "Axes must be an iterable of 2 Axes objects."
         raise ValueError(msg)
@@ -353,9 +359,12 @@ def box_cox_normality_plot(
     if not np.all(data.y > 0):
         msg = "Box-Cox transformation requires all y values to be positive."
         raise ValueError(msg)
-    if fig is None or axes is None:
-        fig, axes = get_figure_and_axes(fig, None)
+    if fig is None and axes is None:
+        fig, axes = plt.subplots(2, 2)
+    elif axes is None:
         axes = fig.subplots(2, 2)
+    elif fig is None:
+        fig = axes.flat[0].get_figure()
     if axes.shape != (2, 2):
         msg = "Axes must be an iterable of (2, 2) Axes objects."
         raise ValueError(msg)
