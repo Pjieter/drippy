@@ -20,11 +20,11 @@ jobs:
         python-version: ['3.11', '3.12', '3.13']
         poetry-version: ['2.2']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6.0.2
       - name: Install poetry
         run: pipx install poetry==${{ matrix.poetry-version }}
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6.2.0
         with:
           python-version: ${{ matrix.python-version }}
           cache: 'poetry'
@@ -53,11 +53,11 @@ jobs:
         python-version: ['3.12']
         poetry-version: ['2.2']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6.0.2
       - name: Install poetry
         run: pipx install poetry==${{ matrix.poetry-version }}
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6.2.0
         with:
           python-version: ${{ matrix.python-version }}
           cache: 'poetry'

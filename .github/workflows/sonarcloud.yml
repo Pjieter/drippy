@@ -15,11 +15,11 @@ jobs:
     name: SonarCloud
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6.0.2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6.2.0
         with:
           python-version: 3.12
       - name: Python Poetry Action
@@ -35,7 +35,7 @@ jobs:
         run: |
           poetry config virtualenvs.create true --local
           poetry config virtualenvs.in-project true --local
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5.0.5
         name: Define a cache for the virtual environment based on the dependencies lock file
         with:
           path: ./.venv
@@ -45,7 +45,7 @@ jobs:
       - name: Run the automated tests
         run: poetry run pytest --cov --cov-report term --cov-report xml --junitxml=xunit-result.xml tests/
       - name: Official SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v6
+        uses: SonarSource/sonarqube-scan-action@v7.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.DRIPPY_GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
