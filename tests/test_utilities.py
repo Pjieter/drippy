@@ -70,7 +70,7 @@ class TestGetFigureAndAxes:
         result = get_figure_and_axes()
 
         assert isinstance(result, tuple)
-        assert len(result) == 2  # noqa: PLR2004 (always should be 2)
+        assert len(result) == 2
 
     def test_raises_value_error_when_fig_and_ax_dont_belong_together(self):
         """Test ValueError is raised when fig and ax don't belong together."""

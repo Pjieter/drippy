@@ -70,3 +70,6 @@ venv.bak/
 
 # VS Code
 .vscode/
+.claude/
+
+.ruff_cache/
