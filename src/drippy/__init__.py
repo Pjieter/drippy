@@ -8,6 +8,10 @@ from drippy.onefactor import mean_plot
 from drippy.onefactor import qq_plot
 from drippy.onefactor import scatter_plot
 from drippy.onefactor import sd_plot
+from drippy.multifactor import contour_plot
+from drippy.multifactor import doe_mean_plot
+from drippy.multifactor import doe_scatter_plot
+from drippy.multifactor import doe_sd_plot
 from drippy.timeseries import autocorrelation_plot
 from drippy.timeseries import complex_demodulation_amplitude_plot
 from drippy.timeseries import complex_demodulation_phase_plot
@@ -38,8 +42,12 @@ __all__ = [
     "box_cox_linearity_plot",
     "box_cox_normality_plot",
     "box_plot",
+    "contour_plot",
     "complex_demodulation_amplitude_plot",
     "complex_demodulation_phase_plot",
+    "doe_mean_plot",
+    "doe_scatter_plot",
+    "doe_sd_plot",
     "four_plot",
     "histogram",
     "lag_plot",
