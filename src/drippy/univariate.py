@@ -14,6 +14,8 @@ if TYPE_CHECKING:
     from matplotlib.figure import Figure
     from drippy.data import EDAData
 
+_ORDERED_VALUES = "Ordered Values"
+
 
 def run_sequence_plot(
     data: EDAData,
@@ -115,29 +117,29 @@ def normal_probability_plot(
     ax: Axes | None = None,
     *,
     return_rsquared: bool = False,
-) -> tuple[Figure, Axes] | tuple[Figure, Axes, float]:
+) -> tuple[Figure, Axes, float | None]:
     """Creates a normal probability plot.
 
     Args:
         data: EDAData container. Requires y.
         fig: Matplotlib figure. If None, creates new figure.
         ax: Matplotlib axes. If None, creates new axes.
-        return_rsquared: If True, returns R-squared as third element.
+        return_rsquared: If True, includes R-squared as the third element.
 
     Returns:
-        (fig, ax) or (fig, ax, r_squared) if return_rsquared is True.
+        (fig, ax, r_squared) where r_squared is None if return_rsquared
+        is False.
     """
     fig, ax = get_figure_and_axes(fig, ax)
     _, (_, _, r_value) = sp.stats.probplot(
         data.y, dist="norm", plot=ax, rvalue=True
     )
-    ax.set_ylabel("Ordered Values")
+    ax.set_ylabel(_ORDERED_VALUES)
     ax.set_xlabel("Theoretical Quantiles")
     ax.set_title("Normal Probability Plot")
     fig.tight_layout()
-    if return_rsquared:
-        return fig, ax, r_value**2
-    return fig, ax
+    r_squared = r_value**2 if return_rsquared else None
+    return fig, ax, r_squared
 
 
 def four_plot(
@@ -290,7 +292,7 @@ def weibull_plot(
         "-",
         label=f"Fit with R$^2$={result.rsquared:.3g}",
     )
-    ax.set_xlabel("Ordered Values")
+    ax.set_xlabel(_ORDERED_VALUES)
     ax.set_ylabel("Theoretical Quantiles (Weibull)")
     ax.set_title("Weibull Probability Plot")
     min_percentage = np.floor(
@@ -332,7 +334,7 @@ def probability_plot(
     """
     fig, ax = get_figure_and_axes(fig, ax)
     sp.stats.probplot(data.y, dist=distribution, plot=ax)
-    ax.set_ylabel("Ordered Values")
+    ax.set_ylabel(_ORDERED_VALUES)
     ax.set_xlabel("Theoretical Quantiles")
     ax.set_title(f"{distribution.capitalize()} Probability Plot")
     fig.tight_layout()

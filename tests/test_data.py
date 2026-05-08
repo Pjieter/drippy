@@ -183,7 +183,7 @@ class TestFluentMethods:
         assert isinstance(ax, Axes)
 
     def test_normal_probability_plot(self, univariate_data):
-        fig, ax = univariate_data.normal_probability_plot()
+        fig, ax, _ = univariate_data.normal_probability_plot()
         assert isinstance(fig, Figure)
         assert isinstance(ax, Axes)
 
