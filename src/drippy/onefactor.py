@@ -11,6 +11,8 @@ if TYPE_CHECKING:
     from matplotlib.figure import Figure
     from drippy.data import EDAData
 
+_FACTOR_LEVEL = "Factor Level"
+
 
 def scatter_plot(
     data: EDAData,
@@ -63,7 +65,7 @@ def box_plot(
     levels = np.unique(data.x)
     groups = [data.y[data.x == level] for level in levels]
     ax.boxplot(groups, tick_labels=levels)
-    ax.set_xlabel("Factor Level")
+    ax.set_xlabel(_FACTOR_LEVEL)
     ax.set_ylabel("Y")
     ax.set_title("Box Plot")
     fig.tight_layout()
@@ -185,7 +187,7 @@ def mean_plot(
     means = [data.y[data.x == level].mean() for level in levels]
     ax.plot(levels, means, "o-")
     ax.axhline(data.y.mean(), color="r", linestyle="--", label="Grand mean")
-    ax.set_xlabel("Factor Level")
+    ax.set_xlabel(_FACTOR_LEVEL)
     ax.set_ylabel("Mean of Y")
     ax.set_title("Mean Plot")
     ax.legend()
@@ -219,7 +221,7 @@ def sd_plot(
     sds = [data.y[data.x == level].std() for level in levels]
     ax.plot(levels, sds, "o-")
     ax.axhline(data.y.std(), color="r", linestyle="--", label="Overall SD")
-    ax.set_xlabel("Factor Level")
+    ax.set_xlabel(_FACTOR_LEVEL)
     ax.set_ylabel("Standard Deviation of Y")
     ax.set_title("Standard Deviation Plot")
     ax.legend()

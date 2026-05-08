@@ -179,30 +179,30 @@ class TestHistogram:
 
 class TestNormalProbabilityPlot:
     def test_returns_figure_and_axes(self, univariate_data):
-        fig, ax = uv.normal_probability_plot(univariate_data)
+        fig, ax, _ = uv.normal_probability_plot(univariate_data)
         assert isinstance(fig, Figure)
         assert isinstance(ax, Axes)
 
     def test_custom_fig_ax(self, univariate_data):
         provided_fig, provided_ax = plt.subplots()
-        fig, ax = uv.normal_probability_plot(
+        fig, ax, _ = uv.normal_probability_plot(
             univariate_data, fig=provided_fig, ax=provided_ax
         )
         assert fig is provided_fig
         assert ax is provided_ax
 
     def test_returns_rsquared_when_requested(self, univariate_data):
-        result = uv.normal_probability_plot(
+        fig, ax, rsq = uv.normal_probability_plot(
             univariate_data, return_rsquared=True
         )
-        assert len(result) == 3
-        _, _, rsq = result
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
         assert isinstance(rsq, float)
         assert 0 <= rsq <= 1
 
-    def test_returns_two_by_default(self, univariate_data):
-        result = uv.normal_probability_plot(univariate_data)
-        assert len(result) == 2
+    def test_rsquared_is_none_by_default(self, univariate_data):
+        _, _, rsq = uv.normal_probability_plot(univariate_data)
+        assert rsq is None
 
 
 # --- four_plot ---
