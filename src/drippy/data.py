@@ -59,7 +59,7 @@ class EDAData:
 
     def normal_probability_plot(
         self, **kwargs: Any
-    ) -> tuple[Figure, Axes] | tuple[Figure, Axes, float]:
+    ) -> tuple[Figure, Axes, float | None]:
         """Delegates to drippy.univariate.normal_probability_plot."""
         from drippy.univariate import normal_probability_plot as fn
 
