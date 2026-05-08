@@ -175,9 +175,7 @@ class TestLinearSlopePlot:
         assert isinstance(ax, Axes)
 
     def test_requires_x(self, no_x_data):
-        with pytest.raises(
-            ValueError, match="linear_slope_plot requires x"
-        ):
+        with pytest.raises(ValueError, match="linear_slope_plot requires x"):
             reg.linear_slope_plot(no_x_data)
 
     def test_custom_window(self, regression_data):
