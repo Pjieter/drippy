@@ -12,6 +12,11 @@ from drippy.onefactor import mean_plot
 from drippy.onefactor import qq_plot
 from drippy.onefactor import scatter_plot
 from drippy.onefactor import sd_plot
+from drippy.regression import linear_correlation_plot
+from drippy.regression import linear_intercept_plot
+from drippy.regression import linear_residual_sd_plot
+from drippy.regression import linear_slope_plot
+from drippy.regression import six_plot
 from drippy.timeseries import autocorrelation_plot
 from drippy.timeseries import complex_demodulation_amplitude_plot
 from drippy.timeseries import complex_demodulation_phase_plot
@@ -51,6 +56,10 @@ __all__ = [
     "four_plot",
     "histogram",
     "lag_plot",
+    "linear_correlation_plot",
+    "linear_intercept_plot",
+    "linear_residual_sd_plot",
+    "linear_slope_plot",
     "mean_plot",
     "normal_probability_plot",
     "ppcc_plot",
@@ -59,6 +68,7 @@ __all__ = [
     "run_sequence_plot",
     "scatter_plot",
     "sd_plot",
+    "six_plot",
     "spectral_plot",
     "weibull_plot",
 ]
