@@ -53,7 +53,7 @@ def _rolling_linregress(
         slopes[i] = result.slope
         intercepts[i] = result.intercept
         res = y_win - (result.slope * x_win + result.intercept)
-        residual_sds[i] = res.std()
+        residual_sds[i] = res.std(ddof=2)
     return midpoints, slopes, intercepts, residual_sds
 
 
@@ -184,7 +184,6 @@ def linear_correlation_plot(
     if data.x is None:
         msg = "linear_correlation_plot requires x"
         raise ValueError(msg)
-    fig, ax = get_figure_and_axes(fig, ax)
     x = data.x.astype(float)
     y = data.y
     n = len(y)
@@ -194,6 +193,7 @@ def linear_correlation_plot(
             f"got window={window}, len(y)={n}"
         )
         raise ValueError(msg)
+    fig, ax = get_figure_and_axes(fig, ax)
     n_windows = n - window + 1
     midpoints = np.empty(n_windows)
     correlations = np.empty(n_windows)
@@ -230,6 +230,13 @@ def linear_intercept_plot(
     if data.x is None:
         msg = "linear_intercept_plot requires x"
         raise ValueError(msg)
+    n = len(data.y)
+    if window < 2 or window > n:  # noqa: PLR2004
+        msg = (
+            "window must satisfy 2 <= window <= len(y); "
+            f"got window={window}, len(y)={n}"
+        )
+        raise ValueError(msg)
     fig, ax = get_figure_and_axes(fig, ax)
     midpoints, _, intercepts, _ = _rolling_linregress(
         data.x.astype(float), data.y, window
@@ -263,6 +270,13 @@ def linear_slope_plot(
     if data.x is None:
         msg = "linear_slope_plot requires x"
         raise ValueError(msg)
+    n = len(data.y)
+    if window < 2 or window > n:  # noqa: PLR2004
+        msg = (
+            "window must satisfy 2 <= window <= len(y); "
+            f"got window={window}, len(y)={n}"
+        )
+        raise ValueError(msg)
     fig, ax = get_figure_and_axes(fig, ax)
     midpoints, slopes, _, _ = _rolling_linregress(
         data.x.astype(float), data.y, window
@@ -295,6 +309,13 @@ def linear_residual_sd_plot(
     """
     if data.x is None:
         msg = "linear_residual_sd_plot requires x"
+        raise ValueError(msg)
+    n = len(data.y)
+    if window < 2 or window > n:  # noqa: PLR2004
+        msg = (
+            "window must satisfy 2 <= window <= len(y); "
+            f"got window={window}, len(y)={n}"
+        )
         raise ValueError(msg)
     fig, ax = get_figure_and_axes(fig, ax)
     midpoints, _, _, residual_sds = _rolling_linregress(
