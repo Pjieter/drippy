@@ -7,6 +7,11 @@ from drippy.multifactor import doe_mean_plot
 from drippy.multifactor import doe_scatter_plot
 from drippy.multifactor import doe_sd_plot
 from drippy.onefactor import bihistogram
+from drippy.regression import linear_correlation_plot
+from drippy.regression import linear_intercept_plot
+from drippy.regression import linear_residual_sd_plot
+from drippy.regression import linear_slope_plot
+from drippy.regression import six_plot
 from drippy.onefactor import box_plot
 from drippy.onefactor import mean_plot
 from drippy.onefactor import qq_plot
@@ -51,6 +56,10 @@ __all__ = [
     "four_plot",
     "histogram",
     "lag_plot",
+    "linear_correlation_plot",
+    "linear_intercept_plot",
+    "linear_residual_sd_plot",
+    "linear_slope_plot",
     "mean_plot",
     "normal_probability_plot",
     "ppcc_plot",
@@ -59,6 +68,7 @@ __all__ = [
     "run_sequence_plot",
     "scatter_plot",
     "sd_plot",
+    "six_plot",
     "spectral_plot",
     "weibull_plot",
 ]
