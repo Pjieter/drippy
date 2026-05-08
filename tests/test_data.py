@@ -237,7 +237,7 @@ class TestFluentMethods:
         _, ax = univariate_data.histogram(bins=5)
         assert len(ax.patches) == 5
 
-    def test_future_module_raises_import_error(self, univariate_data):
-        """Phase 2+ methods raise ImportError until those modules exist."""
-        with pytest.raises((ImportError, ModuleNotFoundError)):
-            univariate_data.doe_scatter_plot()
+    def test_doe_scatter_plot(self, multifactor_data):
+        fig, axes = multifactor_data.doe_scatter_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(axes, np.ndarray)

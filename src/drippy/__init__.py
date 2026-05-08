@@ -2,6 +2,10 @@
 
 import logging
 from drippy.data import EDAData
+from drippy.multifactor import contour_plot
+from drippy.multifactor import doe_mean_plot
+from drippy.multifactor import doe_scatter_plot
+from drippy.multifactor import doe_sd_plot
 from drippy.onefactor import bihistogram
 from drippy.onefactor import box_plot
 from drippy.onefactor import mean_plot
@@ -40,6 +44,10 @@ __all__ = [
     "box_plot",
     "complex_demodulation_amplitude_plot",
     "complex_demodulation_phase_plot",
+    "contour_plot",
+    "doe_mean_plot",
+    "doe_scatter_plot",
+    "doe_sd_plot",
     "four_plot",
     "histogram",
     "lag_plot",
