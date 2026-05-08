@@ -130,6 +130,14 @@ class TestLinearCorrelationPlot:
         lines = ax.get_lines()
         assert len(lines) > 0
 
+    def test_window_too_small_raises(self, regression_data):
+        with pytest.raises(ValueError, match="window must satisfy"):
+            reg.linear_correlation_plot(regression_data, window=1)
+
+    def test_window_too_large_raises(self, regression_data):
+        with pytest.raises(ValueError, match="window must satisfy"):
+            reg.linear_correlation_plot(regression_data, window=51)
+
 
 # --- TestLinearInterceptPlot ---
 
@@ -164,6 +172,14 @@ class TestLinearInterceptPlot:
         # reference line is an axhline — check at least 2 lines (data + hline)
         assert len(ax.get_lines()) >= 2
 
+    def test_window_too_small_raises(self, regression_data):
+        with pytest.raises(ValueError, match="window must satisfy"):
+            reg.linear_intercept_plot(regression_data, window=1)
+
+    def test_window_too_large_raises(self, regression_data):
+        with pytest.raises(ValueError, match="window must satisfy"):
+            reg.linear_intercept_plot(regression_data, window=51)
+
 
 # --- TestLinearSlopePlot ---
 
@@ -194,6 +210,14 @@ class TestLinearSlopePlot:
     def test_reference_line_present(self, regression_data):
         _, ax = reg.linear_slope_plot(regression_data)
         assert len(ax.get_lines()) >= 2
+
+    def test_window_too_small_raises(self, regression_data):
+        with pytest.raises(ValueError, match="window must satisfy"):
+            reg.linear_slope_plot(regression_data, window=1)
+
+    def test_window_too_large_raises(self, regression_data):
+        with pytest.raises(ValueError, match="window must satisfy"):
+            reg.linear_slope_plot(regression_data, window=51)
 
 
 # --- TestLinearResidualSdPlot ---
@@ -227,6 +251,14 @@ class TestLinearResidualSdPlot:
     def test_reference_line_present(self, regression_data):
         _, ax = reg.linear_residual_sd_plot(regression_data)
         assert len(ax.get_lines()) >= 2
+
+    def test_window_too_small_raises(self, regression_data):
+        with pytest.raises(ValueError, match="window must satisfy"):
+            reg.linear_residual_sd_plot(regression_data, window=1)
+
+    def test_window_too_large_raises(self, regression_data):
+        with pytest.raises(ValueError, match="window must satisfy"):
+            reg.linear_residual_sd_plot(regression_data, window=51)
 
 
 # --- TestFluentMethods ---

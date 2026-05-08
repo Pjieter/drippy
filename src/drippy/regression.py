@@ -34,6 +34,12 @@ def _rolling_linregress(
         (midpoints, slopes, intercepts, residual_sds) one value per window.
     """
     n = len(y)
+    if window < 2 or window > n:  # noqa: PLR2004
+        msg = (
+            "window must satisfy 2 <= window <= len(y); "
+            f"got window={window}, len(y)={n}"
+        )
+        raise ValueError(msg)
     n_windows = n - window + 1
     midpoints = np.empty(n_windows)
     slopes = np.empty(n_windows)
@@ -79,6 +85,13 @@ def six_plot(  # noqa: PLR0915
         axes = fig.subplots(2, 3)
     elif fig is None:
         fig = axes.flat[0].get_figure()
+    elif axes.flat[0].get_figure() is not fig:
+        msg = (
+            "axes must belong to provided fig; "
+            f"axes belong to fig_id={id(axes.flat[0].get_figure())}, "
+            f"provided fig_id={id(fig)}"
+        )
+        raise ValueError(msg)
     if axes.shape != (2, 3):
         msg = "axes must have shape (2, 3)"
         raise ValueError(msg)
@@ -122,11 +135,16 @@ def six_plot(  # noqa: PLR0915
 
     # [1,1] Normal probability plot of residuals
     ax = axes[1, 1]
-    (osm, osr), _ = scipy.stats.probplot(res, dist="norm")
+    (osm, osr), (fit_slope, fit_intercept, _) = scipy.stats.probplot(
+        res, dist="norm"
+    )
     ax.scatter(osm, osr, s=10)
     ax.plot(
         [osm[0], osm[-1]],
-        [osm[0], osm[-1]],
+        [
+            fit_slope * osm[0] + fit_intercept,
+            fit_slope * osm[-1] + fit_intercept,
+        ],
         color="r",
         linestyle="--",
     )
@@ -170,6 +188,12 @@ def linear_correlation_plot(
     x = data.x.astype(float)
     y = data.y
     n = len(y)
+    if window < 2 or window > n:  # noqa: PLR2004
+        msg = (
+            "window must satisfy 2 <= window <= len(y); "
+            f"got window={window}, len(y)={n}"
+        )
+        raise ValueError(msg)
     n_windows = n - window + 1
     midpoints = np.empty(n_windows)
     correlations = np.empty(n_windows)
