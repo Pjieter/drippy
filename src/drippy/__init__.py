@@ -1,6 +1,9 @@
 """drippy — EDA plotting library following NIST/SEMATECH principles."""
 
 import logging
+from drippy.comparative import block_plot
+from drippy.comparative import star_plot
+from drippy.comparative import youden_plot
 from drippy.data import EDAData
 from drippy.multifactor import contour_plot
 from drippy.multifactor import doe_mean_plot
@@ -43,6 +46,7 @@ __all__ = [
     "EDAData",
     "autocorrelation_plot",
     "bihistogram",
+    "block_plot",
     "bootstrap_plot",
     "box_cox_linearity_plot",
     "box_cox_normality_plot",
@@ -70,5 +74,7 @@ __all__ = [
     "sd_plot",
     "six_plot",
     "spectral_plot",
+    "star_plot",
     "weibull_plot",
+    "youden_plot",
 ]
