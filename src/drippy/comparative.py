@@ -36,8 +36,10 @@ def block_plot(
     Raises:
         ValueError: If factors is None or missing required keys.
     """
-    if not data.factors or "treatment" not in data.factors or (
-        "block" not in data.factors
+    if (
+        not data.factors
+        or "treatment" not in data.factors
+        or ("block" not in data.factors)
     ):
         msg = "block_plot requires factors with 'treatment' and 'block' keys"
         raise ValueError(msg)
