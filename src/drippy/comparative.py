@@ -140,6 +140,7 @@ def star_plot(
     if not data.factors:
         msg = "star_plot requires factors"
         raise ValueError(msg)
+    # PolarAxes needs projection="polar"; get_figure_and_axes is not used here.
     if fig is None and ax is None:
         fig, ax = plt.subplots(subplot_kw={"projection": "polar"})
     elif fig is not None and ax is None:
