@@ -22,6 +22,8 @@ Welcome to drippy's documentation!
    :maxdepth: 2
    :caption: API Reference:
 
+   autoapi/index
+
 Indices and tables
 ==================
 
