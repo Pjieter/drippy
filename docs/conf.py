@@ -45,7 +45,7 @@ extensions = [
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
     "autoapi.extension",
-    "myst_parser",
+    "myst_nb",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -62,6 +62,11 @@ todo_include_todos = False
 # -- Use autoapi.extension to run sphinx-apidoc -------
 
 autoapi_dirs = ['../src/drippy']
+
+# -- Notebook execution -------------------------------------------------------
+
+nb_execution_mode = "cache"
+nb_execution_timeout = 120
 
 # -- Options for HTML output ----------------------------------------------
 

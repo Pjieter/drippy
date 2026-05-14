@@ -7,8 +7,20 @@ Welcome to drippy's documentation!
 ==========================================================
 
 .. toctree::
-  :maxdepth: 2
-  :caption: Contents:
+   :maxdepth: 2
+   :caption: Examples:
+
+   examples/00_quickstart
+   examples/01_univariate
+   examples/02_timeseries
+   examples/03_onefactor
+   examples/04_multifactor
+   examples/05_regression
+   examples/06_comparative
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API Reference:
 
 Indices and tables
 ==================
