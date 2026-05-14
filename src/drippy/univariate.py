@@ -445,7 +445,7 @@ def box_cox_linearity_plot(
 ) -> tuple[Figure, Axes]:
     """Creates a Box-Cox linearity plot.
 
-    Plots |corr(Y, X^λ)| across a range of λ values to find the
+    Plots ``abs(corr(Y, X^λ))`` across a range of λ values to find the
     power transformation of X that maximises linearity with Y.
 
     Args:
