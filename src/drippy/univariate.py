@@ -177,7 +177,7 @@ def four_plot(
 def ppcc_plot(  # noqa: PLR0913
     data: EDAData,
     fig: Figure | None = None,
-    ax: np.ndarray | None = None,
+    axes: np.ndarray | None = None,
     rough_range: tuple[float, float] = (-2, 2),
     n_rough: int = 50,
     n_fine: int = 100,
@@ -187,7 +187,7 @@ def ppcc_plot(  # noqa: PLR0913
     Args:
         data: EDAData container. Requires y.
         fig: Matplotlib figure. If None, creates new figure.
-        ax: ndarray of Axes with shape (2,). If None, creates new axes.
+        axes: ndarray of Axes with shape (2,). If None, creates new axes.
         rough_range: (min, max) range for rough search.
         n_rough: Points in rough plot.
         n_fine: Points in fine plot.
@@ -207,13 +207,13 @@ def ppcc_plot(  # noqa: PLR0913
     if n_fine <= 0:
         msg = "Number of points must be positive"
         raise ValueError(msg)
-    if fig is None and ax is None:
-        fig, ax = plt.subplots(1, 2)
-    elif ax is None:
-        ax = fig.subplots(1, 2)
+    if fig is None and axes is None:
+        fig, axes = plt.subplots(1, 2)
+    elif axes is None:
+        axes = fig.subplots(1, 2)
     elif fig is None:
-        fig = ax.flat[0].get_figure()
-    if ax.shape != (2,):
+        fig = axes.flat[0].get_figure()
+    if axes.shape != (2,):
         msg = "Axes must be an iterable of 2 Axes objects."
         raise ValueError(msg)
     rough_shape_values, rough_ppcc = sp.stats.ppcc_plot(
@@ -221,7 +221,7 @@ def ppcc_plot(  # noqa: PLR0913
         rough_range[0],
         rough_range[1],
         N=n_rough,
-        plot=ax[0],
+        plot=axes[0],
     )
     rough_max_index = np.argmax(rough_ppcc)
     fine_shape_values, fine_ppcc = sp.stats.ppcc_plot(
@@ -229,29 +229,29 @@ def ppcc_plot(  # noqa: PLR0913
         rough_shape_values[rough_max_index] - 0.5,
         rough_shape_values[rough_max_index] + 0.5,
         N=n_fine,
-        plot=ax[1],
+        plot=axes[1],
     )
     fine_max_index = np.argmax(fine_ppcc)
     max_shape = rough_shape_values[rough_max_index]
-    ax[0].vlines(
+    axes[0].vlines(
         max_shape,
         0,
         rough_ppcc[rough_max_index],
         color="r",
         label=f"Max PPCC at shape={max_shape:.3g}",
     )
-    ax[0].legend()
+    axes[0].legend()
     max_shape_fine = fine_shape_values[fine_max_index]
-    ax[1].axvline(
+    axes[1].axvline(
         max_shape_fine,
         color="r",
         label=f"Max PPCC at shape={max_shape_fine:.3g}",
     )
-    ax[1].legend()
-    ax[0].set_title("Rough PPCC Plot")
-    ax[1].set_title("Fine PPCC Plot")
+    axes[1].legend()
+    axes[0].set_title("Rough PPCC Plot")
+    axes[1].set_title("Fine PPCC Plot")
     fig.tight_layout()
-    return fig, ax
+    return fig, axes
 
 
 def weibull_plot(

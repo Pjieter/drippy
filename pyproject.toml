@@ -65,6 +65,9 @@ ReadTheDocs = "https://drippy.readthedocs.io"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+filterwarnings = [
+    "ignore:invalid value encountered in scalar power:RuntimeWarning",
+]
 
 
 [tool.coverage.run]
