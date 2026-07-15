@@ -18,28 +18,19 @@ jobs:
         python-version: ['3.12']
     steps:
       - uses: actions/checkout@v6.0.2
-      - name: Install poetry
-        run: pipx install poetry==2.3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v6.2.0
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ matrix.python-version }}
-          cache: 'poetry'
-          cache-dependency-path: poetry.lock
       - name: Python info
         shell: bash -e {0}
         run: |
           which python
           python --version
-      - name: Setup Poetry environment
-        run: |
-          poetry env use ${{ matrix.python-version }}
       - name: Install the project dependencies
-        run: poetry install --with docs
+        run: uv sync --group docs
       - name: Install pandoc using apt
         run: sudo apt install pandoc
       - name: Build documentation
-        run: |
-          eval $(poetry env activate)
-          make coverage doctest html
+        run: uv run make coverage doctest html
         working-directory: docs
