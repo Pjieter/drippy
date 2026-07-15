@@ -63,6 +63,31 @@ def regression_data():
     return EDAData(rng.normal(loc=x), x=x)
 
 
+@pytest.fixture
+def positive_data():
+    """EDAData with positive y — for weibull/box-cox plots."""
+    rng = np.random.default_rng(42)
+    return EDAData(np.abs(5 + rng.normal(size=50)) + 1)
+
+
+@pytest.fixture
+def positive_regression_data():
+    """EDAData with positive x — for box_cox_linearity_plot."""
+    rng = np.random.default_rng(42)
+    x = np.linspace(0.1, 5.0, 50)
+    y = np.abs(2 * x + rng.normal(size=50)) + 0.5
+    return EDAData(y, x=x)
+
+
+@pytest.fixture
+def bigroup_data():
+    """EDAData with 2 factor levels — for bihistogram/qq_plot."""
+    rng = np.random.default_rng(42)
+    y = np.concatenate([rng.normal(0, 1, 30), rng.normal(2, 1, 30)])
+    x = np.repeat(["Control", "Treatment"], 30)
+    return EDAData(y, x=x)
+
+
 # --- Construction ---
 
 
@@ -241,3 +266,58 @@ class TestFluentMethods:
         fig, axes = multifactor_data.doe_scatter_plot()
         assert isinstance(fig, Figure)
         assert isinstance(axes, np.ndarray)
+
+    def test_ppcc_plot(self, univariate_data):
+        fig, axes = univariate_data.ppcc_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(axes, np.ndarray)
+
+    def test_weibull_plot(self, positive_data):
+        fig, ax = positive_data.weibull_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_probability_plot(self, univariate_data):
+        fig, ax = univariate_data.probability_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_box_cox_linearity_plot(self, positive_regression_data):
+        fig, ax = positive_regression_data.box_cox_linearity_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_box_cox_normality_plot(self, positive_data):
+        fig, axes = positive_data.box_cox_normality_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(axes, np.ndarray)
+
+    def test_bootstrap_plot(self, univariate_data):
+        fig, ax = univariate_data.bootstrap_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_bihistogram(self, bigroup_data):
+        fig, axes = bigroup_data.bihistogram()
+        assert isinstance(fig, Figure)
+        assert isinstance(axes, np.ndarray)
+
+    def test_qq_plot(self, bigroup_data):
+        fig, ax = bigroup_data.qq_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
+
+    def test_doe_mean_plot(self, multifactor_data):
+        fig, axes = multifactor_data.doe_mean_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(axes, np.ndarray)
+
+    def test_doe_sd_plot(self, multifactor_data):
+        fig, axes = multifactor_data.doe_sd_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(axes, np.ndarray)
+
+    def test_contour_plot(self, multifactor_data):
+        fig, ax = multifactor_data.contour_plot()
+        assert isinstance(fig, Figure)
+        assert isinstance(ax, Axes)
