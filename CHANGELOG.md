@@ -6,13 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.0.1] - 1900-12-31
+## [0.1.0] - 2026-07-15
 
 ### Added
 
-### Removed
+- `EDAData` validated data container with a fluent plotting API
+- 33 plotting functions implementing NIST/SEMATECH EDA techniques across univariate, time series, one-factor, multi-factor (DOE), regression, and comparative modules
+- Sphinx documentation with example notebooks on ReadTheDocs
+- PEP 561 `py.typed` marker (fully type-annotated public API)
 
-### Changed
-
-[Unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/v1.0.0...HEAD
-[0.0.1]: https://github.com/olivierlacan/keep-a-changelog/releases/tag/v0.0.1
+[Unreleased]: https://github.com/Pjieter/drippy/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/Pjieter/drippy/releases/tag/v0.1.0
