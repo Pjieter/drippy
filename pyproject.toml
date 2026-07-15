@@ -4,8 +4,8 @@
 # - https://www.python.org/dev/peps/pep-0621/
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.9,<1"]
+build-backend = "uv_build"
 
 [project]
 authors = [

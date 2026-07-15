@@ -18,32 +18,24 @@ jobs:
       matrix:
         os: ['ubuntu-latest', 'macos-latest', 'windows-latest']
         python-version: ['3.11', '3.12', '3.13']
-        poetry-version: ['2.3']
     steps:
       - uses: actions/checkout@v6.0.2
-      - name: Install poetry
-        run: pipx install poetry==${{ matrix.poetry-version }}
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v6.2.0
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ matrix.python-version }}
-          cache: 'poetry'
-          cache-dependency-path: poetry.lock
       - name: Python info
         shell: bash -e {0}
         run: |
           which python
           python --version
-      - name: Setup Poetry environment
-        run: |
-          poetry env use ${{ matrix.python-version }}
       - name: Install the project dependencies
         run: |
-          poetry install --all-groups
+          uv sync --all-groups
       - name: Run the automated tests (for example)
-        run: poetry run pytest -v
+        run: uv run pytest -v
       - name: Build the package
-        run: poetry build
+        run: uv build
   lint:
     name: Linting build
     runs-on: ubuntu-latest
@@ -51,29 +43,21 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ['3.12']
-        poetry-version: ['2.3']
     steps:
       - uses: actions/checkout@v6.0.2
-      - name: Install poetry
-        run: pipx install poetry==${{ matrix.poetry-version }}
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v6.2.0
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ matrix.python-version }}
-          cache: 'poetry'
-          cache-dependency-path: poetry.lock
       - name: Python info
         shell: bash -e {0}
         run: |
           which python
           python --version
-      - name: Setup Poetry environment
-        run: |
-          poetry env use ${{ matrix.python-version }}
       - name: Install the project dependencies
         run: |
-          poetry install --all-groups
+          uv sync --all-groups
       - name: Check style against standards using ruff
         run: |
-          poetry run ruff check --fix
-          poetry run ruff format --check
+          uv run ruff check --fix
+          uv run ruff format --check
