@@ -52,10 +52,10 @@ fig, ax = histogram(data, bins=20)
 
 ## Installation
 
-Install drippy from PyPI:
+Install drippy from PyPI (distribution name `drippy-eda`; the import name is `drippy`):
 
 ```console
-pip install drippy
+pip install drippy-eda
 ```
 
 ### Development installation

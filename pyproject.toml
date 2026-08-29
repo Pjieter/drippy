@@ -33,7 +33,7 @@ keywords = ["EDA", "data analysis", "data", "exploratory data analysis", "regres
 license = "MIT"
 license-files = ["LICENSE"]
 
-name = "drippy"
+name = "drippy-eda"
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.11,<4"
 version = "0.1.0"
@@ -56,6 +56,11 @@ dev = [
     "tox (>=4.30.2,<5.0.0)",
     "pytest-xdist[psutil] (>=3.8.0,<4.0.0)",
 ]
+
+[tool.uv.build-backend]
+# Distribution is drippy-eda (the PyPI name "drippy" is taken); the import
+# package stays drippy.
+module-name = "drippy"
 
 [project.urls]
 Repository = "https://github.com/Pjieter/drippy"
