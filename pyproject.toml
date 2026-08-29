@@ -82,7 +82,7 @@ envlist = py311,py312,py313
 skip_missing_interpreters = true
 [testenv]
 commands = pytest
-extras = dev
+dependency_groups = dev
 """
 
 [tool.ruff]
