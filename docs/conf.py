@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = u"drippy"
-copyright = u"2025-10-26 17:24:28, Michiel Dubbelman"
+copyright = u"2025-2026, Michiel Dubbelman"
 author = u"Michiel Dubbelman"
 
 # The version info for the project you're documenting, acts as replacement for

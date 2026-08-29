@@ -38,8 +38,9 @@ fig, ax = histogram(data, bins=20)
 `EDAData` accepts optional `t` (time series), `x` (one-factor), or `factors`
 (multi-factor/DOE) arguments to unlock the corresponding plot families:
 
-- **Univariate** (`y = c + e`): four-plot, histogram, box-cox plots,
-  probability/QQ plots, bootstrap plot, lag plot, run-sequence plot, ...
+- **Univariate** (`y = c + e`): four-plot, histogram, run-sequence plot, lag
+  plot, bootstrap plot, box-cox normality/linearity plots, normal probability
+  plot, probability plot, PPCC plot, QQ plot, Weibull plot
 - **Time series** (`y = f(t) + e`): autocorrelation, spectral, and complex
   demodulation plots
 - **One-factor** (`y = f(x) + e`): box plot, scatter plot, mean/sd plots,

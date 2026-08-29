@@ -31,7 +31,7 @@ The sections below outline the steps in each case.
 1. (**important**) announce your plan to the rest of the community *before you start working*. This announcement should be in the form of a (new) issue;
 1. (**important**) wait until some kind of consensus is reached about your idea being a good idea;
 1. if needed, fork the repository to your own Github profile and create your own feature branch off of the latest main commit. While working on your feature branch, make sure to stay up to date with the main branch by pulling in changes, possibly from the 'upstream' repository (follow the instructions [here](https://help.github.com/articles/configuring-a-remote-for-a-fork/) and [here](https://help.github.com/articles/syncing-a-fork/));
-1. install dependencies (see the [development documentation](README.dev.md#development_install));
+1. install dependencies (see the [development documentation](README.dev.md#development-install));
 1. make sure the existing tests still work by running ``pytest``;
 1. add your own tests (if necessary);
 1. update or expand the documentation;
@@ -45,9 +45,9 @@ In case you feel like you've made a valuable contribution, but you don't know ho
 
 To create a release you need write permission on the repository.
 
-1. Check the author list in [`CITATION.cff`](CITATION.cff)
+1. Check the author list and set `date-released` in [`CITATION.cff`](CITATION.cff)
 1. Bump the version using `uv run bump-my-version bump <major|minor|patch>`. For example, `uv run bump-my-version bump major` will increase major version numbers everywhere it's needed (`pyproject.toml`, `src/drippy/__init__.py`, `CITATION.cff` and `docs/conf.py`).
-1. Move the changes listed under `[Unreleased]` in `CHANGELOG.md` into a new section for the version being released.
+1. Move the changes listed under `[Unreleased]` in `CHANGELOG.md` into a new section for the version being released, dated with the release date.
 1. Open a pull request with the version bump and changelog update, and merge it into `main`.
 1. Go to the [GitHub release page](https://github.com/Pjieter/drippy/releases)
 1. Press draft a new release button
@@ -67,4 +67,3 @@ Before the first automated release, a maintainer with admin access needs to:
    - Workflow name: `release.yml`
    - Environment name: `pypi`
 
-Also a Zenodo entry will be made for the release with its own DOI.
