@@ -238,6 +238,19 @@ class TestFourPlot:
         )
         assert fig is provided_fig
 
+    def test_fig_only_creates_axes(self, univariate_data):
+        provided_fig = plt.figure()
+        fig, axes = uv.four_plot(univariate_data, fig=provided_fig)
+        assert fig is provided_fig
+        assert len(axes) == 4
+
+    def test_axes_only_uses_axes_figure(self, univariate_data):
+        _, provided_axes = plt.subplots(2, 2)
+        expected_fig = provided_axes.flat[0].get_figure()
+        fig, axes = uv.four_plot(univariate_data, axes=provided_axes)
+        assert fig is expected_fig
+        assert len(axes) == 4
+
 
 # --- ppcc_plot ---
 
@@ -268,6 +281,19 @@ class TestPpccPlot:
             ValueError, match="Number of points must be positive"
         ):
             uv.ppcc_plot(univariate_data, n_rough=-1)
+
+    def test_fig_only_creates_axes(self, univariate_data):
+        provided_fig = plt.figure()
+        fig, axes = uv.ppcc_plot(univariate_data, fig=provided_fig)
+        assert fig is provided_fig
+        assert len(axes) == 2
+
+    def test_axes_only_uses_axes_figure(self, univariate_data):
+        _, provided_axes = plt.subplots(1, 2)
+        expected_fig = provided_axes.flat[0].get_figure()
+        fig, axes = uv.ppcc_plot(univariate_data, axes=provided_axes)
+        assert fig is expected_fig
+        assert len(axes) == 2
 
 
 # --- weibull_plot ---
@@ -337,6 +363,21 @@ class TestBoxCoxNormalityPlot:
         _, axes = uv.box_cox_normality_plot(positive_data)
         for ax in axes.flatten():
             assert len(ax.get_lines()) > 0 or len(ax.patches) > 0
+
+    def test_fig_only_creates_axes(self, positive_data):
+        provided_fig = plt.figure()
+        fig, axes = uv.box_cox_normality_plot(positive_data, fig=provided_fig)
+        assert fig is provided_fig
+        assert axes.shape == (2, 2)
+
+    def test_axes_only_uses_axes_figure(self, positive_data):
+        _, provided_axes = plt.subplots(2, 2)
+        expected_fig = provided_axes.flat[0].get_figure()
+        fig, axes = uv.box_cox_normality_plot(
+            positive_data, axes=provided_axes
+        )
+        assert fig is expected_fig
+        assert axes.shape == (2, 2)
 
 
 # --- bootstrap_plot ---

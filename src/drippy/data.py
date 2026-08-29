@@ -179,19 +179,19 @@ class EDAData:
 
     # --- Fluent methods (Phase 2 — multifactor) ---
 
-    def doe_scatter_plot(self, **kwargs: Any) -> tuple[Figure, Axes]:
+    def doe_scatter_plot(self, **kwargs: Any) -> tuple[Figure, np.ndarray]:
         """Delegates to drippy.multifactor.doe_scatter_plot (Phase 2)."""
         from drippy.multifactor import doe_scatter_plot as fn
 
         return fn(self, **kwargs)
 
-    def doe_mean_plot(self, **kwargs: Any) -> tuple[Figure, Axes]:
+    def doe_mean_plot(self, **kwargs: Any) -> tuple[Figure, np.ndarray]:
         """Delegates to drippy.multifactor.doe_mean_plot (Phase 2)."""
         from drippy.multifactor import doe_mean_plot as fn
 
         return fn(self, **kwargs)
 
-    def doe_sd_plot(self, **kwargs: Any) -> tuple[Figure, Axes]:
+    def doe_sd_plot(self, **kwargs: Any) -> tuple[Figure, np.ndarray]:
         """Delegates to drippy.multifactor.doe_sd_plot (Phase 2)."""
         from drippy.multifactor import doe_sd_plot as fn
 
@@ -205,9 +205,7 @@ class EDAData:
 
     # --- Fluent methods (Phase 3 — regression) ---
 
-    def six_plot(
-        self, **kwargs: Any
-    ) -> tuple[Figure, tuple[Axes, Axes, Axes, Axes, Axes, Axes]]:
+    def six_plot(self, **kwargs: Any) -> tuple[Figure, np.ndarray]:
         """Delegates to drippy.regression.six_plot (Phase 3)."""
         from drippy.regression import six_plot as fn
 

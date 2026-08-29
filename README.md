@@ -13,17 +13,57 @@ Discover, Refine, Inspect, Present in Python, using EDA principles outlined by N
 
 ## How to use drippy
 
+drippy revolves around `EDAData`, a validated container for your data that
+exposes every plot as a fluent method. The same plots are also available as
+standalone functions that accept an `EDAData` instance as their first
+argument.
 
-The project setup is documented in [project_setup.md](project_setup.md). Feel free to remove this document (and/or the link to this document) if you don't need it.
+```python
+import numpy as np
+
+from drippy import EDAData
+from drippy import histogram
+
+rng = np.random.default_rng(42)
+y = rng.normal(loc=688.0, scale=65.0, size=200)
+data = EDAData(y=y)
+
+# Fluent API: NIST's recommended first stop for any EDA, the 4-plot
+fig, axes = data.four_plot()
+
+# Standalone function: same result, explicit function call
+fig, ax = histogram(data, bins=20)
+```
+
+`EDAData` accepts optional `t` (time series), `x` (one-factor), or `factors`
+(multi-factor/DOE) arguments to unlock the corresponding plot families:
+
+- **Univariate** (`y = c + e`): four-plot, histogram, box-cox plots,
+  probability/QQ plots, bootstrap plot, lag plot, run-sequence plot, ...
+- **Time series** (`y = f(t) + e`): autocorrelation, spectral, and complex
+  demodulation plots
+- **One-factor** (`y = f(x) + e`): box plot, scatter plot, mean/sd plots,
+  bihistogram
+- **Multi-factor / DOE**: DOE mean/sd/scatter plots, contour plot
+- **Regression**: six-plot, linear slope/intercept/correlation/residual-sd
+  plots
+- **Comparative**: block plot, star plot, Youden plot
 
 ## Installation
 
-To install drippy from GitHub repository, do:
+Install drippy from PyPI:
 
 ```console
-git clone git@github.com:Pjieter/drippy.git
-cd drippy
-poetry install
+pip install drippy
+```
+
+### Development installation
+
+To work on drippy itself, clone the repository and install it with
+[uv](https://docs.astral.sh/uv/):
+
+```console
+git clone git@github.com:Pjieter/drippy.git && cd drippy && uv sync --all-groups
 ```
 
 ## Documentation
