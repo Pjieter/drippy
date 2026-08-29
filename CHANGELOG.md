@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 33 plotting functions implementing NIST/SEMATECH EDA techniques across univariate, time series, one-factor, multi-factor (DOE), regression, and comparative modules
 - Sphinx documentation with example notebooks on ReadTheDocs
 - PEP 561 `py.typed` marker (fully type-annotated public API)
+- Published on PyPI as `drippy-eda` (the name `drippy` is taken by an unrelated package); import as `drippy`
 
 [Unreleased]: https://github.com/Pjieter/drippy/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/Pjieter/drippy/releases/tag/v0.1.0

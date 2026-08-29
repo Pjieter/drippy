@@ -54,14 +54,15 @@ To create a release you need write permission on the repository.
 1. Create a new tag `v<version>` (e.g. `v1.2.3`) targeting `main`, fill in the title and description field
 1. Press the Publish Release button
 
-Publishing the release triggers the [`release.yml`](.github/workflows/release.yml) workflow, which builds the package and publishes it to PyPI automatically using [trusted publishing](https://docs.pypi.org/trusted-publishers/) (OIDC) — no API token is needed. Wait until the workflow run completes, then verify the new version is on [PyPI](https://pypi.org/project/drippy/#history).
+Publishing the release triggers the [`release.yml`](.github/workflows/release.yml) workflow, which builds the package and publishes it to PyPI automatically using [trusted publishing](https://docs.pypi.org/trusted-publishers/) (OIDC) — no API token is needed. Wait until the workflow run completes, then verify the new version is on [PyPI](https://pypi.org/project/drippy-eda/#history).
 
 ### One-time trusted publisher setup
 
 Before the first automated release, a maintainer with admin access needs to:
 
 1. Create a `pypi` environment in the GitHub repository settings (Settings > Environments).
-1. On [pypi.org](https://pypi.org), register a trusted publisher for the `drippy` project with:
+1. On [pypi.org](https://pypi.org), register a trusted publisher for the `drippy-eda` project with:
+   - PyPI project name: `drippy-eda` (the name `drippy` on PyPI belongs to an unrelated 2014 package; the import name stays `drippy`)
    - Owner: `Pjieter`
    - Repository name: `drippy`
    - Workflow name: `release.yml`
