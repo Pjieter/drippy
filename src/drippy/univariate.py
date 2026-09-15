@@ -175,7 +175,7 @@ def four_plot(
     return fig, axes
 
 
-def ppcc_plot(  # noqa: PLR0913
+def ppcc_plot(  # noqa: PLR0913, PLR0917
     data: EDAData,
     fig: Figure | None = None,
     axes: np.ndarray | None = None,
