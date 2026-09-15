@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-15
+
 ### Changed
 
 - **Breaking:** minimum supported Python is now 3.12 (was 3.11); supported versions are 3.12, 3.13 and 3.14
@@ -34,5 +36,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PEP 561 `py.typed` marker (fully type-annotated public API)
 - Published on PyPI as `drippy-eda` (the name `drippy` is taken by an unrelated package); import as `drippy`
 
-[Unreleased]: https://github.com/Pjieter/drippy/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/Pjieter/drippy/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/Pjieter/drippy/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Pjieter/drippy/releases/tag/v0.1.0

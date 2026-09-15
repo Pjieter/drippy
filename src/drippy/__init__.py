@@ -40,7 +40,7 @@ logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 __author__ = "Michiel Dubbelman"
 __email__ = "m.p.dubbelman@tudelft.nl"
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "EDAData",

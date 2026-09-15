@@ -36,7 +36,7 @@ license-files = ["LICENSE"]
 name = "drippy-eda"
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.12,<4"
-version = "0.1.0"
+version = "0.2.0"
 
 [dependency-groups]
 docs = [
@@ -147,7 +147,7 @@ force-single-line = true
 no-lines-before = ["future","standard-library","third-party","first-party","local-folder"]
 
 [tool.bumpversion]
-current_version = "0.1.0"
+current_version = "0.2.0"
 
 [[tool.bumpversion.files]]
 filename = "src/drippy/__init__.py"
