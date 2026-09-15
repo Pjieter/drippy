@@ -12,6 +12,7 @@ from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 import drippy.multifactor as mf
 from drippy.data import EDAData
+from drippy.utilities import get_grid_figsize
 
 
 @pytest.fixture(autouse=True)
@@ -100,7 +101,7 @@ class TestDoeMeanPlot:
             mf.doe_mean_plot(no_factors_data)
 
     def test_custom_fig_axes(self, multifactor_data):
-        fig_in, axes_in = plt.subplots(1, 3)
+        fig_in, axes_in = plt.subplots(1, 3, figsize=get_grid_figsize(3))
         fig_out, axes_out = mf.doe_mean_plot(
             multifactor_data, fig=fig_in, axes=axes_in
         )

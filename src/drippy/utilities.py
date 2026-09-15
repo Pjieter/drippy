@@ -31,6 +31,26 @@ def get_figure_and_axes(
     return fig, ax
 
 
+def get_grid_figsize(ncols: int, nrows: int = 1) -> tuple[float, float]:
+    """Get a figure size for a grid of subplots.
+
+    Matplotlib's default ``figure.figsize`` sizes a single Axes. Reusing
+    it for a multi-column grid leaves every Axes too narrow for its own
+    titles, labels and legend, so ``tight_layout`` cannot fit them and
+    warns instead of laying the figure out. Scaling the default by the
+    grid shape keeps each Axes at the default size.
+
+    Args:
+        ncols (int): Number of subplot columns.
+        nrows (int, optional): Number of subplot rows. Defaults to 1.
+
+    Returns:
+        tuple[float, float]: Figure (width, height) in inches.
+    """
+    width, height = plt.rcParams["figure.figsize"]
+    return width * ncols, height * nrows
+
+
 def bl_filt(y: np.ndarray, half_width: int) -> np.ndarray:
     """Simple Blackman filter.
 

@@ -12,6 +12,7 @@ mpl.use("Agg")
 
 import drippy.univariate as uv
 from drippy.data import EDAData
+from drippy.utilities import get_grid_figsize
 
 # --- Fixtures ---
 
@@ -283,13 +284,13 @@ class TestPpccPlot:
             uv.ppcc_plot(univariate_data, n_rough=-1)
 
     def test_fig_only_creates_axes(self, univariate_data):
-        provided_fig = plt.figure()
+        provided_fig = plt.figure(figsize=get_grid_figsize(2))
         fig, axes = uv.ppcc_plot(univariate_data, fig=provided_fig)
         assert fig is provided_fig
         assert len(axes) == 2
 
     def test_axes_only_uses_axes_figure(self, univariate_data):
-        _, provided_axes = plt.subplots(1, 2)
+        _, provided_axes = plt.subplots(1, 2, figsize=get_grid_figsize(2))
         expected_fig = provided_axes.flat[0].get_figure()
         fig, axes = uv.ppcc_plot(univariate_data, axes=provided_axes)
         assert fig is expected_fig

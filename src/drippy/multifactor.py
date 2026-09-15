@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 import matplotlib.pyplot as plt
 import numpy as np
 from drippy.utilities import get_figure_and_axes
+from drippy.utilities import get_grid_figsize
 
 if TYPE_CHECKING:
     from matplotlib.axes import Axes
@@ -18,7 +19,7 @@ def _get_figure_and_multi_axes(
     n: int,
 ) -> tuple[Figure, np.ndarray]:
     if fig is None and axes is None:
-        fig, axes = plt.subplots(1, n)
+        fig, axes = plt.subplots(1, n, figsize=get_grid_figsize(n))
         axes = np.atleast_1d(axes)
     elif axes is None:
         axes = np.atleast_1d(fig.subplots(1, n))
