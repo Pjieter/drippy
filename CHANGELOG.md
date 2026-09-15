@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgraded Ruff to 0.16.x; `CPY001` (missing copyright notice) is ignored because licensing lives in `LICENSE` only
 - Refreshed all locked dependencies (pytest 9.1.1, scipy 1.18.1, tox 4.61.4, urllib3 2.7.0, and others)
 - Replaced Poetry with uv throughout `.github/copilot-instructions.md`, matching the toolchain the project actually uses
+- Updated every GitHub Action to its current release: checkout 7.0.1, setup-uv 10.1.0, upload-artifact 7.0.1, download-artifact 8.0.1, lychee-action 2.9.0, create-issue-from-file 6.0.0 and sonarqube-scan-action 8.2.1. `setup-uv` is pinned to an exact version because it stopped publishing floating major tags at v8
 
 ### Added
 
