@@ -6,6 +6,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Breaking:** minimum supported Python is now 3.12 (was 3.11); supported versions are 3.12, 3.13 and 3.14
+- Multi-panel figures created by `doe_*` plots and `ppcc_plot` are now sized from the number of subplot columns, so `tight_layout` can fit every Axes instead of warning and giving up
+- Upgraded Sphinx to 9.x, which requires Python 3.12+
+- Upgraded Ruff to 0.16.x; `CPY001` (missing copyright notice) is ignored because licensing lives in `LICENSE` only
+- Refreshed all locked dependencies (pytest 9.1.1, scipy 1.18.1, tox 4.61.4, urllib3 2.7.0, and others)
+- Replaced Poetry with uv throughout `.github/copilot-instructions.md`, matching the toolchain the project actually uses
+
+### Added
+
+- `drippy.utilities.get_grid_figsize()` for sizing a figure from its subplot grid shape
+
+### Fixed
+
+- `UserWarning: Tight layout not applied` raised by `doe_mean_plot()` and `ppcc_plot()` on default-sized figures
+
 ## [0.1.0] - 2026-08-29
 
 ### Added
