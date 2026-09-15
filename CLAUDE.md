@@ -53,8 +53,17 @@ src/drippy/
     univariate.py   — Standalone functions for univariate plots (y = c + e)
     timeseries.py   — Standalone functions for time series plots
     onefactor.py    — Standalone functions for 1-factor plots (y = f(x) + e)
+    multifactor.py  — Standalone functions for multi-factor (DOE) plots
+    regression.py   — Standalone functions for regression diagnostic plots
+    comparative.py  — Standalone functions for comparing groups/datasets
     utilities.py    — Shared helpers (get_figure_and_axes, etc.)
 tests/
+    test_comparative.py
+    test_data.py
+    test_init.py
+    test_multifactor.py
+    test_onefactor.py
+    test_regression.py
     test_timeseries.py
     test_univariate.py
     test_utilities.py

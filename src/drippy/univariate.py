@@ -7,6 +7,7 @@ import numpy as np
 import scipy as sp
 from lmfit.models import LinearModel
 from drippy.utilities import get_figure_and_axes
+from drippy.utilities import get_grid_figsize
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -174,7 +175,7 @@ def four_plot(
     return fig, axes
 
 
-def ppcc_plot(  # noqa: PLR0913
+def ppcc_plot(  # noqa: PLR0913, PLR0917
     data: EDAData,
     fig: Figure | None = None,
     axes: np.ndarray | None = None,
@@ -208,7 +209,7 @@ def ppcc_plot(  # noqa: PLR0913
         msg = "Number of points must be positive"
         raise ValueError(msg)
     if fig is None and axes is None:
-        fig, axes = plt.subplots(1, 2)
+        fig, axes = plt.subplots(1, 2, figsize=get_grid_figsize(2))
     elif axes is None:
         axes = fig.subplots(1, 2)
     elif fig is None:

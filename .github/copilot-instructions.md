@@ -11,19 +11,19 @@ DRIPPY is a Python library for Exploratory Data Analysis (EDA) following NIST/SE
 
 ## Development Setup
 
-**Poetry is mandatory** - this project uses Poetry for dependency management, not pip/venv:
+**uv is mandatory** - this project uses uv for dependency management, not pip/venv/poetry:
 
 ```powershell
 # Install dependencies
-poetry install --all-groups
+uv sync --all-groups
 
-# Run commands through Poetry
-poetry run pytest -v
-poetry run ruff check .
-poetry run ruff format
+# Run commands through uv
+uv run pytest -v
+uv run ruff check .
+uv run ruff format
 ```
 
-**Python versions:** 3.11, 3.12, 3.13 (configured in `pyproject.toml`)
+**Python versions:** 3.12, 3.13, 3.14 (configured in `pyproject.toml`)
 
 ## Code Style Conventions
 
@@ -69,29 +69,29 @@ All plotting methods follow the `get_figure_and_axes(fig, ax)` pattern from `uti
       plt.close("all")
   ```
 
-- Group related tests in classes (e.g., `TestTimeSeriesPlotterInitialization`)
+- Group related tests in classes (e.g., `TestDoeMeanPlot`)
 - Test edge cases: empty data, mismatched lengths, multi-dimensional arrays
 
 **Run tests:**
 
 ```powershell
-poetry run pytest -v           # Standard run
-poetry run coverage run        # With coverage
-poetry run coverage report     # View coverage
+uv run pytest -v           # Standard run
+uv run coverage run        # With coverage
+uv run coverage report     # View coverage
 ```
 
 ## Documentation
 
 **Sphinx with AutoAPI and Google-style docstrings:**
 - Source in `docs/` directory with RTD theme
-- Build locally: `cd docs; sphinx-build -b html docs docs/_build/html`
-- Test docstrings: `cd docs; make doctest`
+- Build locally: `cd docs; uv run sphinx-build -b html . _build/html`
+- Test docstrings: `cd docs; uv run make doctest`
 - ReadTheDocs builds automatically from `.readthedocs.yaml`
 
-## Plotter Class Patterns
+## Plotting Function Patterns
 
-When adding new plotter classes or plotting methods:
-1. **Validate inputs in `__init__`**: Check for empty arrays, dimension mismatches, equal lengths
+When adding new plotting functions:
+1. **Accept a validated `EDAData` container as the first argument**: `EDAData` validates on construction (empty arrays, dimension mismatches, equal lengths)
 2. **Use numpy arrays internally**: Convert inputs with `np.asarray()` for consistency
 3. **Provide meaningful error messages**: Include actual vs expected values in exceptions
 4. **Optional figure/axes**: Always use `get_figure_and_axes()` helper from `utilities.py`
@@ -103,9 +103,9 @@ When adding new plotter classes or plotting methods:
 Use `bump-my-version` (NOT manual editing):
 
 ```powershell
-poetry run bump-my-version bump patch  # 0.1.0 -> 0.1.1
-poetry run bump-my-version bump minor  # 0.1.0 -> 0.2.0
-poetry run bump-my-version bump major  # 0.1.0 -> 1.0.0
+uv run bump-my-version bump patch  # 0.1.0 -> 0.1.1
+uv run bump-my-version bump minor  # 0.1.0 -> 0.2.0
+uv run bump-my-version bump major  # 0.1.0 -> 1.0.0
 ```
 
 Updates version in: `pyproject.toml`, `src/drippy/__init__.py`, `CITATION.cff`, `docs/conf.py`
