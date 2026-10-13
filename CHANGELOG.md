@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- Upgraded the locked dev dependencies urllib3 to 2.8.0 and virtualenv to 21.14.5, closing six Dependabot alerts (CVE-2026-97688, CVE-2026-97689, CVE-2026-102925, CVE-2026-102930, CVE-2026-102937, CVE-2026-102938). The installed package is unaffected: urllib3 reaches the lockfile only through Sphinx and virtualenv only through tox
+
 ## [0.2.0] - 2026-09-15
 
 ### Changed
