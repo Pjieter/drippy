@@ -61,7 +61,8 @@ jobs:
           # This runs on every push to main; retry so a PyPI blip does not
           # fail an ordinary merge. A 404 is an answer, not an error.
           http=$(curl -sS --retry 3 --retry-all-errors --max-time 30 \
-            -o /dev/null -w '%{http_code}' "https://pypi.org/pypi/drippy-eda/$VERSION/json")
+            -o /dev/null -w '%{http_code}' "https://pypi.org/pypi/drippy-eda/$VERSION/json") || true
+          # curl prints 000 when it cannot connect; the else branch reports it.
           if [ "$http" = 404 ]; then
             echo "$VERSION is not on PyPI yet, releasing"
             echo "release=true" >> "$GITHUB_OUTPUT"
@@ -157,6 +158,9 @@ jobs:
           name: release-notes
       - name: Tag the commit and create the release
         run: |
+          # The default shell is bash -e without pipefail; a failed draft
+          # listing below must stop the step, not feed an empty loop.
+          set -o pipefail
           # A rerun after a partial failure finds the release already there;
           # upload the assets again instead of failing on create. Only a 404
           # means there is no release; any other API error fails the step.
