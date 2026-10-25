@@ -58,7 +58,10 @@ jobs:
           # An untagged version that is already on PyPI means an earlier run
           # published it and then failed. Releasing again from this commit
           # would tag source that may differ from the files on PyPI.
-          http=$(curl -sS -o /dev/null -w '%{http_code}' "https://pypi.org/pypi/drippy-eda/$VERSION/json")
+          # This runs on every push to main; retry so a PyPI blip does not
+          # fail an ordinary merge. A 404 is an answer, not an error.
+          http=$(curl -sS --retry 3 --retry-all-errors --max-time 30 \
+            -o /dev/null -w '%{http_code}' "https://pypi.org/pypi/drippy-eda/$VERSION/json")
           if [ "$http" = 404 ]; then
             echo "$VERSION is not on PyPI yet, releasing"
             echo "release=true" >> "$GITHUB_OUTPUT"
@@ -160,6 +163,15 @@ jobs:
           if gh api "repos/$GITHUB_REPOSITORY/releases/tags/v$VERSION" --silent 2> lookup-error.txt; then
             gh release upload "v$VERSION" dist/* --repo "$GITHUB_REPOSITORY" --clobber
           elif grep -q "HTTP 404" lookup-error.txt; then
+            # gh release create makes a draft, uploads the assets, then
+            # publishes. A failed upload leaves that draft behind, untagged
+            # and invisible to the lookup above; delete it before retrying.
+            gh api --paginate "repos/$GITHUB_REPOSITORY/releases" \
+              --jq ".[] | select(.draft and .tag_name == \"v$VERSION\") | .id" |
+              while read -r id; do
+                echo "Deleting leftover draft release $id for v$VERSION"
+                gh api -X DELETE "repos/$GITHUB_REPOSITORY/releases/$id"
+              done
             gh release create "v$VERSION" dist/* \
               --repo "$GITHUB_REPOSITORY" \
               --target "$GITHUB_SHA" \
