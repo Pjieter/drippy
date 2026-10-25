@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Merging a version bump into `main` now releases it. `release.yml` runs on every push to `main` and, when tag `v<version>` does not exist yet, publishes to PyPI, tags the commit and creates the GitHub release from the version's changelog section. Creating the release by hand is no longer needed
+
 ## [0.2.1] - 2026-10-25
 
 ### Changed

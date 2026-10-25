@@ -49,12 +49,10 @@ To create a release you need write permission on the repository.
 1. Bump the version using `uv run bump-my-version bump <major|minor|patch>`. For example, `uv run bump-my-version bump major` will increase major version numbers everywhere it's needed (`pyproject.toml`, `src/drippy/__init__.py`, `CITATION.cff` and `docs/conf.py`).
 1. Move the changes listed under `[Unreleased]` in `CHANGELOG.md` into a new section for the version being released, dated with the release date.
 1. Open a pull request with the version bump and changelog update, and merge it into `main`.
-1. Go to the [GitHub release page](https://github.com/Pjieter/drippy/releases)
-1. Press draft a new release button
-1. Create a new tag `v<version>` (e.g. `v1.2.3`) targeting `main`, fill in the title and description field
-1. Press the Publish Release button
 
-Publishing the release triggers the [`release.yml`](.github/workflows/release.yml) workflow, which builds the package and publishes it to PyPI automatically using [trusted publishing](https://docs.pypi.org/trusted-publishers/) (OIDC) — no API token is needed. Wait until the workflow run completes, then verify the new version is on [PyPI](https://pypi.org/project/drippy-eda/#history).
+Merging releases the new version. On every push to `main` the [`release.yml`](.github/workflows/release.yml) workflow reads the version from `pyproject.toml`. If tag `v<version>` does not exist yet, it runs the tests, builds the package and publishes it to PyPI with [trusted publishing](https://docs.pypi.org/trusted-publishers/) (OIDC), so no API token is needed. It then tags the merge commit `v<version>` and creates the GitHub release, with the version's `CHANGELOG.md` section as the release notes. The workflow fails before publishing if `CHANGELOG.md` has no section for the version. Pushes that leave the version unchanged release nothing.
+
+Wait until the workflow run completes, then check that the new version is on [PyPI](https://pypi.org/project/drippy-eda/#history). If a run fails, fix the cause and rerun it from the Actions tab, or start it by hand with "Run workflow".
 
 ### One-time trusted publisher setup
 
