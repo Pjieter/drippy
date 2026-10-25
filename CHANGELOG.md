@@ -6,9 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-10-25
+
+### Changed
+
+- Allow astropy 8: the runtime requirement is now `astropy>=7.1.1,<9` (was `<8`), so drippy installs next to astropy 8.x. The test suite passes against astropy 8.0.2
+- Upgraded Ruff to 0.17.x and allowed ipykernel 7 in the docs group
+- Refreshed all locked dependencies (49 packages, including astropy 8.0.2, python-dateutil 3.0.0 and sqlalchemy 2.1.6)
+- The SonarCloud workflow skips Dependabot pull requests, which get no repository secrets and so always failed the scan
+
 ### Security
 
-- Upgraded the locked dev dependencies urllib3 to 2.8.0 and virtualenv to 21.14.5, closing six Dependabot alerts (CVE-2026-97688, CVE-2026-97689, CVE-2026-102925, CVE-2026-102930, CVE-2026-102937, CVE-2026-102938). The installed package is unaffected: urllib3 reaches the lockfile only through Sphinx and virtualenv only through tox
+- Upgraded the locked pillow to 13.0.0, certifi to 2026.10.23, filelock to 4.2.4 and virtualenv to 21.14.13, closing the remaining open Dependabot alerts. drippy does not pin any of these: pillow comes in through matplotlib, so users should upgrade pillow in their own environments. The other three are dev-only (certifi through Sphinx, filelock and virtualenv through tox)
+- Upgraded the locked dev dependencies urllib3 to 2.8.0 and virtualenv to 21.14.5 (since superseded by 21.14.13 above), closing six Dependabot alerts (CVE-2026-97688, CVE-2026-97689, CVE-2026-102925, CVE-2026-102930, CVE-2026-102937, CVE-2026-102938). The installed package is unaffected: urllib3 reaches the lockfile only through Sphinx and virtualenv only through tox
 
 ## [0.2.0] - 2026-09-15
 
@@ -40,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PEP 561 `py.typed` marker (fully type-annotated public API)
 - Published on PyPI as `drippy-eda` (the name `drippy` is taken by an unrelated package); import as `drippy`
 
-[Unreleased]: https://github.com/Pjieter/drippy/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/Pjieter/drippy/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/Pjieter/drippy/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/Pjieter/drippy/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Pjieter/drippy/releases/tag/v0.1.0
