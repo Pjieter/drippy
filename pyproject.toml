@@ -160,3 +160,10 @@ filename = "CITATION.cff"
 
 [[tool.bumpversion.files]]
 filename = "docs/conf.py"
+
+# uv.lock records the project's own version; --locked fails if it is stale.
+[[tool.bumpversion.files]]
+filename = "uv.lock"
+regex = true
+search = '(name = "drippy-eda"\r?\n)version = "{current_version}"'
+replace = '\g<1>version = "{new_version}"'

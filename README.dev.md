@@ -102,19 +102,20 @@ uv run bump-my-version bump minor  # bumps from e.g. 0.3.2 to 0.4.0
 uv run bump-my-version bump patch  # bumps from e.g. 0.3.2 to 0.3.3
 ```
 
-This updates `pyproject.toml`, `src/drippy/__init__.py`, `CITATION.cff`, and
-`docs/conf.py`. It does not touch `date-released` in `CITATION.cff` or the
+This updates `pyproject.toml`, `src/drippy/__init__.py`, `CITATION.cff`,
+`docs/conf.py`, and the project's own version in `uv.lock`. It does not touch `date-released` in `CITATION.cff` or the
 dates in `CHANGELOG.md`; set those by hand.
 
 ## Making a release
 
-Releases are published to PyPI automatically by the
-[`release.yml`](.github/workflows/release.yml) workflow when a GitHub release
-is published. The full procedure, including the one-time trusted-publisher
+Merging a version bump into `main` releases it: the
+[`release.yml`](.github/workflows/release.yml) workflow publishes the new
+version to PyPI, then tags the merge commit and creates the GitHub release.
+Do not tag or create the release by hand. The full procedure, including the one-time trusted-publisher
 setup on pypi.org, is in
 [CONTRIBUTING.md](CONTRIBUTING.md#you-want-to-make-a-new-release-of-the-code-base).
 
-To check the distribution locally before tagging:
+To check the distribution locally before opening the version-bump PR:
 
 ```shell
 uv build

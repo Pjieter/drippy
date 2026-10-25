@@ -43,7 +43,9 @@ uv run bump-my-version bump minor   # 0.1.0 → 0.2.0
 uv run bump-my-version bump major   # 0.1.0 → 1.0.0
 ```
 
-`bump-my-version` updates: `pyproject.toml`, `src/drippy/__init__.py`, `CITATION.cff`, `docs/conf.py`.
+`bump-my-version` updates: `pyproject.toml`, `src/drippy/__init__.py`, `CITATION.cff`, `docs/conf.py`, `uv.lock` (own version only).
+
+Merging a version bump into `main` releases it: `release.yml` publishes to PyPI, then tags and creates the GitHub release. Never tag by hand.
 
 ## Architecture
 

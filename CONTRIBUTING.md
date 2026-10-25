@@ -46,15 +46,17 @@ In case you feel like you've made a valuable contribution, but you don't know ho
 To create a release you need write permission on the repository.
 
 1. Check the author list and set `date-released` in [`CITATION.cff`](CITATION.cff)
-1. Bump the version using `uv run bump-my-version bump <major|minor|patch>`. For example, `uv run bump-my-version bump major` will increase major version numbers everywhere it's needed (`pyproject.toml`, `src/drippy/__init__.py`, `CITATION.cff` and `docs/conf.py`).
+1. Bump the version using `uv run bump-my-version bump <major|minor|patch>`. For example, `uv run bump-my-version bump major` will increase major version numbers everywhere it's needed (`pyproject.toml`, `src/drippy/__init__.py`, `CITATION.cff`, `docs/conf.py` and the project's own entry in `uv.lock`).
 1. Move the changes listed under `[Unreleased]` in `CHANGELOG.md` into a new section for the version being released, dated with the release date.
 1. Open a pull request with the version bump and changelog update, and merge it into `main`.
 
-Merging releases the new version. On every push to `main` the [`release.yml`](.github/workflows/release.yml) workflow reads the version from `pyproject.toml`. If tag `v<version>` does not exist yet, it runs the tests, builds the package and publishes it to PyPI with [trusted publishing](https://docs.pypi.org/trusted-publishers/) (OIDC), so no API token is needed. It then tags the merge commit `v<version>` and creates the GitHub release, with the version's `CHANGELOG.md` section as the release notes. The workflow fails before publishing if `CHANGELOG.md` has no section for the version. Pushes that leave the version unchanged release nothing.
+Merging releases the new version. On every push to `main` the [`release.yml`](.github/workflows/release.yml) workflow reads the version from `pyproject.toml`. If tag `v<version>` does not exist yet and PyPI does not have the version either, it runs the tests, builds the package and publishes it to PyPI with [trusted publishing](https://docs.pypi.org/trusted-publishers/) (OIDC), so no API token is needed. It then tags the merge commit `v<version>` and creates the GitHub release, with the version's `CHANGELOG.md` section as the release notes. The workflow fails before publishing if `CHANGELOG.md` has no section for the version. Pushes that leave the version unchanged release nothing.
 
 Do not create the tag or the GitHub release yourself. The workflow treats an existing tag as already released, so a tag made by hand makes it skip the PyPI upload without an error.
 
-Wait until the workflow run completes, then check that the new version is on [PyPI](https://pypi.org/project/drippy-eda/#history). If a run fails, fix the cause and rerun it from the Actions tab, or start it by hand with "Run workflow" on the `main` branch. A run started on any other branch skips every job.
+Wait until the workflow run completes, then check that the new version is on [PyPI](https://pypi.org/project/drippy-eda/#history).
+
+If a run fails, fix the cause and use "Re-run failed jobs" on that run in the Actions tab. That reuses the run's built files, so PyPI and the GitHub release get the same package. Do not use "Re-run all jobs" or start a new run once the publish job has succeeded: the check job then finds the version on PyPI without a tag and stops with an error, or finds the tag and skips the rest. If the run failed before publishing, any of the three works. "Run workflow" only does anything on the `main` branch; a run started on any other branch skips every job.
 
 ### One-time trusted publisher setup
 

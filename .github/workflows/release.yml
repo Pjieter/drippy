@@ -35,7 +35,7 @@ jobs:
         run: |
           version=$(python3 -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')
           echo "version=$version" >> "$GITHUB_OUTPUT"
-      - name: Check whether the tag exists
+      - name: Check the tag and PyPI
         id: tag
         env:
           VERSION: ${{ steps.version.outputs.version }}
@@ -48,11 +48,25 @@ jobs:
             echo "v$VERSION is already tagged, nothing to release"
             echo "release=false" >> "$GITHUB_OUTPUT"
           elif [ "$status" -eq 2 ]; then
-            echo "v$VERSION is not tagged yet, releasing"
-            echo "release=true" >> "$GITHUB_OUTPUT"
+            echo "v$VERSION is not tagged yet"
           else
             echo "::error::git ls-remote failed with exit code $status"
             exit "$status"
+          fi
+
+          # An untagged version that is already on PyPI means an earlier run
+          # published it and then failed. Releasing again from this commit
+          # would tag source that may differ from the files on PyPI.
+          http=$(curl -sS -o /dev/null -w '%{http_code}' "https://pypi.org/pypi/drippy-eda/$VERSION/json")
+          if [ "$http" = 404 ]; then
+            echo "$VERSION is not on PyPI yet, releasing"
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          elif [ "$http" = 200 ]; then
+            echo "::error::drippy-eda $VERSION is on PyPI but v$VERSION is not tagged. Finish the run that published it with \"Re-run failed jobs\", or bump the version."
+            exit 1
+          else
+            echo "::error::PyPI lookup for $VERSION returned HTTP $http"
+            exit 1
           fi
 
   build:
