@@ -140,13 +140,17 @@ jobs:
       - name: Tag the commit and create the release
         run: |
           # A rerun after a partial failure finds the release already there;
-          # upload the assets again instead of failing on create.
-          if gh release view "v$VERSION" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+          # upload the assets again instead of failing on create. Only a 404
+          # means there is no release; any other API error fails the step.
+          if gh api "repos/$GITHUB_REPOSITORY/releases/tags/v$VERSION" --silent 2> lookup-error.txt; then
             gh release upload "v$VERSION" dist/* --repo "$GITHUB_REPOSITORY" --clobber
-          else
+          elif grep -q "HTTP 404" lookup-error.txt; then
             gh release create "v$VERSION" dist/* \
               --repo "$GITHUB_REPOSITORY" \
               --target "$GITHUB_SHA" \
               --title "v$VERSION" \
               --notes-file release-notes.md
+          else
+            cat lookup-error.txt
+            exit 1
           fi
