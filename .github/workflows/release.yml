@@ -22,6 +22,8 @@ jobs:
 
   check:
     name: Check for an unreleased version
+    # workflow_dispatch can start a run from any branch; only main releases.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.version.outputs.version }}
@@ -38,12 +40,19 @@ jobs:
         env:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
-          if git ls-remote --exit-code --tags origin "refs/tags/v$VERSION" > /dev/null; then
+          # Exit code 2 means no matching ref; anything else non-zero is an
+          # error, not a missing tag.
+          status=0
+          git ls-remote --exit-code --tags origin "refs/tags/v$VERSION" > /dev/null || status=$?
+          if [ "$status" -eq 0 ]; then
             echo "v$VERSION is already tagged, nothing to release"
             echo "release=false" >> "$GITHUB_OUTPUT"
-          else
+          elif [ "$status" -eq 2 ]; then
             echo "v$VERSION is not tagged yet, releasing"
             echo "release=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::git ls-remote failed with exit code $status"
+            exit "$status"
           fi
 
   build:
@@ -69,7 +78,7 @@ jobs:
           fi
           cat release-notes.md
       - name: Run the tests
-        run: uv run pytest
+        run: uv run --locked pytest
       - name: Build the package
         run: uv build
       - name: Check the distribution with twine
@@ -79,11 +88,13 @@ jobs:
         with:
           name: dist
           path: dist/
+          overwrite: true
       - name: Upload release notes artifact
         uses: actions/upload-artifact@v7.0.1
         with:
           name: release-notes
           path: release-notes.md
+          overwrite: true
 
   publish:
     name: Publish to PyPI
