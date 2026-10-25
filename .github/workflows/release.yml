@@ -138,9 +138,15 @@ jobs:
         with:
           name: release-notes
       - name: Tag the commit and create the release
-        run: >
-          gh release create "v$VERSION" dist/*
-          --repo "$GITHUB_REPOSITORY"
-          --target "$GITHUB_SHA"
-          --title "v$VERSION"
-          --notes-file release-notes.md
+        run: |
+          # A rerun after a partial failure finds the release already there;
+          # upload the assets again instead of failing on create.
+          if gh release view "v$VERSION" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            gh release upload "v$VERSION" dist/* --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "v$VERSION" dist/* \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "v$VERSION" \
+              --notes-file release-notes.md
+          fi
