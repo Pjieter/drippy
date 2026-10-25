@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgraded Ruff to 0.17.x and allowed ipykernel 7 in the docs group
 - Refreshed all locked dependencies (49 packages, including astropy 8.0.2, python-dateutil 3.0.0 and sqlalchemy 2.1.6)
 - The SonarCloud workflow skips Dependabot pull requests, which get no repository secrets and so always failed the scan
+- Merging a version bump into `main` now releases it. `release.yml` runs on every push to `main` and, when tag `v<version>` does not exist yet, publishes to PyPI, tags the commit and creates the GitHub release from the version's changelog section. Creating the release by hand is no longer needed
+- `bump-my-version` also updates drippy's own version in `uv.lock`, and the linting build fails when `uv.lock` does not match `pyproject.toml`. Before, a bump left the lockfile stale
 
 ### Security
 

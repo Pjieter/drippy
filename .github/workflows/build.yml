@@ -54,6 +54,8 @@ jobs:
         run: |
           which python
           python --version
+      - name: Check that uv.lock matches pyproject.toml
+        run: uv lock --check
       - name: Install the project dependencies
         run: |
           uv sync --all-groups
